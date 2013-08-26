@@ -1,0 +1,6 @@
+ul.bus-stops-list,
+ol.bus-stops-list {
+	margin-left: 0;
+	list-style: none;
+	text-align: left;
+}

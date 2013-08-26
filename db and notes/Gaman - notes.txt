@@ -1,0 +1,99 @@
+Gaman Public Transport Management System
+
+Admins: Scheduler, Time Keeper, Stand OIC, admin level 4, admin level 5...
+Users: Commuter
+Bus Personnel: Bus Owner, Bus Operator (Driver, Conductor)
+
+----------------------------------------------------------------------------------------------------------------
+
+admins(id, username, password, admin_level, first_name, last_name, email_address)
+
+routes(id, route_number, length, trip_time, begin_stop, end_stop)
+stops(id, name)
+stops-routes(id, route_id, stop_id)
+buses(id, route_id)
+
+bus_personnel(id, bus_id, role, first_name, last_name)
+role:[owner = 1, driver = 2, conductor = 3, owner+driver = 4, owner+conductor = 5]
+
+buses-bus_personnel(id, bus_id, bus_personnel_id)
+
+timetable(id, route_number, demand_flag)
+demand_flag:[normal+peak, normal+off-peak, weekend+peak, weekend+off-peak, holiday, special]
+
+trips(id, route_id, bus_id, begin_stop, end_stop, departure_from_begin_stop, arrival_at_end_stop)
+
+stop_activity(id, trip_id, stop_id, alighted_commuters, boarded_commuters, arrival_time, departure_time)
+
+commuters(id, username, password, first_name, last_name, email_address)
+
+complaints(id, complaint_type, bus_route_id, , stop_id, bus_id, bus_personnel_id, status, content)
+
+
+----------------------------------------------------------------------------------------------------------------
+
+Admins
+(
+admin_id
+username
+password
+admin_level [time_keeper = 1, stand_oic = 2, scheduler = 3, admin_level_4 = 4, admin_level_5 = 5]
+first_name
+last_name
+email_address
+)
+
+{
+Add Admin User
+View/Edit Admin User
+Delete Admin User
+
+Add Bus Route
+View/Edit Bus Route Details (Number of Stops and their names, Number of Buses in operation)
+Delete Bus Route
+View Route Statistics (passenger demand graphs, time statistics and graphs)
+
+Search for Bus Route
+View Route Timetable
+
+Generate Route Timetable
+}
+
+----------------------------------------------------------------------------------------------------------------
+
+Commuter
+(
+commuter_id
+username
+password
+first_name
+last_name
+email_address
+)
+
+{
+Search for Bus Route
+View Bus Route Details(Number of stop and their names)
+View Route Timetable
+View Fare Table
+}
+
+----------------------------------------------------------------------------------------------------------------
+
+BusPersonnel
+(
+bus_personnel_id
+bus_id
+role [owner = 1, driver = 2, conductor = 3, owner+driver = 4, owner+conductor = 5]
+first_name
+last_name
+nic_number
+)
+
+{
+View Bus Route Details (Number of Stops and their names)
+View Route Statistics (passenger demand graphs, time statistics and graphs)
+
+Search for Bus Route
+View Route Timetable
+}
