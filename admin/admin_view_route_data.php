@@ -21,7 +21,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Route Data &middot; Photo Gallery</title>
+    <title>Route Data &middot; Gaman</title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 

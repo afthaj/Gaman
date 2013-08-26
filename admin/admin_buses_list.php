@@ -6,16 +6,15 @@ if (!$session->is_logged_in()){
 } else {
 	$admin_user = Admin::find_by_id($_SESSION['id']);
 	
-	$routes = BusRoute::find_all();
+	$buses = Bus::find_all();
 	
-	$stop = new BusStop();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Stops List &middot; Gaman</title>
+    <title>Buses List &middot; Gaman</title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -26,51 +25,55 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php $page = admin_stops_list;?>
+      <?php $page = admin_buses_list;?>
       <?php require_once('../includes/layouts/navbar_admin.php');?>
 
       <!-- Begin page content -->
       
-      <div class="container">
-        <div class="page-header">
-          <h1>List of Bus Stops</h1>
+      <header class="jumbotron subhead">
+        <div class="container-fluid">
+          <h1>List of Buses</h1>
         </div>
+      </header>
         
         <!-- Start Content -->
+        <div class="container-fluid">
         
-        <a href="admin_create_stop.php" class="btn btn-primary">Add New Bus Stop</a>
-        <br /><br />
+        <div class="row-fluid">
+        	<br />
+	        <a href="admin_create_bus.php" class="btn btn-primary">Add New Bus</a>
+	        <br /><br />
+        </div>
         
+        <div class="row-fluid">
         <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
         
         <table class="table table-bordered table-hover">
 	        <tr align="center">
 		        <td>Route Number</td>
-		        <td>Begin Stop</td>
-		        <td>End Stop</td>
-		        <td>Length (km)</td>
-		        <td>Trip Time (hh:mm:ss)</td>
+		        <td>Registration Number</td>
+		        <td>Name (Optional)</td>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
 	        </tr>
         	
-        	<?php foreach($routes as $route){ ?>
+        	<?php foreach($buses as $bus){ ?>
         		<tr align="center">
-	        		<td><?php echo $route->route_number; ?></td>
-	        		<td><?php echo $stop->find_by_id($route->begin_stop)->name; ?></td>
-	        		<td><?php echo $stop->find_by_id($route->end_stop)->name; ?></td>
-	        		<td><?php echo $route->length; ?></td>
-	        		<td><?php echo $route->trip_time; ?></td>
-	        		<td><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	        		<td><?php echo BusRoute::find_by_id($bus->route_id)->route_number; ?></td>
+	        		<td><?php echo $bus->reg_number; ?></td>
+	        		<td><?php if (!empty($bus->name)) {echo $bus->name;} ?></td>
+	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
+	        		<td><a href="admin_delete_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
         		</tr>
         	<?php }?>
         	
         </table>
         
+        </div>
+        
+        </div>
         <!-- End Content -->
         
-      </div>
 
       <div id="push"></div>
     </div>

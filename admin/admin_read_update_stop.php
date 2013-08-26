@@ -19,17 +19,13 @@ if (!$session->is_logged_in()){
 	}
 	
 	if (isset($_POST['submit'])){
-		$route_to_read_update->route_number = $_POST['route_number'];
-		$route_to_read_update->length = $_POST['length'];
-		$route_to_read_update->trip_time = $_POST['trip_time'];
-		$route_to_read_update->begin_stop = $_POST['begin_stop'];
-		$route_to_read_update->end_stop = $_POST['end_stop'];
+		$stop_to_read_update->name = $_POST['name'];
 	
-		if ($route_to_read_update->update()){
-			$session->message("Success! The Route details were updated. ");
-			redirect_to('admin_routes_list.php');
+		if ($stop_to_read_update->update()){
+			$session->message("Success! The Bus Stop details were updated. ");
+			redirect_to('admin_stops_list.php');
 		} else {
-			$session->message("Error! The Route details could not be updated. ");
+			$session->message("Error! The Bus Stop details could not be updated. ");
 		}
 	}
 	
@@ -88,12 +84,12 @@ if (!$session->is_logged_in()){
 	      	
 	      	<div class="tab-pane fade" id="route_profile">
 	      	
-	      	<form class="form-horizontal" action="admin_read_update_route.php?routeid=<?php echo $_GET['routeid']; ?>" method="POST">
+	      	<form class="form-horizontal" action="admin_read_update_stop.php?stopid=<?php echo $_GET['stopid']; ?>" method="POST">
             
 	            <div class="control-group">
 	            <label for="name" class="control-label">Name of Bus Stop</label>
 		            <div class="controls">
-		            	<input type="text" value="<?php echo $stop_to_read_update->name; ?>" name="name">
+		            	<input type="text" name="name" value="<?php echo $stop_to_read_update->name; ?>">
 		            </div>
 	            </div>
 	            

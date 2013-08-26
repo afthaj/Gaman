@@ -40,7 +40,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Route Details &middot; Photo Gallery</title>
+    <title>Route Details &middot; Gaman</title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -93,7 +93,7 @@ if (!$session->is_logged_in()){
 	            <div class="control-group">
 	            <label for="route_number" class="control-label">Route Number</label>
 		            <div class="controls">
-		            	<input type="text" value="<?php echo $route_to_read_update->route_number; ?>" name="route_number">
+		            	<input type="text" name="route_number" value="<?php echo $route_to_read_update->route_number; ?>">
 		            </div>
 	            </div>
 	            
