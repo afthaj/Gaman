@@ -1,14 +1,14 @@
 <div class="navbar navbar-fixed-top navbar-invers">
-        
-    <div class="container">
+  <div class="navbar-inner">
+    <div class="container-fluid">
       
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-      </button>
+      </a>
       
-      <a class="navbar-brand" href="index.php">Gaman</a>
+      <a class="brand" href="index.php">Gaman</a>
       
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
@@ -18,6 +18,8 @@
           <li<?php if (isset($page) && $page == test){echo ' class="active"';}?>><a href="test.php">Test</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
+          
+          <li><a href="./admin">Admin Area</a></li>
           
           <?php if (isset($user->id)){ ?>
           	<li class="dropdown">
@@ -34,5 +36,5 @@
       </div><!--/.nav-collapse -->
       
     </div>
-  
+  </div>
 </div>

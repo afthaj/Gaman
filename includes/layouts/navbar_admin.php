@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
       </a>
 
-      <a class="brand" href="index.php"> Gaman</a>
+      <a class="brand" href="index.php">Gaman</a>
       
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
@@ -57,6 +57,8 @@
           <li<?php if (isset($page) && $page == complaints){echo ' class="active"';}?>><a href="complaints.php">Complaints</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
+          
+          <li><a href="../">Public Area</a></li>
           
           <?php if (isset($admin_user->id)){ ?>
           	<li class="dropdown">

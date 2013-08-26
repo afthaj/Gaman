@@ -5,6 +5,7 @@
 
     <!-- CSS -->
     <link href="css/bootswatch-flatly/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/bootswatch-flatly/docs.css" rel="stylesheet">
     
     <link href="css/prettify.css" rel="stylesheet">
@@ -71,7 +72,7 @@
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
+      <script src="../js/html5shiv.js"></script>
     <![endif]-->
 
     <!-- Fav and touch icons -->
