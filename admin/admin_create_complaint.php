@@ -54,7 +54,7 @@ if (!$session->is_logged_in()){
        	  	<?php echo $session->message; ?>
        	  	
        	  	<section>
-       	  	<form action="complaints.php" method="POST" class="form-horizontal">
+       	  	<form action="admin_create_complaint.php" method="POST" class="form-horizontal">
             
 	            <div class="control-group">
 	            <label for="complaint_type" class="control-label">Complaint Type</label>

@@ -16,7 +16,7 @@
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="admin_admin_users_list.php">View All Admin Users</a></li>
+          		<li><a href="admin_list_admin_users.php">View All Admin Users</a></li>
           		<li><a href="admin_create_admin_user.php">Add Admin User</a></li>
           		<li><a href="#">Search for Admin User</a></li>
           	</ul>
@@ -24,7 +24,7 @@
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="admin_routes_list.php">View All Bus Routes</a></li>
+          		<li><a href="admin_list_routes.php">View All Bus Routes</a></li>
           		<li><a href="admin_create_route.php">Add Bus Route</a></li>
           		<li><a href="#">Search for Bus Route</a></li>
           	</ul>
@@ -32,25 +32,25 @@
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="admin_stops_list.php">View All Stops</a></li>
+          		<li><a href="admin_list_stops.php">View All Stops</a></li>
           		<li><a href="admin_create_stop.php">Add Bus Stop</a></li>
-          		<li><a href="">Search for Bus Stop</a></li>
+          		<li><a href="#">Search for Bus Stop</a></li>
           	</ul>
           </li>
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="admin_buses_list.php">View All Buses</a></li>
+          		<li><a href="admin_list_buses.php">View All Buses</a></li>
           		<li><a href="admin_create_bus.php">Add Bus</a></li>
-          		<li><a href="">Search for Bus</a></li>
+          		<li><a href="#">Search for Bus</a></li>
           	</ul>
           </li>
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Personnel <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="">View All Personnel</a></li>
-          		<li><a href="">Add Personnel</a></li>
-          		<li><a href="">Search for Personnel</a></li>
+          		<li><a href="admin_list_personnel.php">View All Personnel</a></li>
+          		<li><a href="admin_create_personnel.php">Add Personnel</a></li>
+          		<li><a href="#">Search for Personnel</a></li>
           	</ul>
           </li>
           

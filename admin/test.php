@@ -11,7 +11,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Test &middot; Gaman</title>
+    <title>Test &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 

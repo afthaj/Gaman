@@ -11,7 +11,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Admin Home &middot; Gaman</title>
+    <title>Admin Home &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
     
   </head>
@@ -27,7 +27,7 @@ if (!$session->is_logged_in()){
 
       	<div class="jumbotron masthead">
 		  <div class="container">
-		    <h1>Gaman</h1>
+		    <h1><?php echo WEB_APP_NAME; ?></h1>
 		    <p>Helping you travel!</p>
 		  </div>
 		</div>

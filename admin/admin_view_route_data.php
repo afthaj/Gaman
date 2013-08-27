@@ -11,7 +11,7 @@ if (!$session->is_logged_in()){
 		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
 	} else {
 		$session->message("No Route ID provided to view.");
-		redirect_to("admin_routes_list.php");
+		redirect_to("admin_list_routes.php");
 	}
 	
 }
@@ -47,7 +47,7 @@ if (!$session->is_logged_in()){
         
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_routes_list.php" class="btn btn-primary"> &larr; Back to Routes List</a>
+        		<a href="admin_list_routes.php" class="btn btn-primary"> &larr; Back to Routes List</a>
         	</div>
         </div>
         

@@ -76,7 +76,7 @@ if (!$session->is_logged_in()){
         
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="admin_admin_users_list.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
+	        	<a href="admin_list_admin_users.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
 	        </div>
         </div>
         

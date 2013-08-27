@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
 	
 	if ($route_to_create->create()){
 		$session->message("Success! The new Route has been added. ");
-		redirect_to('admin_routes_list.php');
+		redirect_to('admin_list_routes.php');
 	} else {
 		$session->message("Error! The Route could not be added. ");
 	}
@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Add Bus Route &middot; Gaman</title>
+    <title>Add Bus Route &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
         
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_routes_list.php" class="btn btn-primary"> &larr; Back to Routes List</a>
+        		<a href="admin_list_routes.php" class="btn btn-primary"> &larr; Back to Routes List</a>
         	</div>
         </div>
         

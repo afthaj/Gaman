@@ -15,7 +15,7 @@ if (!$session->is_logged_in()){
 		
 	} else {
 		$session->message("No Stop ID provided to view.");
-		redirect_to("admin_stops_list.php");
+		redirect_to("admin_list_stops.php");
 	}
 	
 	if (isset($_POST['submit'])){
@@ -23,7 +23,7 @@ if (!$session->is_logged_in()){
 	
 		if ($stop_to_read_update->update()){
 			$session->message("Success! The Bus Stop details were updated. ");
-			redirect_to('admin_stops_list.php');
+			redirect_to('admin_list_stops.php');
 		} else {
 			$session->message("Error! The Bus Stop details could not be updated. ");
 		}
@@ -63,7 +63,7 @@ if (!$session->is_logged_in()){
       
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="admin_stops_list.php" class="btn btn-primary"> &larr; Back to Stops List</a>
+	        	<a href="admin_list_stops.php" class="btn btn-primary"> &larr; Back to Stops List</a>
 	        </div>
         </div>
         

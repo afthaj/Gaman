@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
 	
 	if ($stop_to_create->create()){
 		$session->message("Success! The new Bus Stop has been added. ");
-		redirect_to('admin_stops_list.php');
+		redirect_to('admin_list_stops.php');
 	} else {
 		$session->message("Error! The Bus Stop could not be added. ");
 	}
@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Add Bus Stop &middot; Gaman</title>
+    <title>Add Bus Stop &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -56,7 +56,7 @@ if (isset($_POST['submit'])) {
         
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="admin_stops_list.php" class="btn btn-primary"> &larr; Back to Stops List</a>
+	        	<a href="admin_list_stops.php" class="btn btn-primary"> &larr; Back to Stops List</a>
 	        </div>
         </div>
         

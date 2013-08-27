@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
 	
 	if ($user_to_create->create()){
 		$session->message("Success! The Admin User has been added. ");
-		redirect_to('admin_admin_users_list.php');
+		redirect_to('admin_list_admin_users.php');
 	} else {
 		$session->message("Error! The Admin User could not be added. ");
 	}
@@ -31,7 +31,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Add Admin User &middot; Gaman</title>
+    <title>Add Admin User &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
       
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_admin_users_list.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
+        		<a href="admin_list_admin_users.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
         	</div>  
         </div>
                 

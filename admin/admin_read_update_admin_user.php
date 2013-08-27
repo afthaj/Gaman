@@ -11,7 +11,7 @@ if (!$session->is_logged_in()){
 		$user_to_read_update = Admin::find_by_id($_GET['adminid']);
 	} else {
 		$session->message("No admin id provided to view.");
-		redirect_to("admin_admin_users_list.php");
+		redirect_to("admin_list_admin_users.php");
 	}
 	
 	if (isset($_POST['submit'])){
@@ -23,7 +23,7 @@ if (!$session->is_logged_in()){
 	
 		if ($user_to_read_update->update()){
 			$session->message("Success! The user details were updated. ");
-			redirect_to('admin_admin_users_list.php');
+			redirect_to('admin_list_admin_users.php');
 		} else {
 			$session->message("Error! The user details could not be updated. ");
 		}
@@ -36,7 +36,7 @@ if (!$session->is_logged_in()){
 			
 			if ($user_to_read_update->update()){
 				$session->message("Success! The user's password was updated. ");
-				redirect_to('admin_users_list.php');
+				redirect_to('admin_list_admin_users.php');
 			} else {
 				$session->message("Error! The user's password could not be updated. ");
 			}
@@ -80,7 +80,7 @@ if (!$session->is_logged_in()){
       
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	          <a href="admin_admin_users_list.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
+	          <a href="admin_list_admin_users.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
 	        </div>
         </div>
         

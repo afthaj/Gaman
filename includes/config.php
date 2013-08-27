@@ -5,4 +5,6 @@ defined('DB_USER') ? null : define("DB_USER", "root");
 defined('DB_PASS') ? null : define("DB_PASS", "root");
 defined('DB_NAME') ? null : define("DB_NAME", "gaman");
 
+defined('WEB_APP_NAME') ? null : define("WEB_APP_NAME", "Gaman");
+
 ?>
