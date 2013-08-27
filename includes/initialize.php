@@ -17,5 +17,7 @@ require_once("bus_stop.php");
 require_once("bus.php");
 require_once("bus_personnel.php");
 require_once("stop_route.php");
+require_once("bus_bus_personnel.php");
+require_once("bus_personnel_role.php");
 
 ?>

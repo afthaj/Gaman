@@ -6,7 +6,7 @@ if (!$session->is_logged_in()){
 } else {
 	$admin_user = Admin::find_by_id($_SESSION['id']);
 	
-	$buses = Bus::find_all();
+	$bus_personnel = BusPersonnel::find_all();
 	
 }
 ?>
@@ -32,7 +32,7 @@ if (!$session->is_logged_in()){
       
       <header class="jumbotron subhead">
         <div class="container-fluid">
-          <h1>List of Buses</h1>
+          <h1>List of Bus Personnel</h1>
         </div>
       </header>
         
@@ -41,7 +41,7 @@ if (!$session->is_logged_in()){
         
         <div class="row-fluid">
         	<br />
-	        <a href="admin_create_bus.php" class="btn btn-primary">Add New Bus</a>
+	        <a href="admin_create_bus_personnel.php" class="btn btn-primary">Add New Bus Personnel</a>
 	        <br /><br />
         </div>
         
@@ -50,20 +50,20 @@ if (!$session->is_logged_in()){
         
         <table class="table table-bordered table-hover">
 	        <tr align="center">
-		        <td>Route Number</td>
-		        <td>Registration Number</td>
-		        <td>Name (Optional)</td>
+		        <td>First Name</td>
+		        <td>Last Name</td>
+		        <td>Role</td>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
 	        </tr>
         	
-        	<?php foreach($buses as $bus){ ?>
+        	<?php foreach($bus_personnel as $bus_person){ ?>
         		<tr align="center">
-	        		<td><?php echo BusRoute::find_by_id($bus->route_id)->route_number; ?></td>
-	        		<td><?php echo $bus->reg_number; ?></td>
-	        		<td><?php if (!empty($bus->name)) {echo $bus->name;} ?></td>
-	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	        		<td><?php echo $bus_person->first_name; ?></td>
+	        		<td><?php echo $bus_person->last_name; ?></td>
+	        		<td><?php echo BusPersonnelRole::find_by_id($bus_person->role)->role_name; ?></td>
+	        		<td><a href="admin_read_update_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
+	        		<td><a href="admin_delete_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
         		</tr>
         	<?php }?>
         	

@@ -12,8 +12,8 @@ routes(id, route_number, length, trip_time, begin_stop, end_stop)
 stops(id, name)
 stops-routes(id, route_id, stop_id)
 
-buses(id, reg_number, route_id)
-bus_personnel(id, bus_id, role, first_name, last_name)
+buses(id, route_id, reg_number, name)
+bus_personnel(id, role, first_name, last_name)
 role:[owner = 1, driver = 2, conductor = 3, owner+driver = 4, owner+conductor = 5]
 buses-bus_personnel(id, bus_id, bus_personnel_id)
 
