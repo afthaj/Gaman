@@ -7,6 +7,7 @@ if (!$session->is_logged_in()){
 	
 	$admin_user = Admin::find_by_id($_SESSION['id']);
 	$routes = BusRoute::find_all();
+	$buses = Bus::find_all();
 	
 	if (isset($_GET['busid'])){
 		$bus_to_read_update = Bus::find_by_id($_GET['busid']);
@@ -36,7 +37,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Bus Details &middot; Gaman</title>
+    <title>Bus Details &middot; <?php echo WEB_APP_NAME;?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -119,13 +120,48 @@ if (!$session->is_logged_in()){
 	      	</div>
 	      
 	      	<div class="tab-pane active in" id="bus_personnel_list">
-	      		
-	      		<div>
-	      			<ul class="bus-stops-list">
-	      				<li class=""><h4>List of Personnel</h4></li>
-		        		
-	      			</ul>
-	      		</div>
+	      	
+	      	<div class="row-fluid">
+      			<h4>List of Personnel</h4>
+      			<br />
+      		</div>
+      		
+      		<div class="row-fluid">
+      		
+      		<table class="table table-bordered table-hover">
+	          <thead align="center">
+		        <tr>
+			        <td>Role</td>
+			        <td>First Name</td>
+			        <td>Last Name</td>
+		        </tr>
+		      </thead>
+		      
+		      <tbody align="center">
+	        	
+	        	<?php
+	        	
+	        	$sql  = 'SELECT * FROM buses_bus_personnel ';
+	        	$sql .= 'WHERE bus_id = ' . $bus_to_read_update->id;
+	        	
+	        	$buses_bus_personnel = BusBusPersonnel::find_by_sql($sql);
+	        	
+	        	foreach($buses_bus_personnel as $bbp){ 
+	        	
+	        		$assigned_bus_personnel = BusPersonnel::find_by_id($bbp->bus_personnel_id);
+	        		
+	        		?>
+	        		<tr>
+		        		<td><?php echo BusPersonnelRole::find_by_id($assigned_bus_personnel->role)->role_name; ?></td>
+		        		<td><?php echo $assigned_bus_personnel->first_name; ?></td>
+		        		<td><?php echo $assigned_bus_personnel->last_name; ?></td>
+	        		</tr>
+	        	<?php } ?>
+	        	
+	          </tbody>
+	        </table>
+
+      		</div>
 	      	
 	   		</div>
 	      

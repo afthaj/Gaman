@@ -8,6 +8,11 @@ if (!$session->is_logged_in()){
 	
 	$routes = BusRoute::find_all();
 	$stops = BusStop::find_all();
+	$buses = Bus::find_all();
+	$bus_personnel = BusPersonnel::find_all();
+	$complaint_types = ComplaintType::find_all();
+	$complaint_status = ComplaintStatus::find_all();
+	
 }
 ?>
 
@@ -60,11 +65,9 @@ if (!$session->is_logged_in()){
 	            <label for="complaint_type" class="control-label">Complaint Type</label>
 		            <div class="controls">
 		            	<select name="complaint_type">
-						  <option value="1" selected="selected" >Complaint Type 1</option>
-						  <option value="2">Complaint Type 2</option>
-						  <option value="3">Complaint Type 3</option>
-						  <option value="4">Complaint Type 4</option>
-						  <option value="5">Complaint Type 5</option>
+		            	<?php foreach($complaint_types as $complaint_type){ ?>
+						  <option value="<?php echo $complaint_type->id; ?>"><?php echo $complaint_type->name; ?></option>
+						<?php } ?>
 						</select>
 		            </div>
 	            </div>
@@ -96,12 +99,9 @@ if (!$session->is_logged_in()){
 	            <label for="bus_id" class="control-label">Bus</label>
 		            <div class="controls">
 		            	<select name="bus_id">
-						  <option value="0" selected="selected" >Please select an option</option>
-						  <option value="1">Bus 1</option>
-						  <option value="2">Bus 2</option>
-						  <option value="3">Bus 3</option>
-						  <option value="4">Bus 4</option>
-						  <option value="5">Bus 5</option>
+						  <?php foreach($buses as $bus){ ?>
+						  	<option value="<?php echo $bus->id; ?>"><?php echo $bus->reg_number; ?></option>
+						  <?php } ?>
 						</select>
 		            </div>
 	            </div>
@@ -110,12 +110,9 @@ if (!$session->is_logged_in()){
 	            <label for="bus_personnel_id" class="control-label">Bus Personnel</label>
 		            <div class="controls">
 		            	<select name="bus_personnel_id">
-						  <option value="0" selected="selected" >Please select an option</option>
-						  <option value="1">Bus Personnel 1</option>
-						  <option value="2">Bus Personnel 2</option>
-						  <option value="3">Bus Personnel 3</option>
-						  <option value="4">Bus Personnel 4</option>
-						  <option value="5">Bus Personnel 5</option>
+		            	<?php foreach($bus_personnel as $bp){ ?>
+							<option value="<?php echo $bp->id; ?>"><?php echo $bp->first_name . ' ' . $bp->last_name; ?></option>
+						<?php } ?>
 						</select>
 		            </div>
 	            </div>
@@ -124,10 +121,9 @@ if (!$session->is_logged_in()){
 	            <label for="status" class="control-label">Complaint Status</label>
 		            <div class="controls">
 		            	<select name="status">
-						  <option value="0" selected="selected" >Please select an option</option>
-						  <option value="1">Completed</option>
-						  <option value="2">In Process</option>
-						  <option value="3">Pending</option>
+						<?php foreach($complaint_status as $comp_status){ ?>
+							<option value="<?php echo $comp_status->id; ?>"><?php echo $comp_status->comp_status_name; ?></option>
+						<?php } ?>
 						</select>
 		            </div>
 	            </div>

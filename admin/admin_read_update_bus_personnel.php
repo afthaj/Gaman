@@ -137,31 +137,15 @@ if (!$session->is_logged_in()){
 	      
 	      	<div class="tab-pane active in" id="assigned_buses_list">
 	      		
-      		<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?personnelid=<?php echo $_GET['personnelid']; ?>" method="POST">
-            
-            <div class="control-group">
-            <label for="bus_id" class="control-label">Assign to a  Bus</label>
-	            <div class="controls">
-	            	<select name="bus_id">
-	            	<?php foreach($buses as $bus){ ?>
-	            		<option value="<?php echo $bus->id; ?>"><?php echo BusRoute::find_by_id($bus->route_id)->route_number; ?> &middot; <?php echo $bus->reg_number; ?><?php if(!empty($bus->name)){ echo ' &middot; ' . $bus->name;} ?></option>
-	            	<?php } ?>
-					</select>
-	            </div>
-            </div>
-	            
-          	<div class="form-actions">
-        	    <button class="btn btn-primary" name="assign">Assign</button>
-        	</div>
-	        </form>
-	      		
+      		<div class="row-fluid">
+      			<h4>Assigned Bus/Buses</h4>
+      			<br />
+      		</div>
+      		
       		<div class="row-fluid">
       		
       		<table class="table table-bordered table-hover">
 	          <thead align="center">
-	          	<tr>
-	          		<td colspan="3"><h4>Assigned Bus/Buses</h4></td>
-	          	</tr>
 		        <tr>
 			        <td>Route Number</td>
 			        <td>Registration Number</td>
@@ -191,8 +175,31 @@ if (!$session->is_logged_in()){
 	        	<?php } ?>
 	        	
 	          </tbody>
+	          
 	        </table>
 
+      		</div>
+      		
+      		<div class="row-fluid">
+      		
+      		<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?personnelid=<?php echo $_GET['personnelid']; ?>" method="POST">
+            
+            <div class="control-group">
+            <label for="bus_id" class="control-label">Assign to a  Bus</label>
+	            <div class="controls">
+	            	<select name="bus_id">
+	            	<?php foreach($buses as $bus){ ?>
+	            		<option value="<?php echo $bus->id; ?>"><?php echo BusRoute::find_by_id($bus->route_id)->route_number; ?> &middot; <?php echo $bus->reg_number; ?><?php if(!empty($bus->name)){ echo ' &middot; ' . $bus->name;} ?></option>
+	            	<?php } ?>
+					</select>
+	            </div>
+            </div>
+	            
+          	<div class="form-actions">
+        	    <button class="btn btn-primary" name="assign">Assign</button>
+        	</div>
+	        </form>
+      		
       		</div>
 	      	
 	   		</div>

@@ -1,4 +1,4 @@
-Gaman Public Transport Management System
+Gaman Public Transportation Management System
 
 Admins: Scheduler, Time Keeper, Stand OIC, admin level 4, admin level 5...
 Users: Commuter

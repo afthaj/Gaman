@@ -5,6 +5,7 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_levels = AdminLevel::find_all();
 }
 
 if (isset($_POST['submit'])) {
@@ -90,11 +91,9 @@ if (isset($_POST['submit'])) {
             <label for="admin_level" class="control-label">Admin Level</label>
 	            <div class="controls">
 		            <select name="admin_level">
-					  <option value="3" selected="selected" >Scheduler</option>
-					  <option value="1">Time Keeper</option>
-					  <option value="2">Stand OIC</option>
-					  <option value="4">Admin Level 4</option>
-					  <option value="5">Admin Level 5</option>
+					  <?php for($i = 0; $i < count($admin_levels)-1; $i++){ ?>
+					  	<option value="<?php echo $admin_levels[$i]->id; ?>"<?php if($admin_levels[$i]->admin_level_name == 'Scheduler'){ echo ' selected="selected"'; }?>><?php echo $admin_levels[$i]->admin_level_name; ?></option>
+					  <?php } ?>
 					</select>
 				</div>
             </div>

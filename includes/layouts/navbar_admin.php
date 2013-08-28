@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
       </a>
 
-      <a class="brand" href="index.php">Gaman</a>
+      <a class="brand" href="index.php"><?php echo WEB_APP_NAME;?></a>
       
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
