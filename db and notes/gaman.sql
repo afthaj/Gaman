@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 28, 2013 at 12:25 AM
+-- Generation Time: Aug 28, 2013 at 11:50 AM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -52,6 +52,28 @@ INSERT INTO `admins` VALUES(11, 'janitha', 'janitha123', 1, 'Janitha', 'Rasanga'
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admin_levels`
+--
+
+CREATE TABLE `admin_levels` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_level_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `admin_levels`
+--
+
+INSERT INTO `admin_levels` VALUES(1, 'Time Keeper');
+INSERT INTO `admin_levels` VALUES(2, 'Stand OIC');
+INSERT INTO `admin_levels` VALUES(3, 'Scheduler');
+INSERT INTO `admin_levels` VALUES(4, 'Admin Level 4');
+INSERT INTO `admin_levels` VALUES(5, 'Admin Level 5');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `buses`
 --
 
@@ -88,7 +110,7 @@ CREATE TABLE `buses_bus_personnel` (
   PRIMARY KEY (`id`),
   KEY `bus_id` (`bus_id`),
   KEY `bus_personnel_id` (`bus_personnel_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `buses_bus_personnel`
@@ -96,6 +118,7 @@ CREATE TABLE `buses_bus_personnel` (
 
 INSERT INTO `buses_bus_personnel` VALUES(2, 2, 1);
 INSERT INTO `buses_bus_personnel` VALUES(3, 3, 1);
+INSERT INTO `buses_bus_personnel` VALUES(4, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -120,24 +143,24 @@ INSERT INTO `bus_personnel` VALUES(1, 1, 'John', 'Smith');
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bus_personnel_role`
+-- Table structure for table `bus_personnel_roles`
 --
 
-CREATE TABLE `bus_personnel_role` (
+CREATE TABLE `bus_personnel_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
--- Dumping data for table `bus_personnel_role`
+-- Dumping data for table `bus_personnel_roles`
 --
 
-INSERT INTO `bus_personnel_role` VALUES(1, 'Bus Owner');
-INSERT INTO `bus_personnel_role` VALUES(2, 'Bus Driver');
-INSERT INTO `bus_personnel_role` VALUES(3, 'Bus Conductor');
-INSERT INTO `bus_personnel_role` VALUES(4, 'Bus Owner + Driver');
-INSERT INTO `bus_personnel_role` VALUES(5, 'Bus Owner + Conductor');
+INSERT INTO `bus_personnel_roles` VALUES(1, 'Bus Owner');
+INSERT INTO `bus_personnel_roles` VALUES(2, 'Bus Driver');
+INSERT INTO `bus_personnel_roles` VALUES(3, 'Bus Conductor');
+INSERT INTO `bus_personnel_roles` VALUES(4, 'Bus Owner + Driver');
+INSERT INTO `bus_personnel_roles` VALUES(5, 'Bus Owner + Conductor');
 
 -- --------------------------------------------------------
 
@@ -180,6 +203,40 @@ CREATE TABLE `complaints` (
 
 --
 -- Dumping data for table `complaints`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `complaint_status`
+--
+
+CREATE TABLE `complaint_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comp_status_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `complaint_status`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `complaint_types`
+--
+
+CREATE TABLE `complaint_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `comp_type_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `complaint_types`
 --
 
 
