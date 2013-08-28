@@ -22,7 +22,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php $page = index;?>
+      <?php $page = 'index';?>
       <?php require_once('includes/layouts/navbar.php');?>
 
       	<div class="jumbotron masthead">

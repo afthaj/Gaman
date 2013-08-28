@@ -12,7 +12,7 @@
       
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <li<?php if (isset($page) && $page == index){echo ' class="active"';}?>><a href="index.php">Home</a></li>
+          <li<?php if (isset($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php">Home</a></li>
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">
@@ -50,7 +50,7 @@
         </ul>
         <ul class="nav navbar-nav pull-right">
           
-          <li><a href="../">Public Area</a></li>
+          <li><a href="<?php echo '..'.DS; ?>">Public Area</a></li>
           
           <?php if (isset($admin_user->id)){ ?>
           	<li class="dropdown">

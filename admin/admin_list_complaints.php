@@ -6,7 +6,9 @@ if (!$session->is_logged_in()){
 } else {
 	$admin_user = Admin::find_by_id($_SESSION['id']);
 	
-	$complaints = Complaint::find_all();
+	$c = new Complaint();
+	
+	$complaints = $c->find_all();
 
 }
 ?>
@@ -25,7 +27,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php $page = admin_routes_list;?>
+      <?php $page = 'list_complaints';?>
       <?php require_once('../includes/layouts/navbar_admin.php');?>
       
       <header class="jumbotron subhead">
@@ -74,7 +76,7 @@ if (!$session->is_logged_in()){
 			        <td>Name of Bus Personnel</td>
 			        <td>Complaint Status</td>
 			        <td>Complaint Details</td>
-	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block">Edut</a></td>
+	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
 	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
         		</tr>
         	<?php }?>

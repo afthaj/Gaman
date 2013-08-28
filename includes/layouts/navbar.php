@@ -12,10 +12,10 @@
       
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <li<?php if (isset($page) && $page == index){echo ' class="active"';}?>><a href="index.php">Home</a></li>
+          <li<?php if (isset($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php">Home</a></li>
           
           
-          <li<?php if (isset($page) && $page == test){echo ' class="active"';}?>><a href="test.php">Test</a></li>
+          <li<?php if (isset($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test</a></li>
         </ul>
         <ul class="nav navbar-nav pull-right">
           

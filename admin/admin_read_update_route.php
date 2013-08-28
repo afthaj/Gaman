@@ -11,7 +11,9 @@ if (!$session->is_logged_in()){
 	if (isset($_GET['routeid'])){
 		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
 		
-		$stops_routes = StopRoute::get_stops_for_route($route_to_read_update->id);
+		$sr = new StopRoute();
+		
+		$stops_routes = $sr->get_stops_for_route($route_to_read_update->id);
 		
 	} else {
 		$session->message("No Route ID provided to view.");
@@ -40,7 +42,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Route Details &middot; Gaman</title>
+    <title>Route Details &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -148,7 +150,7 @@ if (!$session->is_logged_in()){
 	      		
 	      		<div>
 	      			<ul class="bus-stops-list">
-	      				<li class=""><h2>Route Number: <? echo $route_to_read_update->route_number; ?></h2></li>
+	      				<li class=""><h2>Route Number: <?php echo $route_to_read_update->route_number; ?></h2></li>
 	      				<li class="">&nbsp;</li>
 	      				
 	      				<?php for ($i = 0; $i < count($stops_routes); $i++){ ?>

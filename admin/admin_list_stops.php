@@ -25,7 +25,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php $page = admin_stops_list;?>
+      <?php $page = 'admin_stops_list';?>
       <?php require_once('../includes/layouts/navbar_admin.php');?>
       
       <header class="jumbotron subhead">

@@ -11,7 +11,9 @@ if (!$session->is_logged_in()){
 	if (isset($_GET['stopid'])){
 		$stop_to_read_update = BusStop::find_by_id($_GET['stopid']);
 		
-		$stops_routes = StopRoute::get_routes_for_stop($stop_to_read_update->id);
+		$sr = new StopRoute();
+		
+		$stops_routes = $sr->get_routes_for_stop($stop_to_read_update->id);
 		
 	} else {
 		$session->message("No Stop ID provided to view.");
@@ -36,7 +38,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Route Details &middot; Photo Gallery</title>
+    <title>Route Details &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -106,12 +108,16 @@ if (!$session->is_logged_in()){
 	      		
 	      		<div>
 	      			<ul class="bus-stops-list">
-	      				<li class=""><h4>List of Routes that pass through <? echo $stop_to_read_update->name; ?></h4></li>
+	      				<li class=""><h4>List of Routes that pass through <?php echo $stop_to_read_update->name; ?></h4></li>
 	      				<li class="">&nbsp;</li>
 	      				
 	      				<?php for ($i = 0; $i < count($stops_routes); $i++){ ?>
 	      				
-	      				<? $route = BusRoute::find_by_id($stops_routes[$i]->route_id); ?>
+	      				<?php
+						
+						$br = new BusRoute();
+						
+						$route = $br->find_by_id($stops_routes[$i]->route_id); ?>
 			        		<li><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-info"><?php echo $route->route_number; ?></a> going from <a href="admin_read_update_stop.php?stopid=<?php echo BusStop::find_by_id($route->begin_stop)->id; ?>" class="btn btn-info"><?php echo BusStop::find_by_id($route->begin_stop)->name; ?></a> to <a href="admin_read_update_stop.php?stopid=<?php echo BusStop::find_by_id($route->end_stop)->id; ?>" class="btn btn-info"><?php echo BusStop::find_by_id($route->end_stop)->name; ?></a></li>
 			        		<li>&nbsp;</li>
 		        		<?php } ?>

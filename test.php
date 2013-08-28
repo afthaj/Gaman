@@ -22,7 +22,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php $page = test;?>
+      <?php $page = 'test';?>
       <?php require_once('includes/layouts/navbar.php');?>
 
       <!-- Begin page content -->

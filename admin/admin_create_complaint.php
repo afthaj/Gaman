@@ -19,7 +19,7 @@ if (!$session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Complaints &middot; Gaman</title>
+    <title>Complaints &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
@@ -30,7 +30,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php $page = complaints;?>
+      <?php $page = 'complaints';?>
       <?php require_once('../includes/layouts/navbar_admin.php');?>
 
       <!-- Begin page content -->
