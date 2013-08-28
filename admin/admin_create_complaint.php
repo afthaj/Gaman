@@ -14,6 +14,22 @@ if (!$session->is_logged_in()){
 	$complaint_status = ComplaintStatus::find_all();
 	
 }
+
+if (isset($_POST['submit'])){
+	$complaint_to_create = new Complaint();
+	
+	$complaint_to_create->complaint_type = $_POST['complaint_type'];
+	$complaint_to_create->bus_route_id = $_POST['bus_route_id'];
+	$complaint_to_create->stop_id = $_POST['stop_id'];
+	$complaint_to_create->bus_id = $_POST['bus_id'];
+	$complaint_to_create->bus_personnel_id = $_POST['bus_personnel_id'];
+	$complaint_to_create->status = $_POST['status'];
+	$complaint_to_create->content = $_POST['content'];
+	
+	
+
+}
+
 ?>
 
 <!DOCTYPE html>
