@@ -6,11 +6,11 @@
     <!-- CSS -->
     <link href="../css/bootswatch-flatly/bootstrap.css" rel="stylesheet">
     <link href="../css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="../css/bootswatch-flatly/docs.css" rel="stylesheet">
-    
     <link href="../css/prettify.css" rel="stylesheet">
-    
+    <link href="../css/bootswatch-flatly/docs.css" rel="stylesheet">
     <link href="../css/bootswatch-flatly/gaman-styles.css" rel="stylesheet">
+
+    <link href="../css/flexslider.css" rel="stylesheet">
     
     <style type="text/css">
 

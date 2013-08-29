@@ -5,6 +5,7 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	
 }
 
 if (empty($_GET['adminid'])){

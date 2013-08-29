@@ -6,14 +6,22 @@ if (!$session->is_logged_in()){
 } else {
 	
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	
 	$stops = BusStop::find_all();
+	
+	$related_object = "bus_stop";
+	$photo_types = PhotoType::get_photo_types($related_object);
 	
 	if (isset($_GET['stopid'])){
 		$stop_to_read_update = BusStop::find_by_id($_GET['stopid']);
 		
 		$sr = new StopRoute();
-		
 		$stops_routes = $sr->get_routes_for_stop($stop_to_read_update->id);
+		
+		$p2 = new Photograph();
+		$photos_of_stop = $p2->get_photos_for_stop($stop_to_read_update->id);
 		
 	} else {
 		$session->message("No Stop ID provided to view.");
@@ -29,6 +37,24 @@ if (!$session->is_logged_in()){
 		} else {
 			$session->message("Error! The Bus Stop details could not be updated. ");
 		}
+	}
+	
+	if (isset($_POST['upload'])){
+	
+		$photo_to_upload = new Photograph();
+	
+		$photo_to_upload->stop_id = $_GET['stopid'];
+		$photo_to_upload->photo_type = $_POST['photo_type'];
+		
+		$photo_to_upload->attach_file_bus_stop($_FILES['file_upload'], $photo_to_upload->stop_id, $photo_to_upload->photo_type);
+	
+		if ($photo_to_upload->save()){
+			$session->message("Success! The photo was uploaded successfully. ");
+			redirect_to('admin_list_stops.php');
+		} else {
+			$message = join("<br />", $photo_to_upload->errors);
+		}
+	
 	}
 	
 }
@@ -98,6 +124,28 @@ if (!$session->is_logged_in()){
 		            </div>
 	            </div>
 	            
+	            <?php if (!empty($stop_to_read_update->location_latitude)) { ?>
+	            
+	            <div class="control-group">
+	            <label for="location_latitude" class="control-label">Geographic Coordinates</label>
+	            </div>
+	            
+	            <div class="control-group">
+	            <label for="location_latitude" class="control-label">Latitude</label>
+		            <div class="controls">
+		            	<input type="text" name="location_latitude" value="<?php echo $stop_to_read_update->location_latitude; ?>">
+		            </div>
+	            </div>
+	            
+	            <div class="control-group">
+	            <label for="location_longitude" class="control-label">Longitude</label>
+		            <div class="controls">
+		            	<input type="text" name="location_longitude" value="<?php echo $stop_to_read_update->location_longitude; ?>">
+		            </div>
+	            </div>
+	            
+	            <?php } ?>
+				
 	          	<div class="form-actions">
 	        	    <button class="btn btn-primary" name="submit">Submit</button>
 	        	</div>
@@ -133,24 +181,59 @@ if (!$session->is_logged_in()){
 			<div class="tab-pane fade" id="map_location">
 	  	
 				<section>
-				
+				<?php if (!empty($stop_to_read_update->location_latitude)) { ?>
 					<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps?q=<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;num=1&amp;ie=UTF8&amp;ll=<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;spn=0.003105,0.004796&amp;t=m&amp;z=17&amp;output=embed"></iframe>
 					<br />
 					<small>
 						<a href="https://www.google.com/maps?q=<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;num=1&amp;ie=UTF8&amp;<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;spn=0.003105,0.004796&amp;t=m&amp;z=14&amp;source=embed" style="color:#0000FF;text-align:left" target="_blank">View Larger Map</a>
 					</small>
-				
+				<?php } else {?>
+					<h4>Map data currently unavailable</h4>
+				<?php } ?>
 				</section>
 	  	
 			</div>
 			
 			<div class="tab-pane fade" id="stop_pictures">
-	  	
-				<section>
-				
-					
-				
-				</section>
+
+			<?php if (!empty($photos_of_stop)) { ?>
+			<div class="flexslider">
+			  <ul class="slides">
+			    <?php foreach($photos_of_stop as $photo_of_stop) { ?>
+			    <li>
+			      <img src="<?php echo '../'.$photo_of_stop->image_path(); ?>" />
+			    </li>
+			    <?php } ?>
+			  </ul>
+			</div>
+			<?php } else { ?>
+			
+			<h5>No photos of the Bus Stop have been uploaded yet!</h5>
+			<br /><br />
+			<?php } ?>
+			
+			  <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?stopid=<?php echo $_GET['stopid']; ?>" method="POST" enctype="multipart/form-data">
+			      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+			        	
+			      <div class="control-group">
+			      	<input type="file" name="file_upload" />
+			      </div>
+			      
+			      <div class="control-group">
+			      <label for="photo_type" class="control-label">Photo Type</label>
+				      <div class="controls">
+					      <select name="photo_type">
+					      	<?php foreach($photo_types as $photo_type) { ?>
+					      	<option value="<?php echo $photo_type->id; ?>"><?php echo $photo_type->photo_type_name; ?></option>
+					      	<?php } ?>
+					      </select>
+				      </div>
+			      </div>
+			        	
+			      <div class="form-actions">
+			      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
+			      </div>	        	
+		      </form>
 	  	
 			</div>
 	      
@@ -159,9 +242,7 @@ if (!$session->is_logged_in()){
 	    </section>
 	    
 	  	</div>
-	  	
-	  	
-        
+
         </div>
         
         <!-- End Content -->
@@ -172,10 +253,11 @@ if (!$session->is_logged_in()){
 
       <div id="push"></div>
     </div>
+    
 
     <?php require_once('../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/bootstrap_scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

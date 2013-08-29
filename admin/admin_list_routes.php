@@ -5,9 +5,10 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
 	
 	$routes = BusRoute::find_all();
-	
 	$stop = new BusStop();
 }
 ?>
@@ -93,7 +94,7 @@ if (!$session->is_logged_in()){
 
     <?php require_once('../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/bootstrap_scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

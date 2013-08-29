@@ -42,7 +42,21 @@ complaint_status(id, comp_status_name)
 
 complaint_types(id, comp_type_name)
 
-photographs(id, stop_id, bus_id, bus_personnel_id, commuter_id, admin_id, photo_type, file_name, file_type, size)
+photos(id, filename, file_type, size)
+
+photo_types(id, photo_type_name)
+
+stop_photos(id, stop_id, photo_type)
+photo_type_name:[]
+
+bus_photos(id, bus_id, photo_type)
+photo_type_name:[]
+
+bus_personnel_photos(id, bus_personnel_id)
+
+admin_photos(id, admin_id)
+
+commuter_photos(id, commuter_id)
 
 photo_type(id, photo_type_name)
 photo_type_name:[Front of Bus, Rear of Bus, Port side of Bus, Starboard side of Bus, Front + Port side of Bus, Front + Starboard side of Bus, Rear + Port side of Bus, Rear + Starboard side of Bus, User Profile, Location of Stop, Facing forward at Bus Stop, Facing behind at Bus Stop]

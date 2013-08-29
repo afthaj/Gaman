@@ -22,3 +22,5 @@
     <script src="js/holder.js"></script>
     <script src="js/html5shiv.js"></script>
     <script src="js/prettify.js"></script>
+    
+    <script src="../js/flexslider.js"></script>

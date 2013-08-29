@@ -5,6 +5,8 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
 	
 	$users = AdminUser::find_all();
 }
@@ -49,6 +51,7 @@ if (!$session->is_logged_in()){
         
         <table class="table table-bordered table-hover">
 	        <tr align="center">
+	        <td>Profile Picture</td>
 	        <td>Full Name</td>
 	        <td>User Name</td>
 	        <td>Email Address</td>
@@ -57,16 +60,40 @@ if (!$session->is_logged_in()){
 	        <td>&nbsp;</td>
 	        </tr>
         	
-        	<?php foreach($users as $user){ ?>
+        	<?php for ($i = 0; $i < count($users); $i++ ){ 
+        	
+        		if ($users[$i]->id != $admin_user->id){ ?>
+        	
         		<tr align="center">
-        		<td><?php echo $user->full_name(); ?></td>
-        		<td><?php echo $user->username; ?></td>
-        		<td><?php echo $user->email_address; ?></td>
-        		<td><?php echo $user->admin_level($user->admin_level); ?></td>
-        		<td><a href="admin_read_update_admin_user.php?adminid=<?php echo $user->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
+        		<td>
+        		<?php 
+        		
+        		$admin_level = new AdminLevel();
+        		
+        		$pic = new Photograph();
+        		
+        		$user_profile_picture = $pic->get_profile_picture($users[$i]->id, "admin");
+        		
+        		if (!empty($user_profile_picture->filename)) {
+        			echo '<img src="../' . $user_profile_picture->image_path() . '" width="100" class="img-rounded" />';
+        		} else {
+        			echo '<img src="../img/default-prof-pic.jpg" width="100" class="img-rounded" alt="Please upload a profile picture" />';
+        		}
+        		
+        		?>
+        		</td>
+        		<td><?php echo $users[$i]->full_name(); ?></td>
+        		<td><?php echo $users[$i]->username; ?></td>
+        		<td><?php echo $users[$i]->email_address; ?></td>
+        		<td><?php echo $admin_level->get_admin_level($users[$i]->admin_level)->admin_level_name; ?></td>
+        		<td><a href="admin_read_update_admin_user.php?adminid=<?php echo $users[$i]->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
         		<td><a href="admin_delete_admin_user.php?adminid=<?php echo $user->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
         		</tr>
-        	<?php }?>
+        		
+        	<?php 
+        		} 
+        	}
+        	?>
         	
         </table>
         
@@ -80,7 +107,7 @@ if (!$session->is_logged_in()){
 
     <?php require_once('../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/bootstrap_scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

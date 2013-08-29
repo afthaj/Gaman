@@ -54,7 +54,17 @@
           
           <?php if (isset($admin_user->id)){ ?>
           	<li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $admin_user->full_name(); ?> <b class="caret"></b></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          	<?php 
+          	
+          	if (!empty($profile_picture->filename)) {
+          		echo '<img src="../' . $profile_picture->image_path() . '" width="17" class="img-circle" /> ';
+          	} else {
+          		echo '<img src="../img/default-prof-pic.jpg" width="17" class="img-circle" alt="Please upload a profile picture" /> ';
+          	}
+          	
+          	echo $admin_user->full_name(); ?> <b class="caret"></b>
+          	</a>
           	<ul class="dropdown-menu">
           		<li><a href="admin_view_profile.php">View Profile</a></li>
           		<li><a href="logout.php">Logout</a></li>

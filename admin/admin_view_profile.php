@@ -6,11 +6,10 @@ if (!$session->is_logged_in()){
 } else {
 	
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$admin_levels = AdminLevel::find_all();
-	
 	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
 	
-	$profile_picture = $p->get_profile_picture_of_admin_user($admin_user->id);
+	$admin_levels = AdminLevel::find_all();
 	
 	if (isset($_POST['submit'])){
 		$admin_user->username = $_POST['username'];
@@ -51,7 +50,7 @@ if (!$session->is_logged_in()){
 		
 		$photo->admin_id = $admin_user->id;
 		$photo->photo_type = 9; // photo_type 9 is "User Profile"
-		$photo->attach_file($_FILES['file_upload']);
+		$photo->attach_file_admin_user($_FILES['file_upload'], $admin_user->id, $admin_user->first_name, $admin_user->last_name);
 	
 		if ($photo->save()){
 			$session->message("Success! The photo was uploaded successfully. ");
@@ -86,7 +85,7 @@ if (!$session->is_logged_in()){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		   <h1>Admin User Profile</h1>
-		   <h3><?php echo $admin_user->first_name . ' ' . $admin_user->last_name;?></h3>
+		   <h3><?php echo $admin_user->full_name();?></h3>
 		 </div>
 	  </header>
 
@@ -125,7 +124,14 @@ if (!$session->is_logged_in()){
 	            	<label for="profile_picture" class="control-label">Profile Picture</label>
 	            
 		            <div class="controls">
-		            	<img src="<?php echo '../' . $profile_picture->image_path(); ?>" width="250" class="img-rounded" />
+		            	<?php 
+		            	if (!empty($profile_picture->filename)) {
+		            		echo '<img src="../' . $profile_picture->image_path() . '" width="250" class="img-rounded" />'; 
+		            	} else {
+		            		echo '<img src="../img/default-prof-pic.jpg" width="250" class="img-rounded" alt="Please upload a profile picture" />';
+		            		echo '<p>Please upload a profile picture</p>';
+		            	} 
+		            	?>
 		            </div>
 	            </div>
 	            
@@ -208,19 +214,24 @@ if (!$session->is_logged_in()){
 	      
 	      <div class="tab-pane fade" id="profile_picture">
 	      
-		      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
-	        	
-	      		<input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
-	        	
-	        	<div class="control-group">
-	        		<input type="file" name="file_upload" />
-	        	</div>
-	        	
-	        	<div class="form-actions">
-	        		<button type="submit" class="btn btn-primary" name="upload">Upload</button>
-	        	</div>
-	        	
-	          </form>
+		  <?php 
+          if (!empty($profile_picture->filename)) {
+          	echo '<h5>You have already uploaded a Profile Picture</h5>';
+          	echo '<a href="#" class="btn btn-danger"/>Delete and Reupload</a>';
+          } else { 
+          ?>
+		  <form action="<?php echo $_SERVER['PHP_SELF']; ?>?adminid=<?php echo $_GET['adminid']; ?>" method="POST" enctype="multipart/form-data">
+		      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+		        	
+		      <div class="control-group">
+		      	<input type="file" name="file_upload" />
+		      </div>
+		        	
+		      <div class="form-actions">
+		      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
+		      </div>	        	
+	      </form>
+	      <?php } ?>
 	    	
 	      </div>
 	      
@@ -243,7 +254,7 @@ if (!$session->is_logged_in()){
 
     <?php require_once('../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/bootstrap_scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

@@ -6,15 +6,17 @@ if (!$session->is_logged_in()){
 } else {
 	
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	
 	$admin_levels = AdminLevel::find_all();
 	
 	
 	if (isset($_GET['adminid'])){
 		$user_to_read_update = AdminUser::find_by_id($_GET['adminid']);
 		
-		$p = new Photograph();
-		
-		$profile_picture = $p->get_profile_picture_of_admin_user($user_to_read_update->id);
+		$photo = new Photograph();
+		$profile_picture_of_other_admin_users = $photo->get_profile_picture($user_to_read_update->id, "admin");
 	} else {
 		$session->message("No Admin ID provided to view.");
 		redirect_to("admin_list_admin_users.php");
@@ -59,7 +61,8 @@ if (!$session->is_logged_in()){
 	
 		$photo_to_upload->admin_id = $_GET['adminid'];
 		$photo_to_upload->photo_type = '9'; // photo_type 9 is "User Profile"
-		$photo_to_upload->attach_file($_FILES['file_upload']);
+		
+		$photo_to_upload->attach_file_admin_user($_FILES['file_upload'], $user_to_read_update->id, $user_to_read_update->first_name, $user_to_read_update->last_name);
 	
 		if ($photo_to_upload->save()){
 			$session->message("Success! The photo was uploaded successfully. ");
@@ -132,11 +135,12 @@ if (!$session->is_logged_in()){
 	            
 		            <div class="controls">
 		            	<?php 
-		            	if (!empty($profile_picture->filename)) {
-		            		echo '<img src="../' . $profile_picture->image_path() . '" width="250" class="img-rounded" />'; 
+		            	if (!empty($profile_picture_of_other_admin_users->filename)) {
+		            		echo '<img src="../' . $profile_picture_of_other_admin_users->image_path() . '" width="250" class="img-rounded" />'; 
 		            	} else {
 		            		echo '<input type="text" value="" name="" placeholder="No profile picture uploaded" >'; 
-		            	} ?>
+		            	} 
+		            	?>
 		            </div>
 	            </div>
 	            
@@ -210,19 +214,26 @@ if (!$session->is_logged_in()){
 	      
 	      <div class="tab-pane fade" id="profile_picture">
 	      
-		      <form action="<?php echo $_SERVER['PHP_SELF']; ?>?adminid=<?php echo $_GET['adminid']; ?>" method="POST" enctype="multipart/form-data">
-	        	
-	      		<input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
-	        	
-	        	<div class="control-group">
-	        		<input type="file" name="file_upload" />
-	        	</div>
-	        	
-	        	<div class="form-actions">
-	        		<button type="submit" class="btn btn-primary" name="upload">Upload</button>
-	        	</div>
-	        	
-	          </form>
+	      <?php 
+          if (!empty($profile_picture_of_other_admin_users->filename)) {
+          	echo '<h5>This User already has a Profile Picture uploaded</h5>';
+          	echo '<a href="#" class="btn btn-danger"/>Delete and Reupload</a>';
+          } else { 
+          ?>
+          
+		  <form action="<?php echo $_SERVER['PHP_SELF']; ?>?adminid=<?php echo $_GET['adminid']; ?>" method="POST" enctype="multipart/form-data">
+		      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+		        	
+		      <div class="control-group">
+		      	<input type="file" name="file_upload" />
+		      </div>
+		        	
+		      <div class="form-actions">
+		      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
+		      </div>	        	
+	      </form>
+	      
+	      <?php } ?>
 	    	
 	      </div>
 	      
@@ -243,7 +254,7 @@ if (!$session->is_logged_in()){
 
     <?php require_once('../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/bootstrap_scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

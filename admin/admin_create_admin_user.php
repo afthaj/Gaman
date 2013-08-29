@@ -5,6 +5,10 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$related_object_flag = "admin";
+	$profile_picture = $p->get_profile_picture($admin_user->id, $related_object_flag);
+	
 	$admin_levels = AdminLevel::find_all();
 }
 
@@ -140,7 +144,7 @@ if (isset($_POST['submit'])) {
 
     <?php require_once('../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/bootstrap_scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

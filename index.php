@@ -70,7 +70,7 @@ if (!$session->is_logged_in()){
 
     <?php require_once('includes/layouts/footer.php');?>
     
-    <?php require_once('includes/layouts/bootstrap_scripts.php');?>
+    <?php require_once('includes/layouts/scripts.php');?>
 
   </body>
 </html>

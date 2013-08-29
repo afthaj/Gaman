@@ -101,7 +101,7 @@ if (isset($_POST['submit'])){
 
     </div> <!-- /container -->
 
-    <?php require_once('includes/layouts/bootstrap_scripts.php');?>
+    <?php require_once('includes/layouts/scripts.php');?>
 
   </body>
 </html>

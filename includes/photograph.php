@@ -35,7 +35,7 @@ class Photograph extends DatabaseObject {
 		  	UPLOAD_ERR_EXTENSION 		=> "File upload stopped by extension."
 			);
 	
-	public function attach_file($file){
+	public function attach_file_admin_user($file, $user_id, $user_first_name, $user_last_name){
 		if (!$file || empty($file) || !is_array($file)){
 			$this->errors[] = "No file was uploaded";
 			return false;
@@ -43,11 +43,39 @@ class Photograph extends DatabaseObject {
 			$this->errors[] = $this->upload_errors[$file['error']];
 			return false;
 		} else {
+			
 			$this->temp_path = $file['tmp_name'];
-			$this->filename = basename($file['name']);
+			
+			$path_parts = pathinfo($file['name']);
+			$this->filename = 'admin_prof_pic_'.$user_id.'_'.$user_first_name.'_'.$user_last_name.'.'.$path_parts['extension'];
+			
 			$this->file_type = $file['type'];
+			
 			$this->size = $file['size'];
 			
+			return true;
+		}
+	}
+	
+	public function attach_file_bus_stop($file, $stop_id, $photo_type) {
+		
+		if (!$file || empty($file) || !is_array($file)){
+			$this->errors[] = "No file was uploaded";
+			return false;
+		} else if ($file['error'] != 0) {
+			$this->errors[] = $this->upload_errors[$file['error']];
+			return false;
+		} else {
+				
+			$this->temp_path = $file['tmp_name'];
+				
+			$path_parts = pathinfo($file['name']);
+			$this->filename = 'bus_stop_pic_'.$stop_id.'_'.$photo_type.'.'.$path_parts['extension'];
+				
+			$this->file_type = $file['type'];
+				
+			$this->size = $file['size'];
+				
 			return true;
 		}
 	}
@@ -129,12 +157,38 @@ class Photograph extends DatabaseObject {
 		}
 	}
 	
-	public function get_profile_picture_of_admin_user($id=0) {
+	public function get_profile_picture($admin_id=0, $photo_flag="") {
 		global $database;
-	
-		$result_array = static::find_by_sql("SELECT * FROM " . static::$table_name . " WHERE admin_id = {$id} LIMIT 1");
+		
+		$related_object_id = $photo_flag."_id"; 
+		
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE {$related_object_id} = {$admin_id}";
+		$sql .= " LIMIT 1";
+		
+		$result_array = static::find_by_sql($sql);
 		
 		return !empty($result_array) ? array_shift($result_array) : false;
+	
+	}
+	
+	public function get_photos_for_stop($stop_id=0){
+		global $database;
+		
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE stop_id = " . $stop_id;
+		
+		return static::find_by_sql($sql);
+		
+	}
+	
+	public function get_photos_for_bus($bus_id=0){
+		global $database;
+	
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE bus_id = " . $bus_id;
+	
+		return static::find_by_sql($sql);
 	
 	}
 
