@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 28, 2013 at 11:50 AM
+-- Generation Time: Aug 29, 2013 at 11:58 AM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -18,36 +18,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `gaman`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admins`
---
-
-CREATE TABLE `admins` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `admin_level` int(5) NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `email_address` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
-
---
--- Dumping data for table `admins`
---
-
-INSERT INTO `admins` VALUES(1, 'user', '123', 3, 'Admin', 'User', 'aftha.jaldin88@gmail.com');
-INSERT INTO `admins` VALUES(2, 'afthaj', 'afthaj', 3, 'Aftha', 'Jaldin', 'afthajaldin@yahoo.com');
-INSERT INTO `admins` VALUES(4, 'buddhi', 'buddhi123', 3, 'Buddhi', 'De Silva', 'gbidsilva@gmail.com');
-INSERT INTO `admins` VALUES(7, 'laleen', 'laleen123', 3, 'Laleen', 'Pallegoda', 'laleen.kp@gmail.com');
-INSERT INTO `admins` VALUES(8, 'sachith', 'sachith123', 3, 'Sachith', 'Senevirathna', 'vihanga88@gmail.com');
-INSERT INTO `admins` VALUES(9, 'john', 'john123', 2, 'John', 'Smith', 'john.smith@acme.com');
-INSERT INTO `admins` VALUES(10, 'sandunika', 'sandunika123', 3, 'Sandunika', 'Wijerathne', 'swijerathne35@gmail.com');
-INSERT INTO `admins` VALUES(11, 'janitha', 'janitha123', 1, 'Janitha', 'Rasanga', 'janitharasanga@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -129,8 +99,11 @@ INSERT INTO `buses_bus_personnel` VALUES(4, 5, 1);
 CREATE TABLE `bus_personnel` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` int(3) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
+  `nic_number` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -138,7 +111,7 @@ CREATE TABLE `bus_personnel` (
 -- Dumping data for table `bus_personnel`
 --
 
-INSERT INTO `bus_personnel` VALUES(1, 1, 'John', 'Smith');
+INSERT INTO `bus_personnel` VALUES(1, 1, 'john', 'john123', 'John', 'Smith', '801231511v');
 
 -- --------------------------------------------------------
 
@@ -161,27 +134,6 @@ INSERT INTO `bus_personnel_roles` VALUES(2, 'Bus Driver');
 INSERT INTO `bus_personnel_roles` VALUES(3, 'Bus Conductor');
 INSERT INTO `bus_personnel_roles` VALUES(4, 'Bus Owner + Driver');
 INSERT INTO `bus_personnel_roles` VALUES(5, 'Bus Owner + Conductor');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `commuters`
---
-
-CREATE TABLE `commuters` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `email_address` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `commuters`
---
-
 
 -- --------------------------------------------------------
 
@@ -243,6 +195,65 @@ CREATE TABLE `complaint_types` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `photographs`
+--
+
+CREATE TABLE `photographs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `stop_id` int(11) NOT NULL,
+  `bus_id` int(11) NOT NULL,
+  `bus_personnel_id` int(11) NOT NULL,
+  `commuter_id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `photo_type` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `file_type` varchar(100) NOT NULL,
+  `size` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `photographs`
+--
+
+INSERT INTO `photographs` VALUES(3, 0, 0, 0, 0, 1, 9, '40544.jpg', 'image/jpeg', '49961');
+INSERT INTO `photographs` VALUES(4, 0, 0, 0, 0, 4, 9, 'one-does-not-simply.jpg', 'image/jpeg', '21009');
+INSERT INTO `photographs` VALUES(5, 0, 0, 0, 0, 8, 9, '215315_10150550294115514_661780513_18422312_5877782_n.jpg', 'image/jpeg', '55854');
+INSERT INTO `photographs` VALUES(6, 0, 0, 0, 0, 2, 9, '40651_10150232280200514_661780513_14445462_7238114_n.jpg', 'image/jpeg', '41294');
+INSERT INTO `photographs` VALUES(7, 0, 0, 0, 0, 7, 9, 'Do-You-Speak-English.gif', 'image/gif', '22095');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `photo_type`
+--
+
+CREATE TABLE `photo_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `photo_type_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `photo_type`
+--
+
+INSERT INTO `photo_type` VALUES(1, 'Front of Bus');
+INSERT INTO `photo_type` VALUES(2, 'Rear of Bus');
+INSERT INTO `photo_type` VALUES(3, 'Port side of Bus');
+INSERT INTO `photo_type` VALUES(4, 'Starboard side of Bus');
+INSERT INTO `photo_type` VALUES(5, 'Front + Port side of Bus');
+INSERT INTO `photo_type` VALUES(6, 'Front + Starboard side of Bus');
+INSERT INTO `photo_type` VALUES(7, 'Rear + Port side of Bus');
+INSERT INTO `photo_type` VALUES(8, 'Rear + Starboard side of Bus');
+INSERT INTO `photo_type` VALUES(9, 'User Profile');
+INSERT INTO `photo_type` VALUES(10, 'Location of Stop');
+INSERT INTO `photo_type` VALUES(11, 'Facing forward at Bus Stop');
+INSERT INTO `photo_type` VALUES(12, 'Facing behind at Bus Stop');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `routes`
 --
 
@@ -277,6 +288,8 @@ INSERT INTO `routes` VALUES(7, 176, 24, '00:40:00', 70, 79);
 CREATE TABLE `stops` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `location_latitude` varchar(255) NOT NULL,
+  `location_longitude` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=80 ;
 
@@ -284,85 +297,85 @@ CREATE TABLE `stops` (
 -- Dumping data for table `stops`
 --
 
-INSERT INTO `stops` VALUES(1, 'Kolpetty - Railway Station');
-INSERT INTO `stops` VALUES(2, 'Kolpetty - Supermarket');
-INSERT INTO `stops` VALUES(3, 'Kolpetty - Alwis Place');
-INSERT INTO `stops` VALUES(4, 'Colombo Public Library');
-INSERT INTO `stops` VALUES(5, 'SLTA');
-INSERT INTO `stops` VALUES(6, 'Nelum Pokuna Theater');
-INSERT INTO `stops` VALUES(7, 'Central');
-INSERT INTO `stops` VALUES(8, 'Wijerama');
-INSERT INTO `stops` VALUES(9, 'Borella - Horton Place');
-INSERT INTO `stops` VALUES(10, 'Devi Balika');
-INSERT INTO `stops` VALUES(11, 'Castle Street');
-INSERT INTO `stops` VALUES(12, 'Ayurveda');
-INSERT INTO `stops` VALUES(13, 'Rajagiriya');
-INSERT INTO `stops` VALUES(14, 'NAITA');
-INSERT INTO `stops` VALUES(15, 'Welikada');
-INSERT INTO `stops` VALUES(16, 'Ethul Kotte - Sri Jayawardenapura Mw');
-INSERT INTO `stops` VALUES(17, 'Polduwa');
-INSERT INTO `stops` VALUES(18, 'Sethsiripaya');
-INSERT INTO `stops` VALUES(19, 'Battaramulla');
-INSERT INTO `stops` VALUES(20, 'Battaramulla - Singer');
-INSERT INTO `stops` VALUES(21, 'Ganahena');
-INSERT INTO `stops` VALUES(22, 'Koswatte - Thalangama Depot');
-INSERT INTO `stops` VALUES(23, 'Koswatte');
-INSERT INTO `stops` VALUES(24, 'Thalangama - Cemetary');
-INSERT INTO `stops` VALUES(25, 'Malabe');
-INSERT INTO `stops` VALUES(26, 'Kaduwela');
-INSERT INTO `stops` VALUES(27, 'Pelawatte - Palam thuna (3 bridges)');
-INSERT INTO `stops` VALUES(28, 'Videsha Seva (Foreign Employment Bureau)');
-INSERT INTO `stops` VALUES(29, 'Palath Sabha (Western Provincial Council)');
-INSERT INTO `stops` VALUES(30, 'Gothami Road');
-INSERT INTO `stops` VALUES(31, 'Cotta Road');
-INSERT INTO `stops` VALUES(32, 'Borella - Supermarket');
-INSERT INTO `stops` VALUES(33, 'Borella - Maradana Road');
-INSERT INTO `stops` VALUES(34, 'Borella - Aquinas');
-INSERT INTO `stops` VALUES(35, 'Punchi Borella');
-INSERT INTO `stops` VALUES(36, 'Maradana');
-INSERT INTO `stops` VALUES(37, 'Technical Junction');
-INSERT INTO `stops` VALUES(38, 'Bo Gaha Handiya (Bo Tree Junction)');
-INSERT INTO `stops` VALUES(39, 'Hultsdorf');
-INSERT INTO `stops` VALUES(40, 'Fort');
-INSERT INTO `stops` VALUES(41, 'Kottawa');
-INSERT INTO `stops` VALUES(42, 'Pannipitiya - Old Road');
-INSERT INTO `stops` VALUES(43, 'Thalawathugoda');
-INSERT INTO `stops` VALUES(44, 'Jayawadanagama');
-INSERT INTO `stops` VALUES(45, 'Isurupaya');
-INSERT INTO `stops` VALUES(46, 'Pelawatte');
-INSERT INTO `stops` VALUES(47, 'Athurugiriya');
-INSERT INTO `stops` VALUES(48, 'Borella - Ward Place');
-INSERT INTO `stops` VALUES(49, 'Eye Hospital');
-INSERT INTO `stops` VALUES(50, 'Darley Road');
-INSERT INTO `stops` VALUES(51, 'McCallum Road (D. R. Wijewardena Mw)');
-INSERT INTO `stops` VALUES(52, 'Pettah');
-INSERT INTO `stops` VALUES(53, 'Meegoda');
-INSERT INTO `stops` VALUES(54, 'Godagama');
-INSERT INTO `stops` VALUES(55, 'Ethul Kotte - Telecom');
-INSERT INTO `stops` VALUES(56, 'Mati Ambalama');
-INSERT INTO `stops` VALUES(57, 'Kotubamma (Rampart Road)');
-INSERT INTO `stops` VALUES(58, 'CMS');
-INSERT INTO `stops` VALUES(59, 'Solis');
-INSERT INTO `stops` VALUES(60, 'Pita Kotte');
-INSERT INTO `stops` VALUES(61, 'Ananda Balika');
-INSERT INTO `stops` VALUES(62, 'Pagoda Road');
-INSERT INTO `stops` VALUES(63, 'Nugegoda - Pagoda Road');
-INSERT INTO `stops` VALUES(64, 'Nugegoda - Supermarket');
-INSERT INTO `stops` VALUES(65, 'Nugegoda - High Level Road');
-INSERT INTO `stops` VALUES(66, 'Kohuwala');
-INSERT INTO `stops` VALUES(67, 'Kalubowila');
-INSERT INTO `stops` VALUES(68, 'William''s Grinding Mill');
-INSERT INTO `stops` VALUES(69, 'Dehiwala');
-INSERT INTO `stops` VALUES(70, 'Karagampitiya');
-INSERT INTO `stops` VALUES(71, 'Dehiwala - Zoo');
-INSERT INTO `stops` VALUES(72, 'S. De S. Jayasinghe Ground');
-INSERT INTO `stops` VALUES(73, 'Nugegoda - Nawala Road');
-INSERT INTO `stops` VALUES(74, 'Nawala');
-INSERT INTO `stops` VALUES(75, 'Nawala - Koswatte');
-INSERT INTO `stops` VALUES(76, 'Kotte Municipal Council');
-INSERT INTO `stops` VALUES(77, 'Borella - YMBA');
-INSERT INTO `stops` VALUES(78, 'Armor Street');
-INSERT INTO `stops` VALUES(79, 'Hettiyawatte');
+INSERT INTO `stops` VALUES(1, 'Kolpetty - Railway Station', '6.911111', '79.849189');
+INSERT INTO `stops` VALUES(2, 'Kolpetty - Supermarket', '6.911995', '79.850505');
+INSERT INTO `stops` VALUES(3, 'Kolpetty - Alwis Place', '', '');
+INSERT INTO `stops` VALUES(4, 'Colombo Public Library', '', '');
+INSERT INTO `stops` VALUES(5, 'SLTA', '', '');
+INSERT INTO `stops` VALUES(6, 'Nelum Pokuna Theater', '', '');
+INSERT INTO `stops` VALUES(7, 'Central', '', '');
+INSERT INTO `stops` VALUES(8, 'Wijerama', '', '');
+INSERT INTO `stops` VALUES(9, 'Borella - Horton Place', '', '');
+INSERT INTO `stops` VALUES(10, 'Devi Balika', '', '');
+INSERT INTO `stops` VALUES(11, 'Castle Street', '', '');
+INSERT INTO `stops` VALUES(12, 'Ayurveda', '', '');
+INSERT INTO `stops` VALUES(13, 'Rajagiriya', '', '');
+INSERT INTO `stops` VALUES(14, 'NAITA', '', '');
+INSERT INTO `stops` VALUES(15, 'Welikada', '', '');
+INSERT INTO `stops` VALUES(16, 'Ethul Kotte - Sri Jayawardenapura Mw', '', '');
+INSERT INTO `stops` VALUES(17, 'Polduwa', '', '');
+INSERT INTO `stops` VALUES(18, 'Sethsiripaya', '', '');
+INSERT INTO `stops` VALUES(19, 'Battaramulla', '', '');
+INSERT INTO `stops` VALUES(20, 'Battaramulla - Singer', '', '');
+INSERT INTO `stops` VALUES(21, 'Ganahena', '', '');
+INSERT INTO `stops` VALUES(22, 'Koswatte - Thalangama Depot', '', '');
+INSERT INTO `stops` VALUES(23, 'Koswatte', '', '');
+INSERT INTO `stops` VALUES(24, 'Thalangama - Cemetary', '', '');
+INSERT INTO `stops` VALUES(25, 'Malabe', '', '');
+INSERT INTO `stops` VALUES(26, 'Kaduwela', '', '');
+INSERT INTO `stops` VALUES(27, 'Pelawatte - Palam thuna (3 bridges)', '', '');
+INSERT INTO `stops` VALUES(28, 'Videsha Seva (Foreign Employment Bureau)', '', '');
+INSERT INTO `stops` VALUES(29, 'Palath Sabha (Western Provincial Council)', '', '');
+INSERT INTO `stops` VALUES(30, 'Gothami Road', '', '');
+INSERT INTO `stops` VALUES(31, 'Cotta Road', '', '');
+INSERT INTO `stops` VALUES(32, 'Borella - Supermarket', '', '');
+INSERT INTO `stops` VALUES(33, 'Borella - Maradana Road', '', '');
+INSERT INTO `stops` VALUES(34, 'Borella - Aquinas', '', '');
+INSERT INTO `stops` VALUES(35, 'Punchi Borella', '', '');
+INSERT INTO `stops` VALUES(36, 'Maradana', '', '');
+INSERT INTO `stops` VALUES(37, 'Technical Junction', '', '');
+INSERT INTO `stops` VALUES(38, 'Bo Gaha Handiya (Bo Tree Junction)', '', '');
+INSERT INTO `stops` VALUES(39, 'Hultsdorf', '', '');
+INSERT INTO `stops` VALUES(40, 'Fort', '', '');
+INSERT INTO `stops` VALUES(41, 'Kottawa', '', '');
+INSERT INTO `stops` VALUES(42, 'Pannipitiya - Old Road', '', '');
+INSERT INTO `stops` VALUES(43, 'Thalawathugoda', '', '');
+INSERT INTO `stops` VALUES(44, 'Jayawadanagama', '', '');
+INSERT INTO `stops` VALUES(45, 'Isurupaya', '', '');
+INSERT INTO `stops` VALUES(46, 'Pelawatte', '', '');
+INSERT INTO `stops` VALUES(47, 'Athurugiriya', '', '');
+INSERT INTO `stops` VALUES(48, 'Borella - Ward Place', '', '');
+INSERT INTO `stops` VALUES(49, 'Eye Hospital', '', '');
+INSERT INTO `stops` VALUES(50, 'Darley Road', '', '');
+INSERT INTO `stops` VALUES(51, 'McCallum Road (D. R. Wijewardena Mw)', '', '');
+INSERT INTO `stops` VALUES(52, 'Pettah', '', '');
+INSERT INTO `stops` VALUES(53, 'Meegoda', '', '');
+INSERT INTO `stops` VALUES(54, 'Godagama', '', '');
+INSERT INTO `stops` VALUES(55, 'Ethul Kotte - Telecom', '', '');
+INSERT INTO `stops` VALUES(56, 'Mati Ambalama', '', '');
+INSERT INTO `stops` VALUES(57, 'Kotubamma (Rampart Road)', '', '');
+INSERT INTO `stops` VALUES(58, 'CMS', '', '');
+INSERT INTO `stops` VALUES(59, 'Solis', '', '');
+INSERT INTO `stops` VALUES(60, 'Pita Kotte', '', '');
+INSERT INTO `stops` VALUES(61, 'Ananda Balika', '', '');
+INSERT INTO `stops` VALUES(62, 'Pagoda Road', '', '');
+INSERT INTO `stops` VALUES(63, 'Nugegoda - Pagoda Road', '', '');
+INSERT INTO `stops` VALUES(64, 'Nugegoda - Supermarket', '', '');
+INSERT INTO `stops` VALUES(65, 'Nugegoda - High Level Road', '', '');
+INSERT INTO `stops` VALUES(66, 'Kohuwala', '', '');
+INSERT INTO `stops` VALUES(67, 'Kalubowila', '', '');
+INSERT INTO `stops` VALUES(68, 'William''s Grinding Mill', '', '');
+INSERT INTO `stops` VALUES(69, 'Dehiwala', '', '');
+INSERT INTO `stops` VALUES(70, 'Karagampitiya', '', '');
+INSERT INTO `stops` VALUES(71, 'Dehiwala - Zoo', '', '');
+INSERT INTO `stops` VALUES(72, 'S. De S. Jayasinghe Ground', '', '');
+INSERT INTO `stops` VALUES(73, 'Nugegoda - Nawala Road', '', '');
+INSERT INTO `stops` VALUES(74, 'Nawala', '', '');
+INSERT INTO `stops` VALUES(75, 'Nawala - Koswatte', '', '');
+INSERT INTO `stops` VALUES(76, 'Kotte Municipal Council', '', '');
+INSERT INTO `stops` VALUES(77, 'Borella - YMBA', '', '');
+INSERT INTO `stops` VALUES(78, 'Armor Street', '', '');
+INSERT INTO `stops` VALUES(79, 'Hettiyawatte', '', '');
 
 -- --------------------------------------------------------
 
@@ -590,6 +603,57 @@ CREATE TABLE `trips` (
 
 --
 -- Dumping data for table `trips`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_admins`
+--
+
+CREATE TABLE `user_admins` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `admin_level` int(5) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `email_address` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `user_admins`
+--
+
+INSERT INTO `user_admins` VALUES(1, 'user', '123', 3, 'Admin', 'User', 'aftha.jaldin88@gmail.com');
+INSERT INTO `user_admins` VALUES(2, 'afthaj', 'afthaj', 3, 'Aftha', 'Jaldin', 'afthajaldin@yahoo.com');
+INSERT INTO `user_admins` VALUES(4, 'buddhi', 'buddhi123', 3, 'Buddhi', 'De Silva', 'gbidsilva@gmail.com');
+INSERT INTO `user_admins` VALUES(7, 'laleen', 'laleen123', 3, 'Laleen', 'Pallegoda', 'laleen.kp@gmail.com');
+INSERT INTO `user_admins` VALUES(8, 'sachith', 'sachith123', 3, 'Sachith', 'Senevirathna', 'vihanga88@gmail.com');
+INSERT INTO `user_admins` VALUES(9, 'john', 'john123', 2, 'John', 'Smith', 'john.smith@acme.com');
+INSERT INTO `user_admins` VALUES(10, 'sandunika', 'sandunika123', 3, 'Sandunika', 'Wijerathne', 'swijerathne35@gmail.com');
+INSERT INTO `user_admins` VALUES(11, 'janitha', 'janitha123', 1, 'Janitha', 'Rasanga', 'janitharasanga@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_commuters`
+--
+
+CREATE TABLE `user_commuters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `email_address` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `user_commuters`
 --
 
 
