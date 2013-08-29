@@ -64,7 +64,7 @@ if (!$session->is_logged_in()){
       
       <div class="row-fluid">
       
-        <div class="span3">
+        <div class="span2">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
 	        	<a href="admin_list_stops.php" class="btn btn-primary"> &larr; Back to Stops List</a>
 	        </div>
@@ -72,7 +72,7 @@ if (!$session->is_logged_in()){
         
         <!-- Start Content -->
 
-        <div class="span9">
+        <div class="span6">
         
         <section>
         
@@ -109,7 +109,7 @@ if (!$session->is_logged_in()){
 	      		
 	      		<div>
 	      			<ul class="bus-stops-list">
-	      				<li class=""><h4>List of Routes that pass through <?php echo $stop_to_read_update->name; ?></h4></li>
+	      				<li class=""><h4>Routes that pass through <?php echo $stop_to_read_update->name; ?></h4></li>
 	      				<li class="">&nbsp;</li>
 	      				
 	      				<?php for ($i = 0; $i < count($stops_routes); $i++){ ?>
@@ -119,7 +119,7 @@ if (!$session->is_logged_in()){
 						$br = new BusRoute();
 						
 						$route = $br->find_by_id($stops_routes[$i]->route_id); ?>
-			        		<li><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-info"><?php echo $route->route_number; ?></a> going from <a href="admin_read_update_stop.php?stopid=<?php echo BusStop::find_by_id($route->begin_stop)->id; ?>" class="btn btn-info"><?php echo BusStop::find_by_id($route->begin_stop)->name; ?></a> to <a href="admin_read_update_stop.php?stopid=<?php echo BusStop::find_by_id($route->end_stop)->id; ?>" class="btn btn-info"><?php echo BusStop::find_by_id($route->end_stop)->name; ?></a></li>
+			        		<li><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-info"><?php echo $route->route_number; ?></a> from <a href="admin_read_update_stop.php?stopid=<?php echo BusStop::find_by_id($route->begin_stop)->id; ?>" class="btn btn-info"><?php echo BusStop::find_by_id($route->begin_stop)->name; ?></a> to <a href="admin_read_update_stop.php?stopid=<?php echo BusStop::find_by_id($route->end_stop)->id; ?>" class="btn btn-info"><?php echo BusStop::find_by_id($route->end_stop)->name; ?></a></li>
 			        		<li>&nbsp;</li>
 		        		<?php } ?>
 		        		
@@ -132,6 +132,20 @@ if (!$session->is_logged_in()){
 	    
 	    </section>
 	    
+	  	</div>
+	  	
+	  	<div class="span4">
+	  	
+		  	<section>
+		  	
+		  		<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps?q=<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;num=1&amp;ie=UTF8&amp;ll=<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;spn=0.003105,0.004796&amp;t=m&amp;z=17&amp;output=embed"></iframe>
+		  		<br />
+		  		<small>
+		  			<a href="https://www.google.com/maps?q=<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;num=1&amp;ie=UTF8&amp;<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;spn=0.003105,0.004796&amp;t=m&amp;z=14&amp;source=embed" style="color:#0000FF;text-align:left" target="_blank">View Larger Map</a>
+		  		</small>
+		  	
+		  	</section>
+	  	
 	  	</div>
         
         </div>
