@@ -4,22 +4,21 @@ require_once("../includes/initialize.php");
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 }
 
-if (empty($_GET['adminid'])){
-	$session->message("Eror. No user ID was provided. ");
+if (empty($_GET['routeid'])){
+	$session->message("Eror. No Route ID was provided. ");
 	redirect_to("index.php");
 }
 
-$user_to_delete = Admin::find_by_id($_GET['adminid']);
+$route_to_delete = BusRoute::find_by_id($_GET['routeid']);
 
-if ($user_to_delete && $user_to_delete->delete()){
-	$session->message("Success! The user has been deleted. ");
-	redirect_to("admin_users_list.php");
+if ($route_to_delete && $route_to_delete->delete()){
+	$session->message("Success! The Bus Route has been deleted. ");
+	redirect_to("admin_list_routes.php");
 } else {
-	$session->message("Error. The user could not be deleted. ");
-	redirect_to("admin_users_list.php");
+	$session->message("Error. The Bus Route could not be deleted. ");
 }
 
 ?>

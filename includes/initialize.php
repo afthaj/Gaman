@@ -23,9 +23,11 @@ require_once("bus_personnel.php");
 require_once("bus_route.php");
 require_once("bus_stop.php");
 require_once("bus.php");
+require_once("commuter.php");
 require_once("complaint_status.php");
 require_once("complaint_type.php");
 require_once("complaint.php");
+require_once("photograph.php");
 require_once("stop_route.php");
 
 ?>

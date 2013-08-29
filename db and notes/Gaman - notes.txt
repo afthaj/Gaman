@@ -6,28 +6,46 @@ Bus Personnel: Bus Owner, Bus Operator (Driver, Conductor)
 
 ----------------------------------------------------------------------------------------------------------------
 
-admins(id, username, password, admin_level, first_name, last_name, email_address)
+user_admins(id, username, password, admin_level, first_name, last_name, email_address, photo_id)
+
+admin_levels(id, admin_level_name)
 
 routes(id, route_number, length, trip_time, begin_stop, end_stop)
-stops(id, name)
-stops-routes(id, route_id, stop_id)
+
+stops(id, name, location)
+
+stops_routes(id, route_id, stop_id)
 
 buses(id, route_id, reg_number, name)
-bus_personnel(id, role, first_name, last_name)
-role:[owner = 1, driver = 2, conductor = 3, owner+driver = 4, owner+conductor = 5]
-buses-bus_personnel(id, bus_id, bus_personnel_id)
 
-timetable(id, route_number, demand_flag)
-demand_flag:[normal+peak, normal+off-peak, weekend+peak, weekend+off-peak, holiday, special]
+bus_personnel(id, role, username, password, first_name, last_name, nic_number)
+
+bus_personnel_roles(id, role_name)
+role_name:[owner, driver, conductor, owner+driver, owner+conductor]
+
+buses_bus_personnel(id, bus_id, bus_personnel_id)
+
+timetables(id, route_number, demand_flag)
+
+timetable_demand_flags(id, demand_flag)
+demand_flag:[normal day + peak time, normal day + off-peak time, weekend day + peak time, weekend day + off-peak time, holiday, special]
 
 trips(id, route_id, bus_id, begin_stop, end_stop, departure_from_begin_stop, arrival_at_end_stop)
 
 stop_activity(id, trip_id, stop_id, alighted_commuters, boarded_commuters, arrival_time, departure_time)
 
-commuters(id, username, password, first_name, last_name, email_address)
+user_commuters(id, username, password, first_name, last_name, email_address)
 
 complaints(id, complaint_type, bus_route_id, , stop_id, bus_id, bus_personnel_id, status, content)
 
+complaint_status(id, comp_status_name)
+
+complaint_types(id, comp_type_name)
+
+photographs(id, stop_id, bus_id, bus_personnel_id, commuter_id, admin_id, photo_type, file_name, file_type, size)
+
+photo_type(id, photo_type_name)
+photo_type_name:[Front of Bus, Rear of Bus, Port side of Bus, Starboard side of Bus, Front + Port side of Bus, Front + Starboard side of Bus, Rear + Port side of Bus, Rear + Starboard side of Bus, User Profile, Location of Stop, Facing forward at Bus Stop, Facing behind at Bus Stop]
 
 ----------------------------------------------------------------------------------------------------------------
 

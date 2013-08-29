@@ -5,7 +5,7 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$stops = BusStop::find_all();
 	
 	if (isset($_GET['routeid'])){
@@ -48,7 +48,6 @@ if (!$session->is_logged_in()){
 
   <body>
 
-
     <!-- Part 1: Wrap all page content here -->
     <div id="wrap">
 
@@ -58,6 +57,7 @@ if (!$session->is_logged_in()){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		   <h1>Route Profile</h1>
+		   <h3>Route Number: <?php echo $route_to_read_update->route_number;?></h3>
 		 </div>
 	  </header>
       
@@ -90,7 +90,7 @@ if (!$session->is_logged_in()){
 	      	
 	      	<div class="tab-pane fade" id="route_profile">
 	      	
-	      	<form class="form-horizontal" action="admin_read_update_route.php?routeid=<?php echo $_GET['routeid']; ?>" method="POST">
+	      	<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?routeid=<?php echo $_GET['routeid']; ?>" method="POST">
             
 	            <div class="control-group">
 	            <label for="route_number" class="control-label">Route Number</label>

@@ -5,7 +5,7 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$routes = BusRoute::find_all();
 	$buses = Bus::find_all();
 	

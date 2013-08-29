@@ -1,16 +1,16 @@
 <?php
-require_once("../includes/initialize.php");
+require_once("includes/initialize.php");
 
 
  if ($session->is_logged_in()){
- 	redirect_to("index.php");
+ 	//redirect_to("index.php");
  }
 
 if (isset($_POST['submit'])){
 	$username = trim($_POST['username']);
 	$password = trim($_POST['password']);
 	
-	$found_user = AdminUser::authenticate($username, $password);
+	$found_user = Commuter::authenticate($username, $password);
 	
 	if ($found_user){
 		$session->login($found_user);
@@ -30,8 +30,8 @@ if (isset($_POST['submit'])){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Login &middot; Gaman</title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <title>Login &middot; <?php echo WEB_APP_NAME; ?></title>
+    <?php require_once('includes/layouts/header.php');?>
     
     <style type="text/css">
       body {
@@ -93,10 +93,6 @@ if (isset($_POST['submit'])){
         	</div>
         </div>
         
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        
         <div class="form-actions">
         	<button class="btn btn-large btn-primary" type="submit" name="submit">Sign in</button>
         </div>
@@ -105,7 +101,7 @@ if (isset($_POST['submit'])){
 
     </div> <!-- /container -->
 
-    <?php require_once('../includes/layouts/bootstrap_scripts_admin.php');?>
+    <?php require_once('includes/layouts/bootstrap_scripts.php');?>
 
   </body>
 </html>

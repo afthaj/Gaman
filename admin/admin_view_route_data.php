@@ -5,7 +5,7 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	
 	if (isset($_GET['routeid'])){
 		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
@@ -37,6 +37,7 @@ if (!$session->is_logged_in()){
       <header class="jumbotron subhead">
         <div class="container-fluid">
         	<h1>Route Data</h1>
+        	<h3>Route Number: <?php echo $route_to_read_update->route_number;?></h3>
         </div>
       </header>
       

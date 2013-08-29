@@ -4,7 +4,7 @@ require_once("../includes/initialize.php");
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$stops = BusStop::find_all();
 }
 
@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
         
         <?php echo $session->message; ?>
         
-        <form class="form-horizontal" action="admin_create_route.php" method="POST">
+        <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             
             <div class="control-group">
             <label for="route_number" class="control-label">Route Number</label>

@@ -5,7 +5,7 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	
 	$roles = BusPersonnelRole::find_all();
 	$buses = Bus::find_all();
@@ -20,8 +20,10 @@ if (!$session->is_logged_in()){
 	
 	if (isset($_POST['submit'])){
 		$bus_personnel_to_read_update->role = $_POST['role'];
+		$bus_personnel_to_read_update->username = $_POST['username'];
 		$bus_personnel_to_read_update->first_name = $_POST['first_name'];
 		$bus_personnel_to_read_update->last_name = $_POST['last_name'];
+		$bus_personnel_to_read_update->nic_number = $_POST['nic_number'];
 	
 		if ($bus_personnel_to_read_update->update()){
 			$session->message("Success! The Bus Personnel details were updated. ");
@@ -43,6 +45,23 @@ if (!$session->is_logged_in()){
 			redirect_to('admin_list_bus_personnel.php');
 		} else {
 			$session->message("Error! The Bus Personnel was not assigned to the given Bus. ");
+		}
+	}
+	
+	if (isset($_POST['update'])){
+		if ($_POST['old_password'] == $bus_personnel_to_read_update->password) {
+				
+			$bus_personnel_to_read_update->password = $_POST['new_password'];
+				
+			if ($bus_personnel_to_read_update->update()){
+				$session->message("Success! The user's password was updated. ");
+				redirect_to('admin_list_admin_users.php');
+			} else {
+				$session->message("Error! The user's password could not be updated. ");
+			}
+				
+		} else {
+			$session->message("Error! The existing password did not match. ");
 		}
 	}
 	
@@ -69,6 +88,7 @@ if (!$session->is_logged_in()){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		   <h1>Bus Personnel Profile</h1>
+		   <h3><?php echo $bus_personnel_to_read_update->first_name . ' ' . $bus_personnel_to_read_update->last_name;?></h3>
 		 </div>
 	  </header>
       
@@ -95,6 +115,7 @@ if (!$session->is_logged_in()){
         <ul class="nav nav-tabs">
 	      <li class="active"><a href="#assigned_buses_list" data-toggle="tab">Bus Assignment</a></li>
 	      <li><a href="#personnel_profile" data-toggle="tab">Personnel Profile</a></li>
+	      <li><a href="#password_update" data-toggle="tab">Password Update</a></li>
 	    </ul>
 	    
 	    <div id="tab_content" class="tab-content">
@@ -115,6 +136,13 @@ if (!$session->is_logged_in()){
             </div>
             
             <div class="control-group">
+        	<label for="username" class="control-label">Username</label>
+	        	<div class="controls">
+	        		<input type="text" name="username" value="<?php echo $bus_personnel_to_read_update->username; ?>" />
+	        	</div>
+        	</div>
+            
+            <div class="control-group">
         	<label for="first_name" class="control-label">First Name</label>
 	        	<div class="controls">
 	        		<input type="text" name="first_name" value="<?php echo $bus_personnel_to_read_update->first_name; ?>" />
@@ -127,10 +155,17 @@ if (!$session->is_logged_in()){
 	            	<input type="text" name="last_name" value="<?php echo $bus_personnel_to_read_update->last_name; ?>" />
 	            </div>
             </div>
-	            
-	          	<div class="form-actions">
-	        	    <button class="btn btn-primary" name="submit">Submit</button>
+            
+            <div class="control-group">
+        	<label for="nic_number" class="control-label">NIC Number</label>
+	        	<div class="controls">
+	        		<input type="text" name="nic_number" value="<?php echo $bus_personnel_to_read_update->nic_number; ?>" />
 	        	</div>
+        	</div>
+	            
+          	<div class="form-actions">
+        	    <button class="btn btn-primary" name="submit">Submit</button>
+        	</div>
 	        </form>
 	      
 	      	</div>
@@ -203,6 +238,29 @@ if (!$session->is_logged_in()){
       		</div>
 	      	
 	   		</div>
+	   		
+	   		<div class="tab-pane fade" id="password_update">
+	    	<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>.php?personnelid=<?php echo $_GET['adminid']; ?>" method="POST" id="tab">
+	    	
+	    		<div class="control-group">
+	        	<label for="old_password" class="control-label">Old Password</label>
+		        	<div class="controls">
+		        		<input type="password" name="old_password">
+		        	</div>
+	        	</div>
+	    		
+	    		<div class="control-group">
+	        	<label for="new_password" class="control-label">New Password</label>
+		        	<div class="controls">
+		        		<input type="password" name="new_password">
+		        	</div>
+	        	</div>
+	        	
+	        	<div class="form-actions">
+	        	    <button class="btn btn-primary" name="update">Update</button>
+	        	</div>
+	    	</form>
+	      	</div>
 	      
 	    </div>
 	    

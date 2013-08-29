@@ -4,7 +4,7 @@ require_once("../includes/initialize.php");
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	
 	$routes = BusRoute::find_all();
 	$stops = BusStop::find_all();
@@ -75,7 +75,7 @@ if (isset($_POST['submit'])){
        	  	<?php echo $session->message; ?>
        	  	
        	  	<section>
-       	  	<form action="admin_create_complaint.php" method="POST" class="form-horizontal">
+       	  	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="form-horizontal">
             
 	            <div class="control-group">
 	            <label for="complaint_type" class="control-label">Complaint Type</label>

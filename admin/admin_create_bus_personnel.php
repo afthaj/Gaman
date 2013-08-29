@@ -4,7 +4,7 @@ require_once("../includes/initialize.php");
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$roles = BusPersonnelRole::find_all();
 	$buses = Bus::find_all();
 }
@@ -15,8 +15,11 @@ if (isset($_POST['submit'])) {
 	//$buses_bus_personnel_to_create = new BusBusPersonnel();
 	
 	$bus_personnel_to_create->role = $_POST['role'];
+	$bus_personnel_to_create->username = $_POST['username'];
+	$bus_personnel_to_create->password = $_POST['password'];
 	$bus_personnel_to_create->first_name = $_POST['first_name'];
 	$bus_personnel_to_create->last_name = $_POST['last_name'];
+	$bus_personnel_to_create->nic_number = $_POST['nic_number'];
 	
 	//$buses_bus_personnel_to_create->bus_id = $_POST['bus_id'];
 	
@@ -79,7 +82,7 @@ if (isset($_POST['submit'])) {
         
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_list_personnel.php" class="btn btn-primary"> &larr; Back to Personnel List</a>
+        		<a href="admin_list_bus_personnel.php" class="btn btn-primary"> &larr; Back to Personnel List</a>
         	</div>
         </div>
 
@@ -103,6 +106,20 @@ if (isset($_POST['submit'])) {
             </div>
             
             <div class="control-group">
+        	<label for="username" class="control-label">Username</label>
+	        	<div class="controls">
+	        		<input type="text" name="username" />
+	        	</div>
+        	</div>
+        	
+        	<div class="control-group">
+        	<label for="password" class="control-label">Password</label>
+	        	<div class="controls">
+	        		<input type="password" name="password" />
+	        	</div>
+        	</div>
+            
+            <div class="control-group">
         	<label for="first_name" class="control-label">First Name</label>
 	        	<div class="controls">
 	        		<input type="text" name="first_name" />
@@ -113,6 +130,13 @@ if (isset($_POST['submit'])) {
             <label for="last_name" class="control-label">Last Name</label>
 	            <div class="controls">
 	            	<input type="text" value="" name="last_name" />
+	            </div>
+            </div>
+            
+            <div class="control-group">
+            <label for="nic_number" class="control-label">NIC Number</label>
+	            <div class="controls">
+	            	<input type="text" value="" name="nic_number" />
 	            </div>
             </div>
             

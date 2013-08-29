@@ -4,7 +4,7 @@ require_once("../includes/initialize.php");
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	
 	$bus_personnel = BusPersonnel::find_all();
 	
@@ -53,6 +53,8 @@ if (!$session->is_logged_in()){
 		        <td>First Name</td>
 		        <td>Last Name</td>
 		        <td>Role</td>
+		        <td>Username</td>
+		        <td>NIC Number</td>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
 	        </tr>
@@ -62,6 +64,8 @@ if (!$session->is_logged_in()){
 	        		<td><?php echo $bus_person->first_name; ?></td>
 	        		<td><?php echo $bus_person->last_name; ?></td>
 	        		<td><?php echo BusPersonnelRole::find_by_id($bus_person->role)->role_name; ?></td>
+	        		<td><?php echo $bus_person->username; ?></td>
+	        		<td><?php echo $bus_person->nic_number; ?></td>
 	        		<td><a href="admin_read_update_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
 	        		<td><a href="admin_delete_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
         		</tr>

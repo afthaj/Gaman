@@ -5,7 +5,9 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$admin_levels = AdminLevel::find_all();
+	$profile_picture = Photograph::get_profile_picture_of_admin_user($admin_user->id);
 	
 	if (isset($_POST['submit'])){
 		$admin_user->username = $_POST['username'];
@@ -40,6 +42,24 @@ if (!$session->is_logged_in()){
 
 	}
 	
+	if (isset($_POST['upload'])){
+		
+		$photo = new Photograph();
+		
+		$photo->admin_id = $admin_user->id;
+		$photo->photo_type = 9; // photo_type 9 is "User Profile"
+		$photo->attach_file($_FILES['file_upload']);
+	
+		if ($photo->save()){
+			$session->message("Success! The photo was uploaded successfully. ");
+			redirect_to('admin_list_admin_users.php');
+		} else {
+			$message = join("<br />", $photo->errors);
+		}
+	
+	}
+	
+	
 }
 
 ?>
@@ -63,6 +83,7 @@ if (!$session->is_logged_in()){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		   <h1>Admin User Profile</h1>
+		   <h3><?php echo $admin_user->first_name . ' ' . $admin_user->last_name;?></h3>
 		 </div>
 	  </header>
 
@@ -87,14 +108,24 @@ if (!$session->is_logged_in()){
 	    <ul class="nav nav-tabs">
 	      <li class="active"><a href="#user_details" data-toggle="tab">Profile</a></li>
 	      <li><a href="#password_update" data-toggle="tab">Password</a></li>
+	      <li><a href="#profile_picture" data-toggle="tab">Profile Picture</a></li>
 	    </ul>
 	    
 	    <div id="myTabContent" class="tab-content">
 	      <div class="tab-pane active in" id="user_details">
 	      
-	      <?php echo $session->message; ?>
-	      
-	        <form action="admin_view_profile.php" method="POST" id="tab" class="form-horizontal">
+	      <?php echo $message; ?>
+	      	      
+	        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
+	            
+	            <div class="control-group">
+	            	<label for="profile_picture" class="control-label">Profile Picture</label>
+	            
+		            <div class="controls">
+		            	<img src="<?php echo '../' . $profile_picture->image_path(); ?>" width="250" class="img-rounded" />
+		            </div>
+	            </div>
+	            
 	            <div class="control-group">
 	            	<label for="username" class="control-label">Username</label>
 	            
@@ -108,11 +139,9 @@ if (!$session->is_logged_in()){
 	            
 		            <div class="controls">
 			            <select name="admin_level">
-						  <option value="3"<?php if (!empty($admin_user->admin_level) && $admin_user->admin_level == 3) echo ' selected = "selected"'; ?>>Scheduler</option>
-						  <option value="1"<?php if (!empty($admin_user->admin_level) && $admin_user->admin_level == 1) echo ' selected = "selected"'; ?>>Time Keeper</option>
-						  <option value="2"<?php if (!empty($admin_user->admin_level) && $admin_user->admin_level == 2) echo ' selected = "selected"'; ?>>Stand OIC</option>
-						  <option value="4"<?php if (!empty($admin_user->admin_level) && $admin_user->admin_level == 4) echo ' selected = "selected"'; ?>>Admin Level 4</option>
-						  <option value="5"<?php if (!empty($admin_user->admin_level) && $admin_user->admin_level == 5) echo ' selected = "selected"'; ?>>Admin Level 5</option>
+			            <?php for ($i = 0; $i < count($admin_levels); $i++) {?>
+			            	<option value="<?php echo $admin_levels[$i]->id; ?>"<?php if (!empty($admin_user->admin_level) && $admin_user->admin_level == $admin_levels[$i]->id) echo ' selected = "selected"'; ?>><?php echo $admin_levels[$i]->admin_level_name; ?></option>
+			            <?php } ?>
 						</select>
 		            </div>
 	            </div>
@@ -145,9 +174,12 @@ if (!$session->is_logged_in()){
         	    	<button class="btn btn-primary" name="submit">Submit</button>
 	        	</div>
 	        </form>
+	        
 	      </div>
+	      
 	      <div class="tab-pane fade" id="password_update">
-	    	<form action="admin_view_profile.php" method="POST" id="tab2" class="form-horizontal">
+	    	
+	    	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
 	    		<div class="control-group">
 	        		<label for="old_password" class="control-label">Old Password</label>
 	        	
@@ -170,6 +202,25 @@ if (!$session->is_logged_in()){
 	        	
 	    	</form>
 	      </div>
+	      
+	      <div class="tab-pane fade" id="profile_picture">
+	      
+		      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+	        	
+	      		<input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+	        	
+	        	<div class="control-group">
+	        		<input type="file" name="file_upload" />
+	        	</div>
+	        	
+	        	<div class="form-actions">
+	        		<button type="submit" class="btn btn-primary" name="upload">Upload</button>
+	        	</div>
+	        	
+	          </form>
+	    	
+	      </div>
+	      
 	  	  </div>
 	  	
 	  	</section>

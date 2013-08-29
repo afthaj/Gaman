@@ -5,7 +5,7 @@ if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
 	
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$stops = BusStop::find_all();
 	
 	if (isset($_GET['stopid'])){
@@ -54,6 +54,7 @@ if (!$session->is_logged_in()){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		   <h1>Bus Stop Profile</h1>
+		   <h3><?php echo $stop_to_read_update->name; ?></h3>
 		 </div>
 	  </header>
       

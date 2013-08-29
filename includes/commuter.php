@@ -2,15 +2,14 @@
 
 require_once("database.php");
 
-class AdminUser extends DatabaseObject {
+class Commuter extends DatabaseObject {
 	
-	protected static $table_name = "user_admins";
-	protected static $db_fields = array('id', 'username', 'password', 'admin_level', 'first_name', 'last_name', 'email_address');
+	protected static $table_name = "user_commuters";
+	protected static $db_fields = array('id', 'username', 'password', 'first_name', 'last_name', 'email_address');
 	
 	public $id;
 	public $username;
 	public $password;
-	public $admin_level;
 	public $first_name;
 	public $last_name;
 	public $email_address;

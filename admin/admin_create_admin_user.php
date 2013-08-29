@@ -4,13 +4,13 @@ require_once("../includes/initialize.php");
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
 } else {
-	$admin_user = Admin::find_by_id($_SESSION['id']);
+	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$admin_levels = AdminLevel::find_all();
 }
 
 if (isset($_POST['submit'])) {
 	
-	$user_to_create = new Admin();
+	$user_to_create = new AdminUser();
 	
 	$user_to_create->username = $_POST['username'];
 	$user_to_create->password = $_POST['password'];
@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
         
         <?php echo $session->message; ?>
         
-        <form action="admin_create_admin_user.php" method="POST" class="form-horizontal">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="form-horizontal">
             
             <div class="control-group">
             <label for="username" class="control-label">Username</label>
@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
             <label for="admin_level" class="control-label">Admin Level</label>
 	            <div class="controls">
 		            <select name="admin_level">
-					  <?php for($i = 0; $i < count($admin_levels)-1; $i++){ ?>
+					  <?php for($i = 0; $i < count($admin_levels); $i++){ ?>
 					  	<option value="<?php echo $admin_levels[$i]->id; ?>"<?php if($admin_levels[$i]->admin_level_name == 'Scheduler'){ echo ' selected="selected"'; }?>><?php echo $admin_levels[$i]->admin_level_name; ?></option>
 					  <?php } ?>
 					</select>
