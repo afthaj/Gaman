@@ -11,7 +11,10 @@ if (!$session->is_logged_in()){
 	
 	if (isset($_GET['adminid'])){
 		$user_to_read_update = AdminUser::find_by_id($_GET['adminid']);
-		$profile_picture = Photograph::get_profile_picture_of_admin_user($user_to_read_update->id);
+		
+		$p = new Photograph();
+		
+		$profile_picture = $p->get_profile_picture_of_admin_user($user_to_read_update->id);
 	} else {
 		$session->message("No Admin ID provided to view.");
 		redirect_to("admin_list_admin_users.php");

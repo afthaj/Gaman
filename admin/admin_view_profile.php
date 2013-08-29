@@ -7,7 +7,10 @@ if (!$session->is_logged_in()){
 	
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$admin_levels = AdminLevel::find_all();
-	$profile_picture = Photograph::get_profile_picture_of_admin_user($admin_user->id);
+	
+	$p = new Photograph();
+	
+	$profile_picture = $p->get_profile_picture_of_admin_user($admin_user->id);
 	
 	if (isset($_POST['submit'])){
 		$admin_user->username = $_POST['username'];
