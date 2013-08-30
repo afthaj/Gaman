@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 30, 2013 at 01:43 PM
+-- Generation Time: Aug 30, 2013 at 07:08 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -80,7 +80,7 @@ CREATE TABLE `buses_bus_personnel` (
   PRIMARY KEY (`id`),
   KEY `bus_id` (`bus_id`),
   KEY `bus_personnel_id` (`bus_personnel_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `buses_bus_personnel`
@@ -89,6 +89,9 @@ CREATE TABLE `buses_bus_personnel` (
 INSERT INTO `buses_bus_personnel` VALUES(2, 2, 1);
 INSERT INTO `buses_bus_personnel` VALUES(3, 3, 1);
 INSERT INTO `buses_bus_personnel` VALUES(4, 5, 1);
+INSERT INTO `buses_bus_personnel` VALUES(5, 7, 2);
+INSERT INTO `buses_bus_personnel` VALUES(6, 5, 3);
+INSERT INTO `buses_bus_personnel` VALUES(7, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -105,13 +108,15 @@ CREATE TABLE `bus_personnel` (
   `last_name` varchar(255) NOT NULL,
   `nic_number` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `bus_personnel`
 --
 
 INSERT INTO `bus_personnel` VALUES(1, 1, 'john', 'john123', 'John', 'Smith', '801231511v');
+INSERT INTO `bus_personnel` VALUES(2, 4, 'busdriver', 'busdriver123', 'Bus', 'Driver', '823231511v');
+INSERT INTO `bus_personnel` VALUES(3, 1, 'busconductor', 'busconductor123', 'Bus', 'Conductor', '842321151v');
 
 -- --------------------------------------------------------
 
@@ -195,6 +200,29 @@ CREATE TABLE `complaint_types` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `object_types`
+--
+
+CREATE TABLE `object_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_type` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `object_types`
+--
+
+INSERT INTO `object_types` VALUES(1, 'bus_route');
+INSERT INTO `object_types` VALUES(2, 'stop');
+INSERT INTO `object_types` VALUES(3, 'bus');
+INSERT INTO `object_types` VALUES(4, 'bus_personnel');
+INSERT INTO `object_types` VALUES(5, 'admin');
+INSERT INTO `object_types` VALUES(6, 'commuter');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `photographs`
 --
 
@@ -210,7 +238,7 @@ CREATE TABLE `photographs` (
   `file_type` varchar(100) NOT NULL,
   `size` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `photographs`
@@ -225,6 +253,16 @@ INSERT INTO `photographs` VALUES(23, 1, 0, 0, 0, 0, 11, 'bus_stop_pic_1_11.jpg',
 INSERT INTO `photographs` VALUES(24, 1, 0, 0, 0, 0, 12, 'bus_stop_pic_1_12.jpg', 'image/jpeg', '90063');
 INSERT INTO `photographs` VALUES(25, 2, 0, 0, 0, 0, 10, 'bus_stop_pic_2_10.jpg', 'image/jpeg', '22031');
 INSERT INTO `photographs` VALUES(26, 2, 0, 0, 0, 0, 11, 'bus_stop_pic_2_11.jpg', 'image/jpeg', '73071');
+INSERT INTO `photographs` VALUES(27, 0, 1, 0, 0, 0, 1, 'bus_pic_1_1.jpeg', 'image/jpeg', '37090');
+INSERT INTO `photographs` VALUES(28, 0, 1, 0, 0, 0, 2, 'bus_pic_1_2.jpeg', 'image/jpeg', '43218');
+INSERT INTO `photographs` VALUES(29, 0, 2, 0, 0, 0, 1, 'bus_pic_2_1.jpg', 'image/jpeg', '37227');
+INSERT INTO `photographs` VALUES(30, 0, 2, 0, 0, 0, 2, 'bus_pic_2_2.jpg', 'image/jpeg', '68710');
+INSERT INTO `photographs` VALUES(31, 0, 3, 0, 0, 0, 1, 'bus_pic_3_1.jpg', 'image/jpeg', '34694');
+INSERT INTO `photographs` VALUES(32, 0, 3, 0, 0, 0, 5, 'bus_pic_3_5.jpg', 'image/jpeg', '53572');
+INSERT INTO `photographs` VALUES(33, 0, 1, 0, 0, 0, 6, 'bus_pic_1_6.jpeg', 'image/jpeg', '24515');
+INSERT INTO `photographs` VALUES(34, 0, 0, 1, 0, 0, 9, 'bus_personnel_prof_pic_1_John_Smith.jpg', 'image/jpeg', '31614');
+INSERT INTO `photographs` VALUES(35, 0, 0, 2, 0, 0, 9, 'bus_personnel_prof_pic_2_Bus_Driver.jpg', 'image/jpeg', '37737');
+INSERT INTO `photographs` VALUES(36, 0, 0, 3, 0, 0, 9, 'bus_personnel_prof_pic_3_Bus_Conductor.jpg', 'image/jpeg', '28270');
 
 -- --------------------------------------------------------
 
