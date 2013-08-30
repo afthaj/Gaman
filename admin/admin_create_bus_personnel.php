@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
 	if ($bus_personnel_to_create->create()){
 		
 		$session->message("Success! The new Bus Personnel has been added. ");
-		redirect_to('admin_list_personnel.php');
+		redirect_to('admin_list_bus_personnel.php');
 		
 		/*
 		$all_bus_personnel = BusPersonnel::find_all();

@@ -80,6 +80,52 @@ class Photograph extends DatabaseObject {
 		}
 	}
 	
+	public function attach_file_bus($file, $bus_id, $photo_type) {
+	
+		if (!$file || empty($file) || !is_array($file)){
+			$this->errors[] = "No file was uploaded";
+			return false;
+		} else if ($file['error'] != 0) {
+			$this->errors[] = $this->upload_errors[$file['error']];
+			return false;
+		} else {
+	
+			$this->temp_path = $file['tmp_name'];
+	
+			$path_parts = pathinfo($file['name']);
+			$this->filename = 'bus_pic_'.$bus_id.'_'.$photo_type.'.'.$path_parts['extension'];
+	
+			$this->file_type = $file['type'];
+	
+			$this->size = $file['size'];
+	
+			return true;
+		}
+	}
+	
+	public function attach_file_bus_personnel($file, $bus_personnel_id, $bus_personnel_first_name, $bus_personnel_last_name) {
+	
+	if (!$file || empty($file) || !is_array($file)){
+			$this->errors[] = "No file was uploaded";
+			return false;
+		} else if ($file['error'] != 0) {
+			$this->errors[] = $this->upload_errors[$file['error']];
+			return false;
+		} else {
+			
+			$this->temp_path = $file['tmp_name'];
+			
+			$path_parts = pathinfo($file['name']);
+			$this->filename = 'bus_personnel_prof_pic_'.$bus_personnel_id.'_'.$bus_personnel_first_name.'_'.$bus_personnel_last_name.'.'.$path_parts['extension'];
+			
+			$this->file_type = $file['type'];
+			
+			$this->size = $file['size'];
+			
+			return true;
+		}
+	}
+	
 	public function comment_count(){
 		global $database;
 		
@@ -157,13 +203,13 @@ class Photograph extends DatabaseObject {
 		}
 	}
 	
-	public function get_profile_picture($admin_id=0, $photo_flag="") {
+	public function get_profile_picture($id=0, $photo_flag="") {
 		global $database;
 		
-		$related_object_id = $photo_flag."_id"; 
+		$related_object_id = $photo_flag."_id";
 		
 		$sql  = "SELECT * FROM " . static::$table_name;
-		$sql .= " WHERE {$related_object_id} = {$admin_id}";
+		$sql .= " WHERE {$related_object_id} = {$id}";
 		$sql .= " LIMIT 1";
 		
 		$result_array = static::find_by_sql($sql);

@@ -12,6 +12,13 @@ if (!$session->is_logged_in()){
 	$routes = BusRoute::find_all();
 	$buses = Bus::find_all();
 	
+	$related_object = "bus";
+	$pt = new PhotoType();
+	$photo_types = $pt->get_photo_types($related_object);
+	
+	$p2 = new Photograph();
+	$photos_of_bus = $p2->get_photos_for_bus($_GET['busid']);
+	
 	if (isset($_GET['busid'])){
 		$bus_to_read_update = Bus::find_by_id($_GET['busid']);
 		
@@ -31,6 +38,24 @@ if (!$session->is_logged_in()){
 		} else {
 			$session->message("Error! The Bus details could not be updated. ");
 		}
+	}
+	
+	if (isset($_POST['upload'])){
+	
+		$photo_to_upload = new Photograph();
+	
+		$photo_to_upload->bus_id = $_GET['busid'];
+		$photo_to_upload->photo_type = $_POST['photo_type'];
+	
+		$photo_to_upload->attach_file_bus($_FILES['file_upload'], $photo_to_upload->bus_id, $photo_to_upload->photo_type);
+	
+		if ($photo_to_upload->save()){
+			$session->message("Success! The photo was uploaded successfully. ");
+			redirect_to('admin_list_buses.php');
+		} else {
+			$message = join("<br />", $photo_to_upload->errors);
+		}
+	
 	}
 	
 }
@@ -80,8 +105,9 @@ if (!$session->is_logged_in()){
         <?php echo $session->message; ?>
         
         <ul class="nav nav-tabs">
-	      <li class="active"><a href="#bus_personnel_list" data-toggle="tab">List of Personnel</a></li>
+	      <li class="active"><a href="#bus_pictures" data-toggle="tab">Pictures of the Bus</a></li>
 	      <li><a href="#bus_profile" data-toggle="tab">Bus Profile</a></li>
+	      <li><a href="#bus_personnel_list" data-toggle="tab">List of Personnel</a></li>
 	    </ul>
 	    
 	    <div id="tab_content" class="tab-content">
@@ -122,7 +148,7 @@ if (!$session->is_logged_in()){
 	      
 	      	</div>
 	      
-	      	<div class="tab-pane active in" id="bus_personnel_list">
+	      	<div class="tab-pane fade" id="bus_personnel_list">
 	      	
 	      	<div class="row-fluid">
       			<h4>List of Personnel</h4>
@@ -162,11 +188,61 @@ if (!$session->is_logged_in()){
 	        	<?php } ?>
 	        	
 	          </tbody>
+	          
 	        </table>
 
       		</div>
 	      	
 	   		</div>
+	   		
+	   		<div class="tab-pane active in" id="bus_pictures">
+
+			<?php if (!empty($photos_of_bus)) { ?>
+				<div class="callbacks_container">
+		        <ul class="rslides" id="responsive_slider">
+		        
+		        <?php for ( $i = 0; $i < count($photos_of_bus); $i++ ) { ?>
+		        
+					<li>
+					<img src="<?php echo '../'.$photos_of_bus[$i]->image_path(); ?>" alt="">
+					<p class="caption"><?php echo PhotoType::find_by_id($photos_of_bus[$i]->photo_type)->photo_type_name; ?></p>
+					</li>
+				
+		        <?php } ?>
+		        
+		        </ul>
+		        </div>
+			      
+			<?php } else { ?>
+			
+			<h5>No photos of the Bus have been uploaded yet!</h5>
+			<br /><br />
+			<?php } ?>
+			
+			  <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?busid=<?php echo $_GET['busid']; ?>" method="POST" enctype="multipart/form-data">
+			      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+			        	
+			      <div class="control-group">
+			      	<input type="file" name="file_upload" />
+			      </div>
+			      
+			      <div class="control-group">
+			      <label for="photo_type" class="control-label">Photo Type</label>
+				      <div class="controls">
+					      <select name="photo_type">
+					      	<?php foreach($photo_types as $photo_type) { ?>
+					      	<option value="<?php echo $photo_type->id; ?>"><?php echo $photo_type->photo_type_name; ?></option>
+					      	<?php } ?>
+					      </select>
+				      </div>
+			      </div>
+			        	
+			      <div class="form-actions">
+			      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
+			      </div>	        	
+		      </form>
+	  	
+			</div>
 	      
 	    </div>
 	    
@@ -184,10 +260,10 @@ if (!$session->is_logged_in()){
 
       <div id="push"></div>
     </div>
-
-    <?php require_once('../includes/layouts/footer_admin.php');?>
-
+    
     <?php require_once('../includes/layouts/scripts_admin.php');?>
-
+    
+    <?php require_once('../includes/layouts/footer_admin.php');?>
+    
   </body>
 </html>

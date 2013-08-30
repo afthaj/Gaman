@@ -15,6 +15,9 @@ if (!$session->is_logged_in()){
 	if (isset($_GET['personnelid'])){
 		$bus_personnel_to_read_update = BusPersonnel::find_by_id($_GET['personnelid']);
 		
+		$pic = new Photograph();
+		$profile_picture_of_bus_personnel = $pic->get_profile_picture($bus_personnel_to_read_update->id, "bus_personnel");
+		
 	} else {
 		$session->message("No Bus Personnel ID provided to view.");
 		redirect_to("admin_list_bus_personnel.php");
@@ -57,7 +60,7 @@ if (!$session->is_logged_in()){
 				
 			if ($bus_personnel_to_read_update->update()){
 				$session->message("Success! The user's password was updated. ");
-				redirect_to('admin_list_admin_users.php');
+				redirect_to('admin_list_bus_personnel.php');
 			} else {
 				$session->message("Error! The user's password could not be updated. ");
 			}
@@ -65,6 +68,24 @@ if (!$session->is_logged_in()){
 		} else {
 			$session->message("Error! The existing password did not match. ");
 		}
+	}
+	
+	if (isset($_POST['upload'])){
+	
+		$photo_to_upload = new Photograph();
+	
+		$photo_to_upload->bus_personnel_id = $_GET['personnelid'];
+		$photo_to_upload->photo_type = '9'; // photo_type 9 is "User Profile"
+	
+		$photo_to_upload->attach_file_bus_personnel($_FILES['file_upload'], $bus_personnel_to_read_update->id, $bus_personnel_to_read_update->first_name, $bus_personnel_to_read_update->last_name);
+	
+		if ($photo_to_upload->save()){
+			$session->message("Success! The photo was uploaded successfully. ");
+			redirect_to('admin_list_bus_personnel.php');
+		} else {
+			$message = join("<br />", $photo_to_upload->errors);
+		}
+	
 	}
 	
 }
@@ -115,18 +136,33 @@ if (!$session->is_logged_in()){
         <?php echo $session->message; ?>
         
         <ul class="nav nav-tabs">
-	      <li class="active"><a href="#assigned_buses_list" data-toggle="tab">Bus Assignment</a></li>
-	      <li><a href="#personnel_profile" data-toggle="tab">Personnel Profile</a></li>
-	      <li><a href="#password_update" data-toggle="tab">Password Update</a></li>
+	      <li class="active"><a href="#personnel_profile" data-toggle="tab">Profile</a></li>
+	      <li><a href="#password_update" data-toggle="tab">Password</a></li>
+	      <li><a href="#profile_picture" data-toggle="tab">Profile Picture</a></li>
+	      <li><a href="#assigned_buses_list" data-toggle="tab">Bus Assignment</a></li>
 	    </ul>
 	    
 	    <div id="tab_content" class="tab-content">
 	      	
-	      	<div class="tab-pane fade" id="personnel_profile">
+	      	<div class="tab-pane active in" id="personnel_profile">
 	      	
 	      	<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?personnelid=<?php echo $_GET['personnelid']; ?>" method="POST">
             
-	            <div class="control-group">
+            <div class="control-group">
+            	<label for="profile_picture" class="control-label">Profile Picture</label>
+            
+	            <div class="controls">
+	            	<?php 
+	            	if (!empty($profile_picture_of_bus_personnel->filename)) {
+	            		echo '<img src="../' . $profile_picture_of_bus_personnel->image_path() . '" width="250" class="img-rounded" />'; 
+	            	} else {
+	            		echo '<input type="text" value="" name="" placeholder="No profile picture uploaded" >'; 
+	            	} 
+	            	?>
+	            </div>
+            </div>
+            
+            <div class="control-group">
             	<label for="role" class="control-label">Route Number</label>
 	            <div class="controls">
 	            	<select name="role">
@@ -172,7 +208,7 @@ if (!$session->is_logged_in()){
 	      
 	      	</div>
 	      
-	      	<div class="tab-pane active in" id="assigned_buses_list">
+	      	<div class="tab-pane fade" id="assigned_buses_list">
 	      		
       		<div class="row-fluid">
       			<h4>Assigned Bus/Buses</h4>
@@ -242,6 +278,7 @@ if (!$session->is_logged_in()){
 	   		</div>
 	   		
 	   		<div class="tab-pane fade" id="password_update">
+	   		
 	    	<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>.php?personnelid=<?php echo $_GET['adminid']; ?>" method="POST" id="tab">
 	    	
 	    		<div class="control-group">
@@ -262,7 +299,33 @@ if (!$session->is_logged_in()){
 	        	    <button class="btn btn-primary" name="update">Update</button>
 	        	</div>
 	    	</form>
+	    	
 	      	</div>
+	      	
+	      	<div class="tab-pane fade" id="profile_picture">
+	      
+		      <?php 
+	          if (!empty($profile_picture_of_bus_personnel->filename)) {
+	          	echo '<h5>This User already has a Profile Picture uploaded</h5>';
+	          	echo '<a href="#" class="btn btn-danger"/>Delete and Reupload</a>';
+	          } else { 
+	          ?>
+	          
+			  <form action="<?php echo $_SERVER['PHP_SELF']; ?>?personnelid=<?php echo $_GET['personnelid']; ?>" method="POST" enctype="multipart/form-data">
+			      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+			        	
+			      <div class="control-group">
+			      	<input type="file" name="file_upload" />
+			      </div>
+			        	
+			      <div class="form-actions">
+			      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
+			      </div>	        	
+		      </form>
+		      
+		      <?php } ?>
+		    	
+		    </div>
 	      
 	    </div>
 	    

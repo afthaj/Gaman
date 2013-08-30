@@ -6,16 +6,17 @@ if (!$session->is_logged_in()){
 } else {
 	
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	//$p = new Photograph();
-	$profile_picture = /*$p->*/Photograph::get_profile_picture($admin_user->id, "admin");
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
 	
 	$stops = BusStop::find_all();
 	
 	$related_object = "bus_stop";
-	$photo_types = PhotoType::get_photo_types($related_object);
+	$pt = new PhotoType();
+	$photo_types = $pt->get_photo_types($related_object);
 	
-	//$p2 = new Photograph();
-	$photos_of_stop = /*$p2->*/Photograph::get_photos_for_stop($_GET['stopid']);
+	$p2 = new Photograph();
+	$photos_of_stop = $p2->get_photos_for_stop($_GET['stopid']);
 	
 	if (isset($_GET['stopid'])){
 		$stop_to_read_update = BusStop::find_by_id($_GET['stopid']);
@@ -105,10 +106,10 @@ if (!$session->is_logged_in()){
         <?php echo $session->message; ?>
         
         <ul class="nav nav-tabs">
-	      <li class="active"><a href="#route_stops_list" data-toggle="tab">List of Routes</a></li>
+	      <li class="active"><a href="#stop_pictures" data-toggle="tab">Pictures of Bus Stop</a></li>
+	      <li><a href="#map_location" data-toggle="tab">Map Location</a></li>
 	      <li><a href="#route_profile" data-toggle="tab">Bus Stop Profile</a></li>
-		  <li><a href="#map_location" data-toggle="tab">Map Location</a></li>
-		  <li><a href="#stop_pictures" data-toggle="tab">Pictures of Bus Stop</a></li>
+	      <li><a href="#route_stops_list" data-toggle="tab">List of Routes</a></li>
 	    </ul>
 	    
 	    <div id="tab_content" class="tab-content">
@@ -153,7 +154,7 @@ if (!$session->is_logged_in()){
 	      
 	      	</div>
 	      
-	      	<div class="tab-pane active in" id="route_stops_list">
+	      	<div class="tab-pane fade" id="route_stops_list">
 	      		
 	      		<div class="clearfix">&nbsp;</div>
 	      		
@@ -194,20 +195,21 @@ if (!$session->is_logged_in()){
 	  	
 			</div>
 			
-			<div class="tab-pane fade" id="stop_pictures">
+			<div class="tab-pane active in" id="stop_pictures">
 
 			<?php if (!empty($photos_of_stop)) { ?>
-				
-				<div class="flexslider">
-				  <ul class="slides">
+			
+			<div class="callbacks_container">
+		        <ul class="rslides" id="responsive_slider">
 				    <?php foreach($photos_of_stop as $photo_of_stop) { ?>
-				    <li>
-				      <img src="<?php echo '../'.$photo_of_stop->image_path(); ?>" />
-				    </li>
+					    <li>
+							<img src="<?php echo '../'.$photo_of_stop->image_path(); ?>" alt="">
+							<p class="caption"><?php echo PhotoType::find_by_id($photo_of_stop->photo_type)->photo_type_name; ?></p>
+						</li>
 				    <?php } ?>
-				  </ul>
-				</div>
-
+				</ul>
+	        </div>
+	        
 			<?php } else { ?>
 			
 			<h5>No photos of the Bus Stop have been uploaded yet!</h5>
@@ -256,20 +258,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
     
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
-    
-    <script type="text/javascript">
-	    $(window).load(function(){
-	      $('.flexslider').flexslider({
-	        animation: "slide",
-	        start: function(slider){
-	          $('body').removeClass('loading');
-	        }
-	      });
-	    });
-	</script>
-
     <?php require_once('../includes/layouts/footer_admin.php');?>
+    
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
     
   </body>
 </html>

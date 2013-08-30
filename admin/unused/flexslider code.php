@@ -1,3 +1,4 @@
+<div class="span11">
 <div class="flexslider">
   <ul class="slides">
     <?php foreach($photos_of_stop as $photo_of_stop) { ?>
@@ -7,3 +8,17 @@
     <?php } ?>
   </ul>
 </div>
+</div>
+
+<script type="text/javascript">
+	$(window).load(function(){
+      $('.flexslider').flexslider({
+        animation: "slide",
+        start: function(slider){
+          $('body').removeClass('loading');
+        }
+      });
+    });
+</script>
+
+<script defer src="../js/jquery.flexslider.js"></script>
