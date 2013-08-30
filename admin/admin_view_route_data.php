@@ -7,7 +7,7 @@ if (!$session->is_logged_in()){
 	
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture_of_admin_user($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
 	
 	if (isset($_GET['routeid'])){
 		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);

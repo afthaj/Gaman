@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 30, 2013 at 12:36 AM
+-- Generation Time: Aug 30, 2013 at 01:43 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -210,7 +210,7 @@ CREATE TABLE `photographs` (
   `file_type` varchar(100) NOT NULL,
   `size` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `photographs`
@@ -223,6 +223,8 @@ INSERT INTO `photographs` VALUES(21, 0, 0, 0, 0, 4, 9, '4-Buddhi-De Silva.jpg', 
 INSERT INTO `photographs` VALUES(22, 1, 0, 0, 0, 0, 10, 'bus_stop_pic_1_10.jpg', 'image/jpeg', '21804');
 INSERT INTO `photographs` VALUES(23, 1, 0, 0, 0, 0, 11, 'bus_stop_pic_1_11.jpg', 'image/jpeg', '105293');
 INSERT INTO `photographs` VALUES(24, 1, 0, 0, 0, 0, 12, 'bus_stop_pic_1_12.jpg', 'image/jpeg', '90063');
+INSERT INTO `photographs` VALUES(25, 2, 0, 0, 0, 0, 10, 'bus_stop_pic_2_10.jpg', 'image/jpeg', '22031');
+INSERT INTO `photographs` VALUES(26, 2, 0, 0, 0, 0, 11, 'bus_stop_pic_2_11.jpg', 'image/jpeg', '73071');
 
 -- --------------------------------------------------------
 

@@ -6,22 +6,22 @@ if (!$session->is_logged_in()){
 } else {
 	
 	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	//$p = new Photograph();
+	$profile_picture = /*$p->*/Photograph::get_profile_picture($admin_user->id, "admin");
 	
 	$stops = BusStop::find_all();
 	
 	$related_object = "bus_stop";
 	$photo_types = PhotoType::get_photo_types($related_object);
 	
+	//$p2 = new Photograph();
+	$photos_of_stop = /*$p2->*/Photograph::get_photos_for_stop($_GET['stopid']);
+	
 	if (isset($_GET['stopid'])){
 		$stop_to_read_update = BusStop::find_by_id($_GET['stopid']);
 		
 		$sr = new StopRoute();
 		$stops_routes = $sr->get_routes_for_stop($stop_to_read_update->id);
-		
-		$p2 = new Photograph();
-		$photos_of_stop = $p2->get_photos_for_stop($stop_to_read_update->id);
 		
 	} else {
 		$session->message("No Stop ID provided to view.");
@@ -197,15 +197,17 @@ if (!$session->is_logged_in()){
 			<div class="tab-pane fade" id="stop_pictures">
 
 			<?php if (!empty($photos_of_stop)) { ?>
-			<div class="flexslider">
-			  <ul class="slides">
-			    <?php foreach($photos_of_stop as $photo_of_stop) { ?>
-			    <li>
-			      <img src="<?php echo '../'.$photo_of_stop->image_path(); ?>" />
-			    </li>
-			    <?php } ?>
-			  </ul>
-			</div>
+				
+				<div class="flexslider">
+				  <ul class="slides">
+				    <?php foreach($photos_of_stop as $photo_of_stop) { ?>
+				    <li>
+				      <img src="<?php echo '../'.$photo_of_stop->image_path(); ?>" />
+				    </li>
+				    <?php } ?>
+				  </ul>
+				</div>
+
 			<?php } else { ?>
 			
 			<h5>No photos of the Bus Stop have been uploaded yet!</h5>
@@ -254,10 +256,20 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
     
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    
+    <script type="text/javascript">
+	    $(window).load(function(){
+	      $('.flexslider').flexslider({
+	        animation: "slide",
+	        start: function(slider){
+	          $('body').removeClass('loading');
+	        }
+	      });
+	    });
+	</script>
 
     <?php require_once('../includes/layouts/footer_admin.php');?>
-
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
-
+    
   </body>
 </html>

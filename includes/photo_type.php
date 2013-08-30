@@ -19,6 +19,7 @@ class PhotoType extends DatabaseObject {
 		
 		return static::find_by_sql($sql);
 	}
+	
 }
 
 

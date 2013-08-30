@@ -3,6 +3,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../js/jquery.js"></script>
     <script src="../js/bootstrap.js"></script>
+    <script defer src="../js/jquery.flexslider.js"></script>
 
 	<script src="js/bootstrap-affix.js"></script>
 	<script src="js/bootstrap-alert.js"></script>
@@ -22,16 +23,3 @@
     <script src="js/holder.js"></script>
     <script src="js/html5shiv.js"></script>
     <script src="js/prettify.js"></script>
-    
-    <script src="../js/flexslider.js"></script>
-    
-    <script type="text/javascript">
-    $(window).load(function(){
-      $('.flexslider').flexslider({
-        animation: "slide",
-        start: function(slider){
-          $('body').removeClass('loading');
-        }
-      });
-    });
-  </script>

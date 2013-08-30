@@ -74,7 +74,18 @@
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.js"></script>
     <![endif]-->
-
+	
+	<script type="text/javascript">
+	    $(window).load(function(){
+	      $('.flexslider').flexslider({
+	        animation: "slide",
+	        start: function(slider){
+	          $('body').removeClass('loading');
+	        }
+	      });
+	    });
+	</script>
+	
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
