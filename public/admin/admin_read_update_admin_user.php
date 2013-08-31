@@ -1,5 +1,5 @@
 <?php
-require_once("../includes/initialize.php");
+require_once("../../includes/initialize.php");
 
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
@@ -81,7 +81,7 @@ if (!$session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Admin Profile &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
 
   <body>
@@ -91,7 +91,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../../includes/layouts/navbar_admin.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -136,7 +136,7 @@ if (!$session->is_logged_in()){
 		            <div class="controls">
 		            	<?php 
 		            	if (!empty($profile_picture_of_other_admin_users->filename)) {
-		            		echo '<img src="../' . $profile_picture_of_other_admin_users->image_path() . '" width="250" class="img-rounded" />'; 
+		            		echo '<img src="../../' . $profile_picture_of_other_admin_users->image_path() . '" width="250" class="img-rounded" />'; 
 		            	} else {
 		            		echo '<input type="text" value="" name="" placeholder="No profile picture uploaded" >'; 
 		            	} 
@@ -252,9 +252,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('../includes/layouts/footer_admin.php');?>
+    <?php require_once('../../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

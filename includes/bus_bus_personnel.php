@@ -11,20 +11,20 @@ class BusBusPersonnel extends DatabaseObject {
 	public $bus_id;
 	public $bus_personnel_id;
 	
-	public function get_stops_for_route($id=0){
+	public function get_buses_for_personnel($id=0){
 		global $database;
 	
-		$sql  = "SELECT * FROM " . static::$table_name;
-		$sql .= " WHERE route_id = " . $id;
+		$sql  = 'SELECT * FROM ' . static::$table_name;
+	    $sql .= ' WHERE bus_personnel_id = ' . $id;
 	
 		return static::find_by_sql($sql);
 	}
 	
-	public function get_routes_for_stop($id=0){
+	public function get_personnel_for_bus($id=0){
 		global $database;
 	
-		$sql  = "SELECT * FROM " . static::$table_name;
-		$sql .= " WHERE stop_id = " . $id;
+		$sql  = 'SELECT * FROM ' . static::$table_name;
+	    $sql .= ' WHERE bus_id = ' . $id;
 	
 		return static::find_by_sql($sql);
 	}

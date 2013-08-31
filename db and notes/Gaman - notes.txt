@@ -38,19 +38,15 @@ user_commuters(id, username, password, first_name, last_name, email_address)
 
 complaints(id, complaint_type, bus_route_id, , stop_id, bus_id, bus_personnel_id, status, content)
 
+object_types(id, object_type_name)
+
 complaint_status(id, comp_status_name)
 
 complaint_types(id, comp_type_name)
 
-photos(id, filename, file_type, size)
+photographs(id, stop_id, bus_id, bus_personnel_id, 	commuter_id, admin_id, filename, file_type, size)
 
 photo_types(id, photo_type_name)
-
-stop_photos(id, stop_id, photo_type)
-photo_type_name:[]
-
-bus_photos(id, bus_id, photo_type)
-photo_type_name:[]
 
 bus_personnel_photos(id, bus_personnel_id)
 

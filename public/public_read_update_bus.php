@@ -11,6 +11,7 @@ if (!$session->is_logged_in()){
 	
 	$routes = BusRoute::find_all();
 	$buses = Bus::find_all();
+	$bus_personnel = BusPersonnel::find_all();
 	
 	$related_object = "bus";
 	$pt = new PhotoType();
@@ -56,6 +57,21 @@ if (!$session->is_logged_in()){
 			$message = join("<br />", $photo_to_upload->errors);
 		}
 	
+	}
+	
+	if (isset($_POST['assign'])){
+	
+		$buses_bus_personnel_to_read_update = new BusBusPersonnel();
+	
+		$buses_bus_personnel_to_read_update->bus_id = $_GET['busid'];
+		$buses_bus_personnel_to_read_update->bus_personnel_id = $_POST['bus_personnel_id'];
+	
+		if ($buses_bus_personnel_to_read_update->create()){
+			$session->message("Success! The Bus Personnel was assigned to the given Bus. ");
+			redirect_to('admin_list_buses.php');
+		} else {
+			$session->message("Error! The Bus Personnel was not assigned to the given Bus. ");
+		}
 	}
 	
 }
@@ -191,6 +207,28 @@ if (!$session->is_logged_in()){
 	          
 	        </table>
 
+      		</div>
+      		
+      		<div class="row-fluid">
+      		
+      		<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?busid=<?php echo $_GET['busid']; ?>" method="POST">
+            
+            <div class="control-group">
+            <label for="bus_personnel_id" class="control-label">Assign to this Bus</label>
+	            <div class="controls">
+	            	<select name="bus_personnel_id">
+	            	<?php foreach($bus_personnel as $bus_person){ ?>
+	            		<option value="<?php echo $bus_person->id; ?>"><?php echo BusPersonnel::find_by_id($bus_person->id)->first_name; ?> <?php echo BusPersonnel::find_by_id($bus_person->id)->last_name; ?> &middot; <?php echo BusPersonnel::find_by_id($bus_person->id)->nic_number; ?></option>
+	            	<?php } ?>
+					</select>
+	            </div>
+            </div>
+	            
+          	<div class="form-actions">
+        	    <button class="btn btn-primary" name="assign">Assign</button>
+        	</div>
+	        </form>
+      		
       		</div>
 	      	
 	   		</div>

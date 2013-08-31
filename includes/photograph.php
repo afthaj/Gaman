@@ -21,7 +21,7 @@ class Photograph extends DatabaseObject {
 	public $size;
 	
 	private $temp_path;
-	protected $upload_dir="img/uploads";
+	protected $upload_dir="public/img/uploads";
 	public $errors = array();
 	
 	protected $upload_errors = array(
@@ -129,7 +129,7 @@ class Photograph extends DatabaseObject {
 	public function comment_count(){
 		global $database;
 		
-		$sql = "SELECT COUNT(*) from comments WHERE photograph_id=". $database->escape_value($this->id);
+		$sql = "SELECT COUNT(*) from comments WHERE photograph_id = ". $database->escape_value($this->id);
 		
 		$result_set = $database->query($sql);
 		$row = $database->fetch_array($result_set);

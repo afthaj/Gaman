@@ -1,5 +1,5 @@
 <?php
-require_once("../includes/initialize.php");
+require_once("../../includes/initialize.php");
 
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
@@ -16,6 +16,8 @@ if (isset($_POST['submit'])) {
 	$stop_to_create = new BusStop();
 	
 	$stop_to_create->name = $_POST['name'];
+	$stop_to_create->location_latitude = $_POST['location_latitude'];
+	$stop_to_create->location_longitude = $_POST['location_longitude'];
 	
 	if ($stop_to_create->create()){
 		$session->message("Success! The new Bus Stop has been added. ");
@@ -31,7 +33,7 @@ if (isset($_POST['submit'])) {
 <html lang="en">
   <head>
     <title>Add Bus Stop &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
 
   <body>
@@ -41,7 +43,7 @@ if (isset($_POST['submit'])) {
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../../includes/layouts/navbar_admin.php');?>
 
       <!-- Begin page content -->
       
@@ -79,6 +81,20 @@ if (isset($_POST['submit'])) {
 	            </div>
             </div>
             
+            <div class="control-group">
+            <label for="location_latitude" class="control-label">Geo Location:<br />Latitude</label>
+	            <div class="controls">
+	            	<input type="text" value="" name="location_latitude">
+	            </div>
+            </div>
+            
+            <div class="control-group">
+            <label for="location_longitude" class="control-label">Geo Location:<br />Longitude</label>
+	            <div class="controls">
+	            	<input type="text" value="" name="location_longitude">
+	            </div>
+            </div>
+            
           	<div class="form-actions">
         	    <button class="btn btn-primary" name="submit">Submit</button>
         	</div>
@@ -99,9 +115,9 @@ if (isset($_POST['submit'])) {
       <div id="push"></div>
     </div>
 
-    <?php require_once('../includes/layouts/footer_admin.php');?>
+    <?php require_once('../../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

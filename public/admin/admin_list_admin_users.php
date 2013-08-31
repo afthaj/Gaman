@@ -1,5 +1,5 @@
 <?php
-require_once("../includes/initialize.php");
+require_once("../../includes/initialize.php");
 
 if (!$session->is_logged_in()){
 	redirect_to("login.php");
@@ -16,7 +16,7 @@ if (!$session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Admin User List &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
 
   <body>
@@ -27,7 +27,7 @@ if (!$session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'admin_user_list';?>
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../../includes/layouts/navbar_admin.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -75,7 +75,7 @@ if (!$session->is_logged_in()){
         		$user_profile_picture = $pic->get_profile_picture($users[$i]->id, "admin");
         		
         		if (!empty($user_profile_picture->filename)) {
-        			echo '<img src="../' . $user_profile_picture->image_path() . '" width="100" class="img-rounded" />';
+        			echo '<img src="../../' . $user_profile_picture->image_path() . '" width="100" class="img-rounded" />';
         		} else {
         			echo '<img src="../img/default-prof-pic.jpg" width="100" class="img-rounded" alt="Please upload a profile picture" />';
         		}
@@ -105,9 +105,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('../includes/layouts/footer_admin.php');?>
+    <?php require_once('../../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

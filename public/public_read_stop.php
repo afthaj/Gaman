@@ -31,6 +31,8 @@ if (!$session->is_logged_in()){
 	
 	if (isset($_POST['submit'])){
 		$stop_to_read_update->name = $_POST['name'];
+		$stop_to_read_update->location_latitude = $_POST['location_latitude'];
+		$stop_to_read_update->location_longitude = $_POST['location_longitude'];
 	
 		if ($stop_to_read_update->update()){
 			$session->message("Success! The Bus Stop details were updated. ");
@@ -128,18 +130,14 @@ if (!$session->is_logged_in()){
 	            <?php if (!empty($stop_to_read_update->location_latitude)) { ?>
 	            
 	            <div class="control-group">
-	            <label for="location_latitude" class="control-label">Geographic Coordinates</label>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="location_latitude" class="control-label">Latitude</label>
+	            <label for="location_latitude" class="control-label">Geo Coordinates:<br />Latitude</label>
 		            <div class="controls">
 		            	<input type="text" name="location_latitude" value="<?php echo $stop_to_read_update->location_latitude; ?>">
 		            </div>
 	            </div>
 	            
 	            <div class="control-group">
-	            <label for="location_longitude" class="control-label">Longitude</label>
+	            <label for="location_longitude" class="control-label">Geo Coordinates:<br />Longitude</label>
 		            <div class="controls">
 		            	<input type="text" name="location_longitude" value="<?php echo $stop_to_read_update->location_longitude; ?>">
 		            </div>

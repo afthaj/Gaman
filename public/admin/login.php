@@ -1,5 +1,5 @@
 <?php
-require_once("../includes/initialize.php");
+require_once("../../includes/initialize.php");
 
 
  if ($session->is_logged_in()){
@@ -31,7 +31,7 @@ if (isset($_POST['submit'])){
 <html lang="en">
   <head>
     <title>Login &middot; Gaman</title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../../includes/layouts/header_admin.php');?>
     
     <style type="text/css">
       body {
@@ -105,7 +105,7 @@ if (isset($_POST['submit'])){
 
     </div> <!-- /container -->
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>
