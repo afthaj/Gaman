@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 30, 2013 at 07:08 PM
+-- Generation Time: Aug 31, 2013 at 12:14 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -80,7 +80,7 @@ CREATE TABLE `buses_bus_personnel` (
   PRIMARY KEY (`id`),
   KEY `bus_id` (`bus_id`),
   KEY `bus_personnel_id` (`bus_personnel_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `buses_bus_personnel`
@@ -92,6 +92,10 @@ INSERT INTO `buses_bus_personnel` VALUES(4, 5, 1);
 INSERT INTO `buses_bus_personnel` VALUES(5, 7, 2);
 INSERT INTO `buses_bus_personnel` VALUES(6, 5, 3);
 INSERT INTO `buses_bus_personnel` VALUES(7, 2, 3);
+INSERT INTO `buses_bus_personnel` VALUES(8, 1, 2);
+INSERT INTO `buses_bus_personnel` VALUES(9, 1, 1);
+INSERT INTO `buses_bus_personnel` VALUES(10, 7, 3);
+INSERT INTO `buses_bus_personnel` VALUES(11, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -148,11 +152,9 @@ INSERT INTO `bus_personnel_roles` VALUES(5, 'Bus Owner + Conductor');
 
 CREATE TABLE `complaints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_type_id` int(11) NOT NULL,
+  `object_id` int(11) NOT NULL,
   `complaint_type` int(11) NOT NULL,
-  `bus_route_id` int(11) NOT NULL,
-  `stop_id` int(11) NOT NULL,
-  `bus_id` int(11) NOT NULL,
-  `bus_personnel_id` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `content` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -205,7 +207,8 @@ CREATE TABLE `complaint_types` (
 
 CREATE TABLE `object_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `object_type` varchar(20) NOT NULL,
+  `object_type_name` varchar(20) NOT NULL,
+  `dispaly_name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
@@ -213,12 +216,12 @@ CREATE TABLE `object_types` (
 -- Dumping data for table `object_types`
 --
 
-INSERT INTO `object_types` VALUES(1, 'bus_route');
-INSERT INTO `object_types` VALUES(2, 'stop');
-INSERT INTO `object_types` VALUES(3, 'bus');
-INSERT INTO `object_types` VALUES(4, 'bus_personnel');
-INSERT INTO `object_types` VALUES(5, 'admin');
-INSERT INTO `object_types` VALUES(6, 'commuter');
+INSERT INTO `object_types` VALUES(1, 'bus_route', 'Bus Route');
+INSERT INTO `object_types` VALUES(2, 'stop', 'Bus Stop');
+INSERT INTO `object_types` VALUES(3, 'bus', 'Bus');
+INSERT INTO `object_types` VALUES(4, 'bus_personnel', 'Bus Personnel');
+INSERT INTO `object_types` VALUES(5, 'admin', 'Admin User');
+INSERT INTO `object_types` VALUES(6, 'commuter', 'Commuter');
 
 -- --------------------------------------------------------
 
