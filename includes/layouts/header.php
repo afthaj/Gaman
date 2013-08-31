@@ -6,11 +6,12 @@
     <!-- CSS -->
     <link href="css/bootswatch-flatly/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/bootswatch-flatly/docs.css" rel="stylesheet">
-    
     <link href="css/prettify.css" rel="stylesheet">
-    
+    <link href="css/bootswatch-flatly/docs.css" rel="stylesheet">
     <link href="css/bootswatch-flatly/gaman-styles.css" rel="stylesheet">
+
+    <link href="css/flexslider.css" rel="stylesheet" />
+    <link href="css/responsiveslides.css" rel="stylesheet" />
     
     <style type="text/css">
 
@@ -50,9 +51,7 @@
           padding-right: 20px;
         }
       }
-
-
-
+      
       /* Custom page CSS
       -------------------------------------------------- */
       /* Not required for template or sticky footer method. */
@@ -74,9 +73,41 @@
     <!--[if lt IE 9]>
       <script src="../js/html5shiv.js"></script>
     <![endif]-->
-	
-	<script type="text/javascript">
-	    $(window).load(function(){
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="ico/favicon.png">
+    
+    <script src="js/jquery.js"></script>
+    
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap-affix.js"></script>
+	<script src="js/bootstrap-alert.js"></script>
+    <script src="js/bootstrap-button.js"></script>
+    <script src="js/bootstrap-carousel.js"></script>
+    <script src="js/bootstrap-collapse.js"></script>
+    <script src="../../js/bootstrap-dropdown.js"></script>
+	<script src="js/bootstrap-modal.js"></script>
+    <script src="js/bootstrap-popover.js"></script>
+    <script src="js/bootstrap-scrollspy.js"></script>
+    <script src="js/bootstrap-tab.js"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <script src="js/bootstrap-transition.js"></script>
+    <script src="js/bootstrap-typeahead.js"></script>
+    
+    <script src="js/application.js"></script>
+    <script src="js/holder.js"></script>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/prettify.js"></script>
+    
+    <script defer src="js/jquery.flexslider.js"></script>
+    <script defer src="js/responsiveslides.js"></script>
+    
+    <script type="text/javascript">
+		$(window).load(function(){
 	      $('.flexslider').flexslider({
 	        animation: "slide",
 	        start: function(slider){
@@ -85,10 +116,26 @@
 	      });
 	    });
 	</script>
-	
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="ico/favicon.png">
+    
+    <script>
+    // You can also use "$(window).load(function() {"
+    $(function () {
+
+      /* Slideshow 4 */
+      $("#responsive_slider").responsiveSlides({
+        auto: false,
+        pager: false,
+        nav: true,
+        speed: 500,
+        namespace: "callbacks",
+        before: function () {
+          $('.events').append("<li>before event fired.</li>");
+        },
+        after: function () {
+          $('.events').append("<li>after event fired.</li>");
+        }
+      });
+
+    });
+  </script>
+    

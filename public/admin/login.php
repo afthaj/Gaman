@@ -5,18 +5,47 @@ require_once("../../includes/initialize.php");
  if ($session->is_logged_in()){
  	redirect_to("index.php");
  }
+ 
+ $ot_object = new ObjectType();
+ $object_type_admin = $ot_object->get_object_type_by_name("admin");
+ 
+ $ot_object2 = new ObjectType();
+ $object_type_bus_personnel = $ot_object2->get_object_type_by_name("bus_personnel");
 
 if (isset($_POST['submit'])){
-	$username = trim($_POST['username']);
-	$password = trim($_POST['password']);
 	
-	$found_user = AdminUser::authenticate($username, $password);
+	$object_type = trim($_POST['object_type']);
 	
-	if ($found_user){
-		$session->login($found_user);
-		redirect_to("index.php");
-	} else {
-		$session->message("username/password combination is incorrect. ");
+	if ($object_type == $object_type_admin->id) {
+		
+		$username = trim($_POST['username']);
+		$password = trim($_POST['password']);
+
+		$admin_user_object = new AdminUser();
+		$found_user_admin = $admin_user_object->authenticate($username, $password);
+		
+		if ($found_user_admin){
+			$session->login($found_user_admin, $object_type_admin->id);
+			redirect_to("index.php");
+		} else {
+			$session->message("username/password combination is incorrect. ");
+		}
+		
+	} else if ($object_type == $object_type_bus_personnel->id) {
+		
+		$username = trim($_POST['username']);
+		$password = trim($_POST['password']);
+		
+		$bus_personnel_object = new BusPersonnel();
+		$found_user_bus_personnel = $bus_personnel_object->authenticate($username, $password);
+		
+		if ($found_user_bus_personnel){
+			$session->login($found_user_bus_personnel, $object_type_bus_personnel->id);
+			redirect_to("index.php");
+		} else {
+			$session->message("username/password combination is incorrect. ");
+		}
+		
 	}
 	
 } else {
@@ -64,6 +93,13 @@ if (isset($_POST['submit'])){
         margin-bottom: 15px;
         padding: 7px 9px;
       }
+      
+      .form-signin .control-label {
+        font-size: 20px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 0px;
+      }
 
     </style>
     
@@ -93,9 +129,15 @@ if (isset($_POST['submit'])){
         	</div>
         </div>
         
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
+        <div class="control-group">
+        	<div class="controls">
+        	<label class="control-label">Login as:</label>
+        		<select name="object_type">
+        			<option value="<?php echo $object_type_admin->id; ?>"><?php echo $object_type_admin->display_name; ?></option>
+        			<option value="<?php echo $object_type_bus_personnel->id; ?>"><?php echo $object_type_bus_personnel->display_name; ?></option>
+        		</select>
+        	</div>
+        </div>
         
         <div class="form-actions">
         	<button class="btn btn-large btn-primary" type="submit" name="submit">Sign in</button>

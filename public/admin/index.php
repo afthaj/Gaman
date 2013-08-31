@@ -4,9 +4,25 @@ require_once("../../includes/initialize.php");
 if (!$session->is_logged_in()){
 	//redirect_to("login.php");
 } else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	// object_type = 5 is admin, 4 is bus_personnel, 6 is commuter 
+	 if ($_SESSION['object_type'] == 5 ){
+		$user = AdminUser::find_by_id($_SESSION['id']);
+		
+		$p = new Photograph();
+		$profile_picture = $p->get_profile_picture($user->id, "admin");
+		
+	} else if ($_SESSION['object_type'] == 4 ){
+		$user = BusPersonnel::find_by_id($_SESSION['id']);
+		
+		$p = new Photograph();
+		$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+		
+	} else if ($_SESSION['object_type'] == 6 ){
+		$user = Commuter::find_by_id($_SESSION['id']);
+		
+		$p = new Photograph();
+		$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	}
 }
 ?>
 
@@ -30,7 +46,7 @@ if (!$session->is_logged_in()){
       	<div class="jumbotron masthead">
 		  <div class="container">
 		    <h1><?php echo WEB_APP_NAME; ?></h1>
-		    <p>Helping you travel!</p>
+		    <p><?php echo WEB_APP_CATCH_PHRASE; ?></p>
 		  </div>
 		</div>
       

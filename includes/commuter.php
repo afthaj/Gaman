@@ -28,26 +28,14 @@ class Commuter extends DatabaseObject {
 		$username = $database->escape_value($username);
 		$password = $database->escape_value($password);
 	
-		$sql = "SELECT * FROM " . static::$table_name . " WHERE username = '{$username}' AND password = '{$password}' LIMIT 1";
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE username = '{$username}' AND password = '{$password}'";
+		$sql .= " LIMIT 1";
 	
 		$result_array = self::find_by_sql($sql);
+		
 		return !empty($result_array) ? array_shift($result_array) : false;
 	}
-	
-	public function admin_level($level_number){
-		if ($level_number == 1){
-			return "Time Keeper";
-		} else if ($level_number == 2){
-			return "Stand OIC";
-		} else if ($level_number == 3) {
-			return "Scheduler";
-		} else if ($level_number == 4){
-			return "Admin Level 4";
-		} else if ($level_number == 5) {
-			return "Admin Level 5";
-		}
-	}
-	
 	
 }
 

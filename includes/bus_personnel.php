@@ -15,6 +15,29 @@ class BusPersonnel extends DatabaseObject {
 	public $last_name;
 	public $nic_number;
 	
+	public function full_name(){
+		if (isset($this->first_name) && isset($this->last_name)){
+			return $this->first_name . " " . $this->last_name;
+		} else {
+			return "";
+		}
+	}
+	
+	public static function authenticate($username="", $password=""){
+		global $database;
+	
+		$username = $database->escape_value($username);
+		$password = $database->escape_value($password);
+	
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE username = '{$username}' AND password = '{$password}'";
+		$sql .= " LIMIT 1";
+	
+		$result_array = self::find_by_sql($sql);
+	
+		return !empty($result_array) ? array_shift($result_array) : false;
+	}
+	
 }
 
 

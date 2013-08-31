@@ -1,5 +1,5 @@
 <?php
-require_once("includes/initialize.php");
+require_once("../includes/initialize.php");
 
 if (!$session->is_logged_in()){
 	//redirect_to("login.php");
@@ -12,7 +12,7 @@ if (!$session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Test &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -23,7 +23,7 @@ if (!$session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'test';?>
-      <?php require_once('includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
 
       <!-- Begin page content -->
       
@@ -62,9 +62,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

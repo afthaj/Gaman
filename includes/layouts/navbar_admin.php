@@ -13,6 +13,7 @@
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
           <li<?php if (isset($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php">Home</a></li>
+          
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">
@@ -38,6 +39,7 @@
           		<li><a href="#">Search for Personnel</a></li>
           	</ul>
           </li>
+          
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Complaints <b class="caret"></b></a>
           	<ul class="dropdown-menu">
@@ -52,7 +54,7 @@
           
           <li><a href="<?php echo '..'.DS; ?>">Public Area</a></li>
           
-          <?php if (isset($admin_user->id)){ ?>
+          <?php if (isset($_SESSION['id'])){ ?>
           	<li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
           	<?php 
@@ -63,7 +65,7 @@
           		echo '<img src="../img/default-prof-pic.jpg" width="17" class="img-circle" alt="Please upload a profile picture" /> ';
           	}
           	
-          	echo $admin_user->full_name(); ?> <b class="caret"></b>
+          	echo $user->full_name(); ?> <b class="caret"></b>
           	</a>
           	<ul class="dropdown-menu">
           		<li><a href="admin_view_profile.php">View Profile</a></li>

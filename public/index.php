@@ -1,10 +1,14 @@
 <?php
-require_once("includes/initialize.php");
+require_once("../includes/initialize.php");
 
 if (!$session->is_logged_in()){
 	//redirect_to("login.php");
 } else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$commuter = Commuter::find_by_id($_SESSION['id']);
+	/*
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($commuter->id, "commuter");
+	*/
 }
 ?>
 
@@ -12,7 +16,7 @@ if (!$session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Home &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
     
   </head>
 
@@ -23,12 +27,12 @@ if (!$session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'index';?>
-      <?php require_once('includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
 
       	<div class="jumbotron masthead">
 		  <div class="container">
-		    <h1>Gaman</h1>
-		    <p>Helping you travel!</p>
+		    <h1><?php echo WEB_APP_NAME; ?></h1>
+		    <p><?php echo WEB_APP_CATCH_PHRASE; ?></p>
 		  </div>
 		</div>
       
@@ -68,9 +72,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
     
-    <?php require_once('includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>
