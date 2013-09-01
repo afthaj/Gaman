@@ -48,9 +48,9 @@
           
           <li><a href="./admin">Admin Area</a></li>
           
-          <?php if (isset($commuter->id)){ ?>
+          <?php if (isset($user->id)){ ?>
           	<li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $commuter->full_name(); ?> <b class="caret"></b></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $user->full_name(); ?> <b class="caret"></b></a>
           	<ul class="dropdown-menu">
           		<li><a href="public_view_profile.php">View Profile</a></li>
           		<li><a href="logout.php">Logout</a></li>

@@ -4,7 +4,7 @@ require_once("../includes/initialize.php");
 if (!$session->is_logged_in()){
 	//redirect_to("login.php");
 } else {
-	$commuter = Commuter::find_by_id($_SESSION['id']);
+	$user = Commuter::find_by_id($_SESSION['id']);
 	/*
 	$p = new Photograph();
 	$profile_picture = $p->get_profile_picture($commuter->id, "commuter");

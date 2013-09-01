@@ -7,6 +7,9 @@ require_once("../includes/initialize.php");
  }
 
 if (isset($_POST['submit'])){
+	
+	$object_type = 6; // for 'commuter' object_type
+	
 	$username = trim($_POST['username']);
 	$password = trim($_POST['password']);
 	
@@ -14,7 +17,7 @@ if (isset($_POST['submit'])){
 	$found_user = $commuter->authenticate($username, $password);
 	
 	if ($found_user){
-		$session->login($found_user);
+		$session->login($found_user, $object_type);
 		redirect_to("index.php");
 	} else {
 		$session->message("username/password combination is incorrect. ");

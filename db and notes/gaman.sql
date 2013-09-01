@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2013 at 12:14 PM
+-- Generation Time: Sep 01, 2013 at 11:32 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -208,7 +208,7 @@ CREATE TABLE `complaint_types` (
 CREATE TABLE `object_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object_type_name` varchar(20) NOT NULL,
-  `dispaly_name` varchar(20) NOT NULL,
+  `display_name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
@@ -696,12 +696,13 @@ CREATE TABLE `user_commuters` (
   `last_name` varchar(255) NOT NULL,
   `email_address` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `user_commuters`
 --
 
+INSERT INTO `user_commuters` VALUES(1, 'gencomm', 'gencomm123', 'Generic', 'Commuter', 'aftha.jaldin88@gmail.com');
 
 --
 -- Constraints for dumped tables
