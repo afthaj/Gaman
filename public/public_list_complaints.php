@@ -1,16 +1,23 @@
 <?php
 require_once("../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 6) {
+	
+	$user = Commuter::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "commuter");
 	
 	$c = new Complaint();
 	$complaints = $c->find_all();
-
+	
+} else if ($session->is_logged_in() && $session->object_type != 6) {
+	
+	redirect_to("login.php");
+	
+} else if (!$session->is_logged_in() && $session->object_type != 6) {
+	
+	redirect_to("login.php");
+	
 }
 ?>
 
@@ -18,7 +25,7 @@ if (!$session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Complaints List &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -29,7 +36,7 @@ if (!$session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'list_complaints';?>
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -45,7 +52,7 @@ if (!$session->is_logged_in()){
       	
       	<div class="row-fluid">
 	        <br />
-	        <a href="admin_create_complaint.php" class="btn btn-primary">Add New Complaint</a>
+	        <a href="public_create_complaint.php" class="btn btn-primary">Add New Complaint</a>
 	        <br/> <br />
         </div>
         
@@ -77,8 +84,8 @@ if (!$session->is_logged_in()){
 			        <td>Name of Bus Personnel</td>
 			        <td>Complaint Status</td>
 			        <td>Complaint Details</td>
-	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	        		<td><a href="public_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
+	        		<td><a href="public_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
         		</tr>
         	<?php }?>
         	
@@ -95,9 +102,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('../includes/layouts/footer_admin.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

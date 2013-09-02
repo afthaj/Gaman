@@ -1,33 +1,11 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
-	
-	$stops = BusStop::find_all();
-	
-	$related_object = "bus_stop";
-	$pt = new PhotoType();
-	$photo_types = $pt->get_photo_types($related_object);
-	
-	$p2 = new Photograph();
-	$photos_of_stop = $p2->get_photos_for_stop($_GET['stopid']);
-	
-	if (isset($_GET['stopid'])){
-		$stop_to_read_update = BusStop::find_by_id($_GET['stopid']);
-		
-		$sr = new StopRoute();
-		$stops_routes = $sr->get_routes_for_stop($stop_to_read_update->id);
-		
-	} else {
-		$session->message("No Stop ID provided to view.");
-		redirect_to("admin_list_stops.php");
-	}
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	if (isset($_POST['submit'])){
 		$stop_to_read_update->name = $_POST['name'];
@@ -48,7 +26,7 @@ if (!$session->is_logged_in()){
 	
 		$photo_to_upload->stop_id = $_GET['stopid'];
 		$photo_to_upload->photo_type = $_POST['photo_type'];
-		
+	
 		$photo_to_upload->attach_file_bus_stop($_FILES['file_upload'], $photo_to_upload->stop_id, $photo_to_upload->photo_type);
 	
 		if ($photo_to_upload->save()){
@@ -60,7 +38,35 @@ if (!$session->is_logged_in()){
 	
 	}
 	
+} else if ($session->is_logged_in() && $session->object_type == 4) {
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+} else {
+	redirect_to("login.php");
 }
+
+if (isset($_GET['stopid'])){
+	$stop_to_read_update = BusStop::find_by_id($_GET['stopid']);
+
+	$sr = new StopRoute();
+	$stops_routes = $sr->get_routes_for_stop($stop_to_read_update->id);
+
+} else {
+	$session->message("No Stop ID provided to view.");
+	redirect_to("admin_list_stops.php");
+}
+
+$related_object = "bus_stop";
+$pt = new PhotoType();
+$photo_types = $pt->get_photo_types($related_object);
+
+$p2 = new Photograph();
+$photos_of_stop = $p2->get_photos_for_stop($_GET['stopid']);
+
+$stops = BusStop::find_all();
 
 ?>
 
@@ -123,7 +129,7 @@ if (!$session->is_logged_in()){
 	            <div class="control-group">
 	            <label for="name" class="control-label">Name of Bus Stop</label>
 		            <div class="controls">
-		            	<input type="text" name="name" value="<?php echo $stop_to_read_update->name; ?>">
+		            	<input type="text" name="name"<?php if ($session->object_type != 5){ echo ' class="uneditable-input" id="disabledInput" disabled'; } ?> value="<?php echo $stop_to_read_update->name; ?>" />
 		            </div>
 	            </div>
 	            
@@ -132,22 +138,24 @@ if (!$session->is_logged_in()){
 	            <div class="control-group">
 	            <label for="location_latitude" class="control-label">Geo Coordinates:<br />Latitude</label>
 		            <div class="controls">
-		            	<input type="text" name="location_latitude" value="<?php echo $stop_to_read_update->location_latitude; ?>">
+		            	<input type="text" name="location_latitude"<?php if ($session->object_type != 5){ echo ' class="uneditable-input" id="disabledInput" disabled'; } ?> value="<?php echo $stop_to_read_update->location_latitude; ?>" />
 		            </div>
 	            </div>
 	            
 	            <div class="control-group">
 	            <label for="location_longitude" class="control-label">Geo Coordinates:<br />Longitude</label>
 		            <div class="controls">
-		            	<input type="text" name="location_longitude" value="<?php echo $stop_to_read_update->location_longitude; ?>">
+		            	<input type="text" name="location_longitude"<?php if ($session->object_type != 5){ echo ' class="uneditable-input" id="disabledInput" disabled'; } ?> value="<?php echo $stop_to_read_update->location_longitude; ?>" />
 		            </div>
 	            </div>
 	            
 	            <?php } ?>
 				
+				<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 	          	<div class="form-actions">
 	        	    <button class="btn btn-primary" name="submit">Submit</button>
 	        	</div>
+	        	<?php } ?>
 	        </form>
 	      
 	      	</div>
@@ -214,6 +222,7 @@ if (!$session->is_logged_in()){
 			<br /><br />
 			<?php } ?>
 			
+			<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 			  <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?stopid=<?php echo $_GET['stopid']; ?>" method="POST" enctype="multipart/form-data">
 			      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
 			        	
@@ -236,7 +245,7 @@ if (!$session->is_logged_in()){
 			      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
 			      </div>	        	
 		      </form>
-	  	
+		    <?php } ?>
 			</div>
 	      
 	    </div>

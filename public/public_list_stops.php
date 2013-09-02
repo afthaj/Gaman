@@ -1,22 +1,27 @@
 <?php
 require_once("../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+if ($session->is_logged_in() && $session->object_type == 6) {
 	
-	$stops = BusStop::find_all();
+	$user = Commuter::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	
+} else if ($session->is_logged_in() && $session->object_type != 6) {
+	
+	//redirect_to("login.php");
+	
 }
+
+$stops = BusStop::find_all();
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Stops List &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -26,8 +31,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php $page = 'admin_stops_list';?>
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -43,13 +47,7 @@ if (!$session->is_logged_in()){
       
       <div class="row-fluid">
       
-      <div class="span3">
-      	<div class="sidenav" data-spy="affix" data-offset-top="200">
-      		<a href="admin_create_stop.php" class="btn btn-primary">Add New Bus Stop</a>
-      	</div>
-      </div>
-      
-      <div class="span9">
+      <div class="span12">
       
       <section>
       
@@ -57,17 +55,23 @@ if (!$session->is_logged_in()){
       
       <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
       
+      <tr>
+	   <td rowspan="2" align="center">Stop Name</td>
+	   <td colspan="2" align="center">Coordinates</td>
+	   <td rowspan="2">&nbsp;</td>
+      </tr>
+      
       <tr align="center">
-	   <td>Stop Name</td>
-	   <td>&nbsp;</td>
-	   <td>&nbsp;</td>
+      	<td>Latitude</td>
+      	<td>Longitude</td>
       </tr>
        
       <?php foreach($stops as $stop){ ?>
       <tr>
 	  	<td align="left"><?php echo $stop->name; ?></td>
-      	<td><a href="admin_read_update_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	  	<td><a href="admin_delete_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	  	<td align="center"><?php echo $stop->location_latitude; ?></td>
+	  	<td align="center"><?php echo $stop->location_longitude; ?></td>
+      	<td><a href="public_read_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block">View Details</a></td>
       </tr>
       <?php }?>
       </table>
@@ -87,9 +91,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('../includes/layouts/footer_admin.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

@@ -1,15 +1,24 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$stops = BusStop::find_all();
+	$user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	
+} else if ($session->is_logged_in() && $session->object_type == 4) {
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+} else {
+	redirect_to("login.php");
 }
+
+$stops = BusStop::find_all();
+
 ?>
 
 <!DOCTYPE html>
@@ -43,12 +52,19 @@ if (!$session->is_logged_in()){
       
       <div class="row-fluid">
       
+      <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
       <div class="span3">
       	<div class="sidenav" data-spy="affix" data-offset-top="200">
       		<a href="admin_create_stop.php" class="btn btn-primary">Add New Bus Stop</a>
       	</div>
       </div>
-      
+      <?php } else { ?>
+      <div class="span3">
+      	<div class="sidenav" data-spy="affix" data-offset-top="200">
+      		<a href="index.php" class="btn btn-primary">&larr; Back to Home</a>
+      	</div>
+      </div>
+      <?php } ?>
       <div class="span9">
       
       <section>
@@ -57,17 +73,29 @@ if (!$session->is_logged_in()){
       
       <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
       
+      <tr>
+	   <td rowspan="2" align="center">Stop Name</td>
+	   <td colspan="2" align="center">Coordinates</td>
+	   <td rowspan="2">&nbsp;</td>
+	   <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
+	   <td rowspan="2">&nbsp;</td>
+	   <?php } ?>
+      </tr>
+      
       <tr align="center">
-	   <td>Stop Name</td>
-	   <td>&nbsp;</td>
-	   <td>&nbsp;</td>
+      	<td>Latitude</td>
+      	<td>Longitude</td>
       </tr>
        
       <?php foreach($stops as $stop){ ?>
       <tr>
 	  	<td align="left"><?php echo $stop->name; ?></td>
-      	<td><a href="admin_read_update_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	  	<td><a href="admin_delete_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	  	<td align="center"><?php echo $stop->location_latitude; ?></td>
+	  	<td align="center"><?php echo $stop->location_longitude; ?></td>
+      	<td><a href="admin_read_update_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block">Details</a></td>
+	  	<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
+	  	<td><a href="admin_delete_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-danger btn-block">Delete</a></td>
+	  	<?php } ?>        		
       </tr>
       <?php }?>
       </table>

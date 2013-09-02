@@ -48,15 +48,28 @@
           
           <li><a href="./admin">Admin Area</a></li>
           
-          <?php if (isset($user->id)){ ?>
+          <?php 
+          
+          if (isset($session->id) && $session->object_type == 6) { // object_type 6 commuter
+          	
+          	?>
           	<li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $user->full_name(); ?> <b class="caret"></b></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          	<?php 
+          	
+          	if (!empty($profile_picture->filename)) {
+          		echo '<img src="../' . $profile_picture->image_path() . '" width="17" class="img-circle" /> ';
+          	} else {
+          		echo '<img src="img/default-prof-pic.jpg" width="17" class="img-circle" alt="Please upload a profile picture" /> ';
+          	}
+          	
+          	echo $user->full_name(); ?> <b class="caret"></b></a>
           	<ul class="dropdown-menu">
           		<li><a href="public_view_profile.php">View Profile</a></li>
           		<li><a href="logout.php">Logout</a></li>
           	</ul>
           	</li>
-          <?php } else { ?>
+          <?php	} else { ?>
           	<li><a href="login.php">Login</a></li>
           <?php } ?>
           

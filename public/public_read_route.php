@@ -1,43 +1,31 @@
 <?php
 require_once("../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->object_type == 6){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = Commuter::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "commuter");
 	
-	$stops = BusStop::find_all();
 	
-	if (isset($_GET['routeid'])){
-		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
-		
-		$sr = new StopRoute();
-		
-		$stops_routes = $sr->get_stops_for_route($route_to_read_update->id);
-		
-	} else {
-		$session->message("No Route ID provided to view.");
-		redirect_to("admin_list_routes.php");
-	}
+} else if ($session->is_logged_in() && $session->object_type != 6) {
 	
-	if (isset($_POST['submit'])){
-		$route_to_read_update->route_number = $_POST['route_number'];
-		$route_to_read_update->length = $_POST['length'];
-		$route_to_read_update->trip_time = $_POST['trip_time'];
-		$route_to_read_update->begin_stop = $_POST['begin_stop'];
-		$route_to_read_update->end_stop = $_POST['end_stop'];
+	//redirect_to("login.php");
 	
-		if ($route_to_read_update->update()){
-			$session->message("Success! The Route details were updated. ");
-			redirect_to('admin_list_routes.php');
-		} else {
-			$session->message("Error! The Route details could not be updated. ");
-		}
-	}
-	
+}
+
+$stops = BusStop::find_all();
+
+if (isset($_GET['routeid'])) {
+	$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
+
+	$sr = new StopRoute();
+
+	$stops_routes = $sr->get_stops_for_route($route_to_read_update->id);
+
+} else {
+	$session->message("No Route ID provided to view.");
+	redirect_to("public_list_routes.php");
 }
 
 ?>
@@ -46,7 +34,7 @@ if (!$session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Route Details &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -55,7 +43,7 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -72,7 +60,7 @@ if (!$session->is_logged_in()){
       
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="admin_list_routes.php" class="btn btn-primary"> &larr; Back to Routes List</a>
+	        	<a href="public_list_routes.php" class="btn btn-primary"> &larr; Back to Routes List</a>
 	        </div>
         </div>
         
@@ -93,26 +81,26 @@ if (!$session->is_logged_in()){
 	      	
 	      	<div class="tab-pane fade" id="route_profile">
 	      	
-	      	<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?routeid=<?php echo $_GET['routeid']; ?>" method="POST">
+	      	<form class="form-horizontal" action="" method="POST">
             
 	            <div class="control-group">
 	            <label for="route_number" class="control-label">Route Number</label>
 		            <div class="controls">
-		            	<input type="text" name="route_number" value="<?php echo $route_to_read_update->route_number; ?>">
+		            	<input type="text" name="route_number" class="uneditable-input" id="disabledInput" disabled value="<?php echo $route_to_read_update->route_number; ?>">
 		            </div>
 	            </div>
 	            
 	            <div class="control-group">
 	        	<label for="length" class="control-label">Route Length<br />(in km)</label>
 		        	<div class="controls">
-		        		<input type="text" name="length" value="<?php echo $route_to_read_update->length; ?>">
+		        		<input type="text" name="length" class="uneditable-input" id="disabledInput" disabled value="<?php echo $route_to_read_update->length; ?>">
 		        	</div>
 	        	</div>
 	        	
 	        	<div class="control-group">
 	        	<label for="trip_time" class="control-label">Trip Time<br />(Format = HH:MM:SS)</label>
 		        	<div class="controls">
-		        		<input type="text" name="trip_time" value="<?php echo $route_to_read_update->trip_time; ?>">
+		        		<input type="text" name="trip_time" class="uneditable-input" id="disabledInput" disabled value="<?php echo $route_to_read_update->trip_time; ?>">
 		        	</div>
 	        	</div>
 	            
@@ -141,10 +129,7 @@ if (!$session->is_logged_in()){
 						</select>
 		            </div>
 	            </div>
-	            
-	          	<div class="form-actions">
-	        	    <button class="btn btn-primary" name="submit">Submit</button>
-	        	</div>
+
 	        </form>
 	      
 	      	</div>
@@ -157,7 +142,7 @@ if (!$session->is_logged_in()){
 	      				<li class="">&nbsp;</li>
 	      				
 	      				<?php for ($i = 0; $i < count($stops_routes); $i++){ ?>
-			        		<li><a href="admin_read_update_stop.php?stopid=<?php echo BusStop::find_by_id($stops_routes[$i]->stop_id)->id; ?>" class="btn btn-success"><?php echo BusStop::find_by_id($stops_routes[$i]->stop_id)->name; ?></a></li>
+			        		<li><a href="public_read_stop.php?stopid=<?php echo BusStop::find_by_id($stops_routes[$i]->stop_id)->id; ?>" class="btn btn-success"><?php echo BusStop::find_by_id($stops_routes[$i]->stop_id)->name; ?></a></li>
 			        		<?php if ( $i != count($stops_routes)-1 ) { echo '<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-arrow-down"></i></li>'; } ?>
 		        		<?php } ?>
 		        		
@@ -183,9 +168,9 @@ if (!$session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('../includes/layouts/footer_admin.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

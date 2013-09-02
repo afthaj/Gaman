@@ -1,31 +1,33 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$stops = BusStop::find_all();
+	$user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	
+	if (isset($_POST['submit'])) {
+	
+		$stop_to_create = new BusStop();
+	
+		$stop_to_create->name = $_POST['name'];
+		$stop_to_create->location_latitude = $_POST['location_latitude'];
+		$stop_to_create->location_longitude = $_POST['location_longitude'];
+	
+		if ($stop_to_create->create()){
+			$session->message("Success! The new Bus Stop has been added. ");
+			redirect_to('admin_list_stops.php');
+		} else {
+			$session->message("Error! The Bus Stop could not be added. ");
+		}
+	}
+
+} else {
+	redirect_to("login.php");
 }
 
-if (isset($_POST['submit'])) {
-	
-	$stop_to_create = new BusStop();
-	
-	$stop_to_create->name = $_POST['name'];
-	$stop_to_create->location_latitude = $_POST['location_latitude'];
-	$stop_to_create->location_longitude = $_POST['location_longitude'];
-	
-	if ($stop_to_create->create()){
-		$session->message("Success! The new Bus Stop has been added. ");
-		redirect_to('admin_list_stops.php');
-	} else {
-		$session->message("Error! The Bus Stop could not be added. ");
-	}
-}
+$stops = BusStop::find_all();
 
 ?>
 

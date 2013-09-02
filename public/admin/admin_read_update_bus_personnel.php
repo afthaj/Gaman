@@ -1,23 +1,21 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->id == 5){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	$roles = BusPersonnelRole::find_all();
 	$buses = Bus::find_all();
 	
 	if (isset($_GET['personnelid'])){
 		$bus_personnel_to_read_update = BusPersonnel::find_by_id($_GET['personnelid']);
-		
+	
 		$pic = new Photograph();
 		$profile_picture_of_bus_personnel = $pic->get_profile_picture($bus_personnel_to_read_update->id, "bus_personnel");
-		
+	
 	} else {
 		$session->message("No Bus Personnel ID provided to view.");
 		redirect_to("admin_list_bus_personnel.php");
@@ -39,9 +37,9 @@ if (!$session->is_logged_in()){
 	}
 	
 	if (isset($_POST['assign'])){
-		
+	
 		$buses_bus_personnel_to_read_update = new BusBusPersonnel();
-		
+	
 		$buses_bus_personnel_to_read_update->bus_id = $_POST['bus_id'];
 		$buses_bus_personnel_to_read_update->bus_personnel_id = $bus_personnel_to_read_update->id;
 	
@@ -55,16 +53,16 @@ if (!$session->is_logged_in()){
 	
 	if (isset($_POST['update'])){
 		if ($_POST['old_password'] == $bus_personnel_to_read_update->password) {
-				
+	
 			$bus_personnel_to_read_update->password = $_POST['new_password'];
-				
+	
 			if ($bus_personnel_to_read_update->update()){
 				$session->message("Success! The user's password was updated. ");
 				redirect_to('admin_list_bus_personnel.php');
 			} else {
 				$session->message("Error! The user's password could not be updated. ");
 			}
-				
+	
 		} else {
 			$session->message("Error! The existing password did not match. ");
 		}
@@ -88,6 +86,17 @@ if (!$session->is_logged_in()){
 	
 	}
 	
+} else if ($session->is_logged_in() && $session->id == 4) {
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+	$roles = BusPersonnelRole::find_all();
+	$buses = Bus::find_all();
+	
+} else {
+	redirect_to("login.php");
 }
 
 ?>
@@ -163,7 +172,7 @@ if (!$session->is_logged_in()){
             </div>
             
             <div class="control-group">
-            	<label for="role" class="control-label">Route Number</label>
+            	<label for="role" class="control-label">Role</label>
 	            <div class="controls">
 	            	<select name="role">
 					<?php foreach($roles as $role){ ?>

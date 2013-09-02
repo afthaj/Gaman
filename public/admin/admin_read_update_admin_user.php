@@ -1,20 +1,17 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	$admin_levels = AdminLevel::find_all();
 	
-	
 	if (isset($_GET['adminid'])){
 		$user_to_read_update = AdminUser::find_by_id($_GET['adminid']);
-		
+	
 		$photo = new Photograph();
 		$profile_picture_of_other_admin_users = $photo->get_profile_picture($user_to_read_update->id, "admin");
 	} else {
@@ -23,7 +20,7 @@ if (!$session->is_logged_in()){
 	}
 	
 	if (isset($_POST['submit'])){
-		
+	
 		$user_to_read_update->username = $_POST['username'];
 		$user_to_read_update->admin_level = $_POST['admin_level'];
 		$user_to_read_update->first_name = $_POST['first_name'];
@@ -40,16 +37,16 @@ if (!$session->is_logged_in()){
 	
 	if (isset($_POST['update'])){
 		if ($_POST['old_password'] == $user_to_read_update->password) {
-			
+				
 			$user_to_read_update->password = $_POST['new_password'];
-			
+				
 			if ($user_to_read_update->update()){
 				$session->message("Success! The user's password was updated. ");
 				redirect_to('admin_list_admin_users.php');
 			} else {
 				$session->message("Error! The user's password could not be updated. ");
 			}
-			
+				
 		} else {
 			$session->message("Error! The existing password did not match. ");
 		}
@@ -61,7 +58,7 @@ if (!$session->is_logged_in()){
 	
 		$photo_to_upload->admin_id = $_GET['adminid'];
 		$photo_to_upload->photo_type = '9'; // photo_type 9 is "User Profile"
-		
+	
 		$photo_to_upload->attach_file_admin_user($_FILES['file_upload'], $user_to_read_update->id, $user_to_read_update->first_name, $user_to_read_update->last_name);
 	
 		if ($photo_to_upload->save()){
@@ -72,6 +69,12 @@ if (!$session->is_logged_in()){
 		}
 	
 	}
+	
+	
+	
+} else {
+	
+	redirect_to("login.php");
 	
 }
 

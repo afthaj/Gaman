@@ -1,14 +1,14 @@
 <?php
 require_once("../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	//redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->object_type == 6){
+	
 	$user = Commuter::find_by_id($_SESSION['id']);
-	/*
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($commuter->id, "commuter");
-	*/
+	$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	
+} else if ($session->is_logged_in() && $session->object_type != 6) {
+	//redirect_to("login.php");
 }
 ?>
 

@@ -1,37 +1,32 @@
 <?php
 require_once("../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->object_type == 6){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = Commuter::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
-	
-	$admin_levels = AdminLevel::find_all();
+	$profile_picture = $p->get_profile_picture($user->id, "commuter");
 	
 	if (isset($_POST['submit'])){
-		$admin_user->username = $_POST['username'];
-		$admin_user->first_name = $_POST['first_name'];
-		$admin_user->last_name = $_POST['last_name'];
-		$admin_user->email_address = $_POST['email_address'];
-		$admin_user->admin_level = $_POST['admin_level'];
+		$user->username = $_POST['username'];
+		$user->first_name = $_POST['first_name'];
+		$user->last_name = $_POST['last_name'];
+		$user->email_address = $_POST['email_address'];
 	
-		if ($admin_user->update()){
-			$session->message("Success! The user details were updated. ");
-			redirect_to('admin_view_profile.php');
+		if ($user->update()){
+			$session->message("Success! Your details were updated. ");
+			redirect_to('public_view_profile.php');
 		} else {
-			$session->message("Error! The user details could not be updated. ");
+			$session->message("Error! Your details could not be updated. ");
 		}
 	}
 	
 	if (isset($_POST['update'])){
-		
-		if ($_POST['old_password'] == $admin_user->password){
-			
-			$admin_user->password = $_POST['new_password'];
-			
+	
+		if ($_POST['old_password'] == $user->password){
+				
+			$user->password = $_POST['new_password'];
+				
 			if ($admin_user->update()){
 				$session->message("Success! The password was updated. ");
 				redirect_to('admin_view_profile.php');
@@ -41,26 +36,33 @@ if (!$session->is_logged_in()){
 		} else {
 			$session->message("Error! The existing password did not match. ");
 		}
-
+	
 	}
 	
 	if (isset($_POST['upload'])){
-		
+	
 		$photo = new Photograph();
-		
-		$photo->admin_id = $admin_user->id;
+	
+		$photo->commuter_id = $user->id;
 		$photo->photo_type = 9; // photo_type 9 is "User Profile"
-		$photo->attach_file_admin_user($_FILES['file_upload'], $admin_user->id, $admin_user->first_name, $admin_user->last_name);
+		$photo->attach_file_commuter($_FILES['file_upload'], $user->id, $user->first_name, $user->last_name);
 	
 		if ($photo->save()){
 			$session->message("Success! The photo was uploaded successfully. ");
-			redirect_to('admin_list_admin_users.php');
+			redirect_to('public_view_profile.php');
 		} else {
 			$message = join("<br />", $photo->errors);
 		}
 	
 	}
 	
+} else if ($session->is_logged_in() && $session->object_type != 6) {
+	
+	redirect_to("login.php");
+	
+} else if (!$session->is_logged_in() && $session->object_type != 6) {
+	
+	redirect_to("login.php");
 	
 }
 
@@ -70,7 +72,7 @@ if (!$session->is_logged_in()){
 <html lang="en">
   <head>
     <title>User Profile &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -80,12 +82,12 @@ if (!$session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
-		   <h1>Admin User Profile</h1>
-		   <h3><?php echo $admin_user->full_name();?></h3>
+		   <h1>User Profile</h1>
+		   <h3><?php echo $user->full_name();?></h3>
 		 </div>
 	  </header>
 
@@ -99,7 +101,7 @@ if (!$session->is_logged_in()){
         
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="admin_list_admin_users.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
+	        	<a href="index.php" class="btn btn-primary"> &larr; Back to Home Page</a>
 	        </div>
         </div>
         
@@ -116,7 +118,7 @@ if (!$session->is_logged_in()){
 	    <div id="myTabContent" class="tab-content">
 	      <div class="tab-pane active in" id="user_details">
 	      
-	      <?php echo $message; ?>
+	      <?php if (!empty($message)) { echo '<div class="alert alert-success">' . $message . '</div>'; }?>
 	      	      
 	        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
 	            
@@ -128,7 +130,7 @@ if (!$session->is_logged_in()){
 		            	if (!empty($profile_picture->filename)) {
 		            		echo '<img src="../' . $profile_picture->image_path() . '" width="250" class="img-rounded" />'; 
 		            	} else {
-		            		echo '<img src="../img/default-prof-pic.jpg" width="250" class="img-rounded" alt="Please upload a profile picture" />';
+		            		echo '<img src="img/default-prof-pic.jpg" width="250" class="img-rounded" alt="Please upload a profile picture" />';
 		            		echo '<p>Please upload a profile picture</p>';
 		            	} 
 		            	?>
@@ -139,19 +141,7 @@ if (!$session->is_logged_in()){
 	            	<label for="username" class="control-label">Username</label>
 	            
 		            <div class="controls">
-		            	<input type="text" value="<?php echo $admin_user->username; ?>" name="username">
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            	<label for="admin_level" class="control-label">Admin Level</label>
-	            
-		            <div class="controls">
-			            <select name="admin_level">
-			            <?php for ($i = 0; $i < count($admin_levels); $i++) {?>
-			            	<option value="<?php echo $admin_levels[$i]->id; ?>"<?php if (!empty($admin_user->admin_level) && $admin_user->admin_level == $admin_levels[$i]->id) echo ' selected = "selected"'; ?>><?php echo $admin_levels[$i]->admin_level_name; ?></option>
-			            <?php } ?>
-						</select>
+		            	<input type="text" value="<?php echo $user->username; ?>" name="username">
 		            </div>
 	            </div>
 	            
@@ -159,7 +149,7 @@ if (!$session->is_logged_in()){
 	            	<label for="first_name" class="control-label">First Name</label>
 	            
 		            <div class="controls">
-		            	<input type="text" value="<?php echo $admin_user->first_name; ?>" name="first_name">
+		            	<input type="text" value="<?php echo $user->first_name; ?>" name="first_name">
 		            </div>
 	            </div>
 	            
@@ -167,7 +157,7 @@ if (!$session->is_logged_in()){
 	            	<label for="last_name" class="control-label">Last Name</label>
 	            
 		            <div class="controls">
-		            	<input type="text" value="<?php echo $admin_user->last_name; ?>" name="last_name">
+		            	<input type="text" value="<?php echo $user->last_name; ?>" name="last_name">
 		            </div>
 	            </div>
 	            
@@ -175,7 +165,7 @@ if (!$session->is_logged_in()){
 	            	<label for="email_address" class="control-label">Email Address</label>
 	            
 		            <div class="controls">
-		            	<input type="text" value="<?php echo $admin_user->email_address; ?>" name="email_address">
+		            	<input type="text" value="<?php echo $user->email_address; ?>" name="email_address">
 		            </div>
 	           </div>
 	            
@@ -220,7 +210,7 @@ if (!$session->is_logged_in()){
           	echo '<a href="#" class="btn btn-danger"/>Delete and Reupload</a>';
           } else { 
           ?>
-		  <form action="<?php echo $_SERVER['PHP_SELF']; ?>?adminid=<?php echo $_GET['adminid']; ?>" method="POST" enctype="multipart/form-data">
+		  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
 		      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
 		        	
 		      <div class="control-group">

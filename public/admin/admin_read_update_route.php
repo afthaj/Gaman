@@ -1,27 +1,11 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
-	
-	$stops = BusStop::find_all();
-	
-	if (isset($_GET['routeid'])){
-		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
-		
-		$sr = new StopRoute();
-		
-		$stops_routes = $sr->get_stops_for_route($route_to_read_update->id);
-		
-	} else {
-		$session->message("No Route ID provided to view.");
-		redirect_to("admin_list_routes.php");
-	}
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	if (isset($_POST['submit'])){
 		$route_to_read_update->route_number = $_POST['route_number'];
@@ -38,7 +22,29 @@ if (!$session->is_logged_in()){
 		}
 	}
 	
+} else if ($session->is_logged_in() && $session->object_type == 4) {
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+} else {
+	redirect_to("login.php");
 }
+
+if (isset($_GET['routeid'])){
+	$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
+
+	$sr = new StopRoute();
+
+	$stops_routes = $sr->get_stops_for_route($route_to_read_update->id);
+
+} else {
+	$session->message("No Route ID provided to view.");
+	redirect_to("admin_list_routes.php");
+}
+
+$stops = BusStop::find_all();
 
 ?>
 
@@ -98,28 +104,28 @@ if (!$session->is_logged_in()){
 	            <div class="control-group">
 	            <label for="route_number" class="control-label">Route Number</label>
 		            <div class="controls">
-		            	<input type="text" name="route_number" value="<?php echo $route_to_read_update->route_number; ?>">
+		            	<input type="text" name="route_number"<?php if ($session->object_type != 5){ echo ' class="uneditable-input" id="disabledInput" disabled'; } ?> value="<?php echo $route_to_read_update->route_number; ?>" >
 		            </div>
 	            </div>
 	            
 	            <div class="control-group">
 	        	<label for="length" class="control-label">Route Length<br />(in km)</label>
 		        	<div class="controls">
-		        		<input type="text" name="length" value="<?php echo $route_to_read_update->length; ?>">
+		        		<input type="text" name="length"<?php if ($session->object_type != 5){ echo ' class="uneditable-input" id="disabledInput" disabled'; } ?> value="<?php echo $route_to_read_update->length; ?>" />
 		        	</div>
 	        	</div>
 	        	
 	        	<div class="control-group">
 	        	<label for="trip_time" class="control-label">Trip Time<br />(Format = HH:MM:SS)</label>
 		        	<div class="controls">
-		        		<input type="text" name="trip_time" value="<?php echo $route_to_read_update->trip_time; ?>">
+		        		<input type="text" name="trip_time"<?php if ($session->object_type != 5){ echo ' class="uneditable-input" id="disabledInput" disabled'; } ?> value="<?php echo $route_to_read_update->trip_time; ?>" />
 		        	</div>
 	        	</div>
 	            
 	            <div class="control-group">
 	            <label for="begin_stop" class="control-label">Begin Stop</label>
 		            <div class="controls">
-		            <select name="begin_stop">
+		            <select name="begin_stop"<?php if ($session->object_type != 5){ echo ' disabled'; } ?>>
 		            <?php foreach($stops as $stop){ ?>
 		            	<option value="<?php echo $stop->id; ?>"<?php if (!empty($route_to_read_update->begin_stop) && $route_to_read_update->begin_stop == $stop->id) echo ' selected = "selected"'; ?>><?php echo $stop->name; ?></option>
 		            <?php } ?>
@@ -130,7 +136,7 @@ if (!$session->is_logged_in()){
 	            <div class="control-group">
 	            <label for="end_stop" class="control-label">End Stop</label>
 		            <div class="controls">
-			            <select name="end_stop">
+			            <select name="end_stop"<?php if ($session->object_type != 5){ echo ' disabled'; } ?>>
 			            <?php 
 			            foreach($stops as $stop){
 			            ?>
@@ -142,9 +148,12 @@ if (!$session->is_logged_in()){
 		            </div>
 	            </div>
 	            
+	            <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 	          	<div class="form-actions">
 	        	    <button class="btn btn-primary" name="submit">Submit</button>
 	        	</div>
+	        	<?php } ?>
+	        	
 	        </form>
 	      
 	      	</div>

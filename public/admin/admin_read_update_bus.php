@@ -1,32 +1,13 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+//check login and POST request form processing
+
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
-	
-	$routes = BusRoute::find_all();
-	$buses = Bus::find_all();
-	$bus_personnel = BusPersonnel::find_all();
-	
-	$related_object = "bus";
-	$pt = new PhotoType();
-	$photo_types = $pt->get_photo_types($related_object);
-	
-	$p2 = new Photograph();
-	$photos_of_bus = $p2->get_photos_for_bus($_GET['busid']);
-	
-	if (isset($_GET['busid'])){
-		$bus_to_read_update = Bus::find_by_id($_GET['busid']);
-		
-	} else {
-		$session->message("No Bus ID provided to view.");
-		redirect_to("admin_list_buses.php");
-	}
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	if (isset($_POST['submit'])){
 		$bus_to_read_update->route_id = $_POST['route_id'];
@@ -74,6 +55,82 @@ if (!$session->is_logged_in()){
 		}
 	}
 	
+} else if ($session->is_logged_in() && $session->object_type == 4){
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+	if (isset($_POST['submit'])){
+		$bus_to_read_update->route_id = $_POST['route_id'];
+		$bus_to_read_update->reg_number = $_POST['reg_number'];
+		$bus_to_read_update->name = $_POST['name'];
+	
+		if ($bus_to_read_update->update()){
+			$session->message("Success! The Bus details were updated. ");
+			redirect_to('admin_list_buses.php');
+		} else {
+			$session->message("Error! The Bus details could not be updated. ");
+		}
+	}
+	
+	if (isset($_POST['upload'])){
+	
+		$photo_to_upload = new Photograph();
+	
+		$photo_to_upload->bus_id = $_GET['busid'];
+		$photo_to_upload->photo_type = $_POST['photo_type'];
+	
+		$photo_to_upload->attach_file_bus($_FILES['file_upload'], $photo_to_upload->bus_id, $photo_to_upload->photo_type);
+	
+		if ($photo_to_upload->save()){
+			$session->message("Success! The photo was uploaded successfully. ");
+			redirect_to('admin_list_buses.php');
+		} else {
+			$message = join("<br />", $photo_to_upload->errors);
+		}
+	
+	}
+	
+	if (isset($_POST['assign'])){
+	
+		$buses_bus_personnel_to_read_update = new BusBusPersonnel();
+	
+		$buses_bus_personnel_to_read_update->bus_id = $_GET['busid'];
+		$buses_bus_personnel_to_read_update->bus_personnel_id = $_POST['bus_personnel_id'];
+	
+		if ($buses_bus_personnel_to_read_update->create()){
+			$session->message("Success! The Bus Personnel was assigned to the given Bus. ");
+			redirect_to('admin_list_buses.php');
+		} else {
+			$session->message("Error! The Bus Personnel was not assigned to the given Bus. ");
+		}
+	}
+	
+} else {
+	redirect_to("login.php");
+}
+
+// GET request stuff and object initialization code
+
+$routes = BusRoute::find_all();
+$buses = Bus::find_all();
+$bus_personnel = BusPersonnel::find_all();
+$buses_bus_personnel = new BusBusPersonnel();
+
+$related_object = "bus";
+$pt = new PhotoType();
+$photo_types = $pt->get_photo_types($related_object);
+
+$p2 = new Photograph();
+$photos_of_bus = $p2->get_photos_for_bus($_GET['busid']);
+
+if (isset($_GET['busid'])){
+	$bus_to_read_update = Bus::find_by_id($_GET['busid']);
+
+} else {
+	$session->message("No Bus ID provided to view.");
+	redirect_to("admin_list_buses.php");
 }
 
 ?>
@@ -130,12 +187,12 @@ if (!$session->is_logged_in()){
 	      	
 	      	<div class="tab-pane fade" id="bus_profile">
 	      	
-	      	<form class="form-horizontal" action="admin_read_update_bus.php?busid=<?php echo $_GET['busid']; ?>" method="POST">
+	      	<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?busid=<?php echo $_GET['busid']; ?>" method="POST">
             
 	            <div class="control-group">
             	<label for="route_id" class="control-label">Route Number</label>
 	            <div class="controls">
-	            	<select name="route_id">
+	            	<select name="route_id"<?php if(!$buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)){ echo 'disabled'; } ?>>
 					<?php foreach($routes as $route){ ?>
 	            		<option value="<?php echo $route->id; ?>"<?php if ($bus_to_read_update->route_id == $route->id){ echo ' selected="selected"';} ?>><?php echo $route->route_number; ?></option>
 	            	<?php } ?>
@@ -146,20 +203,22 @@ if (!$session->is_logged_in()){
             <div class="control-group">
         	<label for="reg_number" class="control-label">Registration Number</label>
 	        	<div class="controls">
-	        		<input type="text" name="reg_number" value="<?php echo $bus_to_read_update->reg_number; ?>">
+	        		<input type="text" name="reg_number"<?php if(!$buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)){ echo 'disabled'; } ?> value="<?php echo $bus_to_read_update->reg_number; ?>" />
 	        	</div>
         	</div>
             
             <div class="control-group">
             <label for="name" class="control-label">Name of Bus</label>
 	            <div class="controls">
-	            	<input type="text" name="name" value="<?php echo $bus_to_read_update->name; ?>">
+	            	<input type="text" name="name"<?php if(!$buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)){ echo 'disabled'; } ?> value="<?php echo $bus_to_read_update->name; ?>" />
 	            </div>
             </div>
-	            
-	          	<div class="form-actions">
-	        	    <button class="btn btn-primary" name="submit">Submit</button>
-	        	</div>
+            
+            <?php if($buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)) { ?>
+          	<div class="form-actions">
+        	    <button class="btn btn-primary" name="submit">Submit</button>
+        	</div>
+        	<?php } ?>
 	        </form>
 	      
 	      	</div>
@@ -227,16 +286,29 @@ if (!$session->is_logged_in()){
 		        		</td>
 		        		
 	        		</tr>
-	        		
+	          
+	          <?php } ?>
+	          
 	          </tbody>
 	          </table>
 	        		
-	          <?php } } else { ?>
+	          <?php } else { ?>
 	          <h5>No Personnel have been assigned to this Bus yet!</h5>
 	          <br />
 	          <?php } ?>
 	          
       		</div>
+      		
+      		<?php 
+      		
+      		$bp = new BusPersonnel();
+      		$bus_bp = BusBusPersonnel::check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+      		
+      		if($bus_bp) { 
+      		
+      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+      			
+      			?>
       		
       		<div class="row-fluid">
       		
@@ -261,9 +333,11 @@ if (!$session->is_logged_in()){
           	<div class="form-actions">
         	    <button class="btn btn-primary" name="assign">Assign</button>
         	</div>
+        	
 	        </form>
-      		
+	        
       		</div>
+      		<?php } } ?>
 	      	
 	   		</div>
 	   		
@@ -291,6 +365,18 @@ if (!$session->is_logged_in()){
 			<br /><br />
 			<?php } ?>
 			
+			
+			<?php 
+      		
+      		$bp = new BusPersonnel();
+      		$bus_bp = BusBusPersonnel::check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+      		
+      		if($bus_bp) { 
+      		
+      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+      			
+      			?>
+      			
 			  <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?busid=<?php echo $_GET['busid']; ?>" method="POST" enctype="multipart/form-data">
 			      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
 			        	
@@ -313,7 +399,7 @@ if (!$session->is_logged_in()){
 			      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
 			      </div>	        	
 		      </form>
-	  	
+	  	<?php } } ?>
 			</div>
 	      
 	    </div>

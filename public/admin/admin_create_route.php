@@ -1,32 +1,34 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 5){
+	
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	$stops = BusStop::find_all();
-}
-
-if (isset($_POST['submit'])) {
 	
-	$route_to_create = new Route();
+	if (isset($_POST['submit'])) {
 	
-	$route_to_create->route_number = $_POST['route_number'];
-	$route_to_create->length = $_POST['length'];
-	$route_to_create->trip_time = $_POST['trip_time'];
-	$route_to_create->begin_stop = $_POST['begin_stop'];
-	$route_to_create->end_stop = $_POST['end_stop'];
+		$route_to_create = new Route();
 	
-	if ($route_to_create->create()){
-		$session->message("Success! The new Route has been added. ");
-		redirect_to('admin_list_routes.php');
-	} else {
-		$session->message("Error! The Route could not be added. ");
+		$route_to_create->route_number = $_POST['route_number'];
+		$route_to_create->length = $_POST['length'];
+		$route_to_create->trip_time = $_POST['trip_time'];
+		$route_to_create->begin_stop = $_POST['begin_stop'];
+		$route_to_create->end_stop = $_POST['end_stop'];
+	
+		if ($route_to_create->create()){
+			$session->message("Success! The new Route has been added. ");
+			redirect_to('admin_list_routes.php');
+		} else {
+			$session->message("Error! The Route could not be added. ");
+		}
 	}
+	
+} else {
+	redirect_to("login.php");
 }
 
 ?>

@@ -1,16 +1,25 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+if ($session->is_logged_in() && $session->object_type == 5) {
 	
-	$routes = BusRoute::find_all();
-	$stop = new BusStop();
+	$user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	
+} else if ($session->is_logged_in() && $session->object_type == 4) {
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+} else {
+	redirect_to("login.php");
 }
+
+$routes = BusRoute::find_all();
+$stop = new BusStop();
+
 ?>
 
 <!DOCTYPE html>
@@ -42,13 +51,20 @@ if (!$session->is_logged_in()){
       
       <div class="container-fluid">
       	
+      	<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
       	<div class="row-fluid">
 	        <br />
 	        <a href="admin_create_route.php" class="btn btn-primary">Add New Route</a>
-	        <br/> <br />
+	        <br />
         </div>
+        <?php } ?>
         
         <div class="row-fluid">
+        
+        <div class="span12">
+        
+        <section>
+        
         <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
         
         <table class="table table-bordered table-hover">
@@ -60,8 +76,10 @@ if (!$session->is_logged_in()){
 		        <td>Length (km)</td>
 		        <td>Trip Time (hh:mm:ss)</td>
 		        <td>&nbsp;</td>
+		        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
+		        <?php } ?>
 	        </tr>
 	      </thead>
 	      <tbody>
@@ -73,14 +91,21 @@ if (!$session->is_logged_in()){
 	        		<td><?php echo $stop->find_by_id($route->end_stop)->name; ?></td>
 	        		<td><?php echo $route->length; ?></td>
 	        		<td><?php echo $route->trip_time; ?></td>
-	        		<td><a href="admin_view_route_data.php?routeid=<?php echo $route->id; ?>" class="btn btn-success btn-block">Route Data</a></td>
 	        		<td><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block">Route Profile</a></td>
-	        		<td><a href="admin_delete_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-danger btn-block">Delete Route</a></td>        		
+	        		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
+	        		<td><a href="admin_view_route_data.php?routeid=<?php echo $route->id; ?>" class="btn btn-success btn-block">Route Data</a></td>
+	        		<td><a href="admin_delete_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-danger btn-block">Delete Route</a></td>
+	        		<?php } ?>        		
         		</tr>
-        	<?php }?>
+        	<?php } ?>
         	
           </tbody>
+          
         </table>
+        
+        </section>
+        
+        </div>
         
         </div>
         

@@ -1,13 +1,11 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	if (isset($_GET['routeid'])){
 		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
@@ -16,6 +14,8 @@ if (!$session->is_logged_in()){
 		redirect_to("admin_list_routes.php");
 	}
 	
+} else {
+	redirect_to("login.php");
 }
 
 ?>
@@ -63,10 +63,7 @@ if (!$session->is_logged_in()){
         </section>
         	
         </div>
-        
-        
-        
-        
+
         <!-- End Content -->
       </div>
       </div>

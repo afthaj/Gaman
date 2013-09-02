@@ -90,7 +90,7 @@
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   top: 50%;
   left: 0;
-  opacity: 0.7;
+  opacity: 0.3;
   z-index: 3;
   text-indent: -9999px;
   overflow: hidden;
@@ -102,7 +102,7 @@
   }
 
 .callbacks_nav:active {
-  opacity: 1.0;
+  opacity: 1;
   }
 
 .callbacks_nav.next {

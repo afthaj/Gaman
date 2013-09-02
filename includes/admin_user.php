@@ -5,9 +5,10 @@ require_once("database.php");
 class AdminUser extends DatabaseObject {
 	
 	protected static $table_name = "user_admins";
-	protected static $db_fields = array('id', 'username', 'password', 'admin_level', 'first_name', 'last_name', 'email_address');
+	protected static $db_fields = array('id', 'object_type', 'username', 'password', 'admin_level', 'first_name', 'last_name', 'email_address');
 	
 	public $id;
+	public $object_type;
 	public $username;
 	public $password;
 	public $admin_level;

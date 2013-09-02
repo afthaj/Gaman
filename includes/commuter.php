@@ -5,9 +5,10 @@ require_once("database.php");
 class Commuter extends DatabaseObject {
 	
 	protected static $table_name = "user_commuters";
-	protected static $db_fields = array('id', 'username', 'password', 'first_name', 'last_name', 'email_address');
+	protected static $db_fields = array('id', 'object_type', 'username', 'password', 'first_name', 'last_name', 'email_address');
 	
 	public $id;
+	public $object_type;
 	public $username;
 	public $password;
 	public $first_name;

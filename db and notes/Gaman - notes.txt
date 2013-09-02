@@ -59,6 +59,31 @@ photo_type_name:[Front of Bus, Rear of Bus, Port side of Bus, Starboard side of 
 
 ----------------------------------------------------------------------------------------------------------------
 
+requires a commuter login
+
+complaints
+view profile
+
+
+
+doesn't require a commuter login
+
+Bus Route (search for and view)
+Bus Stop (search for and view)
+Bus (search for and view)
+Bus Person (search for and view)
+
+
+
+available for bus personnel
+
+Bus (search for, view, and update)
+Bus Person (search for, view, and update)
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
 Admins
 (
 admin_id

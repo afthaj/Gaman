@@ -57,6 +57,51 @@ class Photograph extends DatabaseObject {
 		}
 	}
 	
+	public function attach_file_bus_personnel($file, $bus_personnel_id, $bus_personnel_first_name, $bus_personnel_last_name) {
+	
+		if (!$file || empty($file) || !is_array($file)){
+			$this->errors[] = "No file was uploaded";
+			return false;
+		} else if ($file['error'] != 0) {
+			$this->errors[] = $this->upload_errors[$file['error']];
+			return false;
+		} else {
+				
+			$this->temp_path = $file['tmp_name'];
+				
+			$path_parts = pathinfo($file['name']);
+			$this->filename = 'bus_personnel_prof_pic_'.$bus_personnel_id.'_'.$bus_personnel_first_name.'_'.$bus_personnel_last_name.'.'.$path_parts['extension'];
+				
+			$this->file_type = $file['type'];
+				
+			$this->size = $file['size'];
+				
+			return true;
+		}
+	}
+	
+	public function attach_file_commuter($file, $user_id, $user_first_name, $user_last_name){
+		if (!$file || empty($file) || !is_array($file)){
+			$this->errors[] = "No file was uploaded";
+			return false;
+		} else if ($file['error'] != 0) {
+			$this->errors[] = $this->upload_errors[$file['error']];
+			return false;
+		} else {
+	
+			$this->temp_path = $file['tmp_name'];
+	
+			$path_parts = pathinfo($file['name']);
+			$this->filename = 'commuter_prof_pic_'.$user_id.'_'.$user_first_name.'_'.$user_last_name.'.'.$path_parts['extension'];
+	
+			$this->file_type = $file['type'];
+	
+			$this->size = $file['size'];
+	
+			return true;
+		}
+	}
+	
 	public function attach_file_bus_stop($file, $stop_id, $photo_type) {
 		
 		if (!$file || empty($file) || !is_array($file)){
@@ -99,29 +144,6 @@ class Photograph extends DatabaseObject {
 	
 			$this->size = $file['size'];
 	
-			return true;
-		}
-	}
-	
-	public function attach_file_bus_personnel($file, $bus_personnel_id, $bus_personnel_first_name, $bus_personnel_last_name) {
-	
-	if (!$file || empty($file) || !is_array($file)){
-			$this->errors[] = "No file was uploaded";
-			return false;
-		} else if ($file['error'] != 0) {
-			$this->errors[] = $this->upload_errors[$file['error']];
-			return false;
-		} else {
-			
-			$this->temp_path = $file['tmp_name'];
-			
-			$path_parts = pathinfo($file['name']);
-			$this->filename = 'bus_personnel_prof_pic_'.$bus_personnel_id.'_'.$bus_personnel_first_name.'_'.$bus_personnel_last_name.'.'.$path_parts['extension'];
-			
-			$this->file_type = $file['type'];
-			
-			$this->size = $file['size'];
-			
 			return true;
 		}
 	}

@@ -1,14 +1,16 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 5) {
+	
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	$users = AdminUser::find_all();
+
+} else {
+	redirect_to("login.php");
 }
 ?>
 
@@ -62,7 +64,7 @@ if (!$session->is_logged_in()){
         	
         	<?php for ($i = 0; $i < count($users); $i++ ){ 
         	
-        		if ($users[$i]->id != $admin_user->id){ ?>
+        		if ($users[$i]->id != $user->id){ ?>
         	
         		<tr align="center">
         		<td>

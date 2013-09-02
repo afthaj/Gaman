@@ -1,31 +1,33 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+if ($session->is_logged_in() && $session->object_type == 5){
 	
-	$routes = BusRoute::find_all();
+	$user = AdminUser::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	
+	if (isset($_POST['submit'])) {
+	
+		$bus_to_create = new Bus();
+	
+		$bus_to_create->route_id = $_POST['route_id'];
+		$bus_to_create->reg_number = $_POST['reg_number'];
+		$bus_to_create->name = $_POST['name'];
+	
+		if ($bus_to_create->create()){
+			$session->message("Success! The new Bus has been added. ");
+			redirect_to('admin_list_buses.php');
+		} else {
+			$session->message("Error! The Bus could not be added. ");
+		}
+	}
+	
+} else {
+	redirect_to("login.php");
 }
 
-if (isset($_POST['submit'])) {
-	
-	$bus_to_create = new Bus();
-	
-	$bus_to_create->route_id = $_POST['route_id'];
-	$bus_to_create->reg_number = $_POST['reg_number'];
-	$bus_to_create->name = $_POST['name'];
-	
-	if ($bus_to_create->create()){
-		$session->message("Success! The new Bus has been added. ");
-		redirect_to('admin_list_buses.php');
-	} else {
-		$session->message("Error! The Bus could not be added. ");
-	}
-}
+$routes = BusRoute::find_all();
 
 ?>
 

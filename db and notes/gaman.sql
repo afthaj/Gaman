@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 01, 2013 at 11:32 PM
+-- Generation Time: Sep 02, 2013 at 11:33 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -105,12 +105,14 @@ INSERT INTO `buses_bus_personnel` VALUES(11, 1, 3);
 
 CREATE TABLE `bus_personnel` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_type` int(11) NOT NULL,
   `role` int(3) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `nic_number` varchar(20) NOT NULL,
+  `telephone_number` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
@@ -118,9 +120,9 @@ CREATE TABLE `bus_personnel` (
 -- Dumping data for table `bus_personnel`
 --
 
-INSERT INTO `bus_personnel` VALUES(1, 1, 'john', 'john123', 'John', 'Smith', '801231511v');
-INSERT INTO `bus_personnel` VALUES(2, 4, 'busdriver', 'busdriver123', 'Bus', 'Driver', '823231511v');
-INSERT INTO `bus_personnel` VALUES(3, 1, 'busconductor', 'busconductor123', 'Bus', 'Conductor', '842321151v');
+INSERT INTO `bus_personnel` VALUES(1, 4, 1, 'john', 'john123', 'John', 'Smith', '801231511v', '0774422980');
+INSERT INTO `bus_personnel` VALUES(2, 4, 4, 'busdriver', 'busdriver123', 'Bus', 'Driver', '823231511v', '');
+INSERT INTO `bus_personnel` VALUES(3, 4, 3, 'busconductor', 'busconductor123', 'Bus', 'Conductor', '842321151v', '');
 
 -- --------------------------------------------------------
 
@@ -210,7 +212,7 @@ CREATE TABLE `object_types` (
   `object_type_name` varchar(20) NOT NULL,
   `display_name` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `object_types`
@@ -222,6 +224,7 @@ INSERT INTO `object_types` VALUES(3, 'bus', 'Bus');
 INSERT INTO `object_types` VALUES(4, 'bus_personnel', 'Bus Personnel');
 INSERT INTO `object_types` VALUES(5, 'admin', 'Admin User');
 INSERT INTO `object_types` VALUES(6, 'commuter', 'Commuter');
+INSERT INTO `object_types` VALUES(7, 'complaint', 'Complaint');
 
 -- --------------------------------------------------------
 
@@ -241,7 +244,7 @@ CREATE TABLE `photographs` (
   `file_type` varchar(100) NOT NULL,
   `size` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Dumping data for table `photographs`
@@ -660,6 +663,7 @@ CREATE TABLE `trips` (
 
 CREATE TABLE `user_admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_type` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `admin_level` int(5) NOT NULL,
@@ -673,14 +677,14 @@ CREATE TABLE `user_admins` (
 -- Dumping data for table `user_admins`
 --
 
-INSERT INTO `user_admins` VALUES(1, 'user', '123', 3, 'Admin', 'User', 'aftha.jaldin88@gmail.com');
-INSERT INTO `user_admins` VALUES(2, 'afthaj', 'afthaj', 3, 'Aftha', 'Jaldin', 'afthajaldin@yahoo.com');
-INSERT INTO `user_admins` VALUES(4, 'buddhi', 'buddhi123', 3, 'Buddhi', 'De Silva', 'gbidsilva@gmail.com');
-INSERT INTO `user_admins` VALUES(7, 'laleen', 'laleen123', 3, 'Laleen', 'Pallegoda', 'laleen.kp@gmail.com');
-INSERT INTO `user_admins` VALUES(8, 'sachith', 'sachith123', 3, 'Sachith', 'Senevirathna', 'vihanga88@gmail.com');
-INSERT INTO `user_admins` VALUES(9, 'john', 'john123', 2, 'John', 'Smith', 'john.smith@acme.com');
-INSERT INTO `user_admins` VALUES(10, 'sandunika', 'sandunika123', 3, 'Sandunika', 'Wijerathne', 'swijerathne35@gmail.com');
-INSERT INTO `user_admins` VALUES(11, 'janitha', 'janitha123', 1, 'Janitha', 'Rasanga', 'janitharasanga@gmail.com');
+INSERT INTO `user_admins` VALUES(1, 5, 'user', '123', 3, 'Admin', 'User', 'aftha.jaldin88@gmail.com');
+INSERT INTO `user_admins` VALUES(2, 5, 'afthaj', 'afthaj', 3, 'Aftha', 'Jaldin', 'afthajaldin@yahoo.com');
+INSERT INTO `user_admins` VALUES(4, 5, 'buddhi', 'buddhi123', 3, 'Buddhi', 'De Silva', 'gbidsilva@gmail.com');
+INSERT INTO `user_admins` VALUES(7, 5, 'laleen', 'laleen123', 3, 'Laleen', 'Pallegoda', 'laleen.kp@gmail.com');
+INSERT INTO `user_admins` VALUES(8, 5, 'sachith', 'sachith123', 3, 'Sachith', 'Senevirathna', 'vihanga88@gmail.com');
+INSERT INTO `user_admins` VALUES(9, 5, 'john', 'john123', 2, 'John', 'Smith', 'john.smith@acme.com');
+INSERT INTO `user_admins` VALUES(10, 5, 'sandunika', 'sandunika123', 3, 'Sandunika', 'Wijerathne', 'swijerathne35@gmail.com');
+INSERT INTO `user_admins` VALUES(11, 5, 'janitha', 'janitha123', 1, 'Janitha', 'Rasanga', 'janitharasanga@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -690,6 +694,7 @@ INSERT INTO `user_admins` VALUES(11, 'janitha', 'janitha123', 1, 'Janitha', 'Ras
 
 CREATE TABLE `user_commuters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_type` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
@@ -702,7 +707,7 @@ CREATE TABLE `user_commuters` (
 -- Dumping data for table `user_commuters`
 --
 
-INSERT INTO `user_commuters` VALUES(1, 'gencomm', 'gencomm123', 'Generic', 'Commuter', 'aftha.jaldin88@gmail.com');
+INSERT INTO `user_commuters` VALUES(1, 6, 'gencomm', 'gencomm123', 'Generic', 'Commuter', 'aftha.jaldin88@gmail.com');
 
 --
 -- Constraints for dumped tables
