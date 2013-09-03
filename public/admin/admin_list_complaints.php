@@ -1,17 +1,29 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 5){
+	
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
 	$c = new Complaint();
 	$complaints = $c->find_all();
-
+	
+} else if ($session->is_logged_in() && $session->object_type == 4){
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+	$c = new Complaint();
+	$complaints = $c->find_all();
+	
+} else {
+	redirect_to("login.php");
 }
+
+
 ?>
 
 <!DOCTYPE html>

@@ -195,14 +195,16 @@ $stops = BusStop::find_all();
 						<a href="https://www.google.com/maps?q=<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;num=1&amp;ie=UTF8&amp;<?php echo $stop_to_read_update->location_latitude; ?>,<?php echo $stop_to_read_update->location_longitude; ?>&amp;spn=0.003105,0.004796&amp;t=m&amp;z=14&amp;source=embed" style="color:#0000FF;text-align:left" target="_blank">View Larger Map</a>
 					</small>
 				<?php } else {?>
-					<h4>Map data currently unavailable</h4>
+					<h5>Map data currently unavailable</h5>
 				<?php } ?>
 				</section>
 	  	
 			</div>
 			
 			<div class="tab-pane active in" id="stop_pictures">
-
+			
+			<section>
+			
 			<?php if (!empty($photos_of_stop)) { ?>
 			
 			<div class="callbacks_container">
@@ -246,6 +248,7 @@ $stops = BusStop::find_all();
 			      </div>	        	
 		      </form>
 		    <?php } ?>
+		    </section>
 			</div>
 	      
 	    </div>

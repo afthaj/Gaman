@@ -116,7 +116,16 @@ if ($session->is_logged_in() && $session->object_type == 5){
 $routes = BusRoute::find_all();
 $buses = Bus::find_all();
 $bus_personnel = BusPersonnel::find_all();
-$buses_bus_personnel = new BusBusPersonnel();
+
+// this is for the loop to display the list of bus personnel assigned to the bus
+$bbp_object = new BusBusPersonnel();
+
+// for the foreach loop wthin the list of bus personnel assigned to the bus
+$bus_personnel_object = new BusPersonnel();
+
+// this is to check if the user is the (owner), (owner + driver), or (owner + conductor)  
+$bp = new BusPersonnel();
+$bbp_obj = new BusBusPersonnel();
 
 $related_object = "bus";
 $pt = new PhotoType();
@@ -192,20 +201,7 @@ if (isset($_GET['busid'])){
 	            <div class="control-group">
             	<label for="route_id" class="control-label">Route Number</label>
 	            <div class="controls">
-	            	<select name="route_id"
-	            	<?php 
-      		
-		      		$bp = new BusPersonnel();
-		      		$bbp_obj = new BusBusPersonnel(); 
-		      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
-		      		
-		      		if($bus_bp) { 
-		      		
-		      			if (!$bp->check_personnel_owner($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
-		      				echo ' disabled';
-		      			}
-		      		}
-      				?>>
+	            	<select name="route_id"<?php if (!($session->is_logged_in() && $session->object_type == 5)){ echo ' disabled'; } ?>>
 					<?php foreach($routes as $route){ ?>
 	            		<option value="<?php echo $route->id; ?>"<?php if ($bus_to_read_update->route_id == $route->id){ echo ' selected="selected"';} ?>><?php echo $route->route_number; ?></option>
 	            	<?php } ?>
@@ -216,19 +212,7 @@ if (isset($_GET['busid'])){
             <div class="control-group">
         	<label for="reg_number" class="control-label">Registration Number</label>
 	        	<div class="controls">
-	        		<input type="text" name="reg_number"<?php 
-      		
-		      		$bp = new BusPersonnel();
-		      		$bbp_obj = new BusBusPersonnel(); 
-		      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
-		      		
-		      		if($bus_bp) { 
-		      		
-		      			if (!$bp->check_personnel_owner($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
-		      				echo ' disabled';
-		      			}
-		      		}
-      				?> value="<?php echo $bus_to_read_update->reg_number; ?>" />
+	        		<input type="text" name="reg_number"<?php if (!($session->is_logged_in() && $session->object_type == 5)){ echo ' disabled'; } ?> value="<?php echo $bus_to_read_update->reg_number; ?>" />
 	        	</div>
         	</div>
             
@@ -236,26 +220,24 @@ if (isset($_GET['busid'])){
             <label for="name" class="control-label">Name of Bus</label>
 	            <div class="controls">
 	            	<input type="text" name="name"<?php 
-      		
-		      		$bp = new BusPersonnel();
-		      		$bbp_obj = new BusBusPersonnel(); 
+
 		      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
 		      		
 		      		if($bus_bp) { 
 		      		
-		      			if (!$bp->check_personnel_owner($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+		      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)) {
+		      				
+		      			} else {
 		      				echo ' disabled';
 		      			}
+		      		} else {
+		      			echo ' disabled';
 		      		}
       				?> value="<?php echo $bus_to_read_update->name; ?>" />
 	            </div>
             </div>
             
-            <?php 
-      		
-      		$bp = new BusPersonnel();
-      		$bbp_obj = new BusBusPersonnel(); 
-      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+            <?php
       		
       		if($bus_bp) { 
       		
@@ -281,7 +263,6 @@ if (isset($_GET['busid'])){
       		
 		      <?php 
 		      
-		      $bbp_object = new BusBusPersonnel();
 		      $buses_bus_personnel = $bbp_object->get_personnel_for_bus($bus_to_read_update->id);
 		      
 		      if ($buses_bus_personnel) { ?>
@@ -299,8 +280,7 @@ if (isset($_GET['busid'])){
 		      <tbody align="center">
 		      
 		      <?php foreach($buses_bus_personnel as $bbp){
-		      
-		      	$bus_personnel_object = new BusPersonnel();
+
 		      	$assigned_bus_personnel = $bus_personnel_object->find_by_id($bbp->bus_personnel_id);
 		      	
 		      	?>
@@ -346,17 +326,15 @@ if (isset($_GET['busid'])){
 	          
       		</div>
       		
-	      		<?php 
-	      		
-	      		$bp = new BusPersonnel();
-	      		$bbp_obj = new BusBusPersonnel(); 
-	      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
-	      		
-	      		if($bus_bp) { 
-	      		
-	      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
-	      			
-	      			?>
+      		<?php 
+      		
+      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+      		
+      		if($bus_bp) { 
+      		
+      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+      			
+      			?>
       		
       		<div class="row-fluid">
       		
@@ -416,8 +394,6 @@ if (isset($_GET['busid'])){
 			
 			<?php 
       		
-      		$bp = new BusPersonnel();
-      		$bbp_obj = new BusBusPersonnel();
       		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
       		
       		if($bus_bp) { 

@@ -17,10 +17,10 @@ if ($session->is_logged_in() && $session->object_type == 5){
 		$user->admin_level = $_POST['admin_level'];
 	
 		if ($user->update()){
-			$session->message("Success! The user details were updated. ");
+			$session->message("Success! Your details were updated. ");
 			redirect_to('admin_view_profile.php');
 		} else {
-			$session->message("Error! The user details could not be updated. ");
+			$session->message("Error! Your details could not be updated. ");
 		}
 	}
 	
@@ -31,10 +31,10 @@ if ($session->is_logged_in() && $session->object_type == 5){
 			$user->password = $_POST['new_password'];
 				
 			if ($user->update()){
-				$session->message("Success! The password was updated. ");
+				$session->message("Success! Your password was updated. ");
 				redirect_to('admin_view_profile.php');
 			} else {
-				$session->message("Error! The user details could not be updated. ");
+				$session->message("Error! Your password could not be updated. ");
 			}
 		} else {
 			$session->message("Error! The existing password did not match. ");
@@ -72,7 +72,6 @@ if ($session->is_logged_in() && $session->object_type == 5){
 		$user->username = $_POST['username'];
 		$user->first_name = $_POST['first_name'];
 		$user->last_name = $_POST['last_name'];
-		$user->role = $_POST['role'];
 		$user->nic_number = $_POST['nic_number'];
 		$user->telephone_number = $_POST['telephone_number'];
 	
@@ -91,10 +90,10 @@ if ($session->is_logged_in() && $session->object_type == 5){
 			$user->password = $_POST['new_password'];
 	
 			if ($user->update()){
-				$session->message("Success! The password was updated. ");
+				$session->message("Success! Your password was updated. ");
 				redirect_to('admin_view_profile.php');
 			} else {
-				$session->message("Error! Your details could not be updated. ");
+				$session->message("Error! Your password could not be updated. ");
 			}
 		} else {
 			$session->message("Error! The existing password did not match. ");
@@ -120,9 +119,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	}
 	
 } else {
-	
 	redirect_to("login.php");
-	
 }
 
 ?>
@@ -224,7 +221,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	            <div class="control-group">
 	            <label for="role" class="control-label">Role</label>
 		            <div class="controls">
-		            	<select name="role">
+		            	<select name="role"<?php if (!($session->is_logged_in() && $session->object_type == 5)){ echo ' disabled';}?>>
 		            	<?php foreach($roles as $role){ ?>
 		            		<option value="<?php echo $role->id; ?>"<?php if($user->role==$role->id){echo ' selected="selected"';}?>><?php echo $role->role_name; ?></option>
 		            	<?php } ?>

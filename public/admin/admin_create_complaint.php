@@ -1,37 +1,63 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 5){
+	
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
-	$routes = BusRoute::find_all();
-	$stops = BusStop::find_all();
-	$buses = Bus::find_all();
-	$bus_personnel = BusPersonnel::find_all();
-	$complaint_types = ComplaintType::find_all();
-	$complaint_status = ComplaintStatus::find_all();
+	if (isset($_POST['submit'])){
+		
+		$complaint_to_create = new Complaint();
+		
+		if (isset($_POST['bus_route_id'])) {
+			
+			$complaint_to_create->object_type_id = 1;
+			$complaint_to_create->object_id = $_POST['bus_route_id'];
+			
+		} else if (isset($_POST['stop_id'])) {
+			
+			$complaint_to_create->object_type_id = 2;
+			$complaint_to_create->object_id = $_POST['stop_id'];
+			
+		} else if (isset($_POST['bus_id'])) {
+			
+			$complaint_to_create->object_type_id = 3;
+			$complaint_to_create->object_id = $_POST['bus_id'];
+			
+		} else if (isset($_POST['bus_personnel_id'])) {
+			
+			$complaint_to_create->object_type_id = 4;
+			$complaint_to_create->object_id = $_POST['bus_personnel_id'];
+			
+		}
 	
+		$complaint_to_create->complaint_type = $_POST['complaint_type'];
+		$complaint_to_create->status = $_POST['status'];
+		$complaint_to_create->content = $_POST['content'];
+	
+	}
+	
+} else if ($session->is_logged_in() && $session->object_type == 4){
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+} else {
+	redirect_to("login.php");
 }
 
-if (isset($_POST['submit'])){
-	$complaint_to_create = new Complaint();
-	
-	$complaint_to_create->bus_route_id = $_POST['bus_route_id'];
-	$complaint_to_create->stop_id = $_POST['stop_id'];
-	$complaint_to_create->bus_id = $_POST['bus_id'];
-	$complaint_to_create->bus_personnel_id = $_POST['bus_personnel_id'];
-	
-	$complaint_to_create->complaint_type = $_POST['complaint_type'];
-	$complaint_to_create->status = $_POST['status'];
-	$complaint_to_create->content = $_POST['content'];
-	
-	
+// GET request stuff and initialization code
 
-}
+$routes = BusRoute::find_all();
+$stops = BusStop::find_all();
+$buses = Bus::find_all();
+$bus_personnel = BusPersonnel::find_all();
+$complaint_types = ComplaintType::find_all();
+$complaint_status = ComplaintStatus::find_all();
+$object_types = ObjectType::find_all();
 
 ?>
 
@@ -40,6 +66,7 @@ if (isset($_POST['submit'])){
   <head>
     <title>Complaints &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
+    
   </head>
 
   <body>
@@ -80,13 +107,14 @@ if (isset($_POST['submit'])){
        	  	<section>
        	  	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="form-horizontal">
             
-	            <div class="control-group">
-	            <label for="complaint_type" class="control-label">Complaint Type</label>
+            	<div class="control-group">
+	            <label for="object_type_id" class="control-label">Related to:</label>
 		            <div class="controls">
-		            	<select name="complaint_type">
-		            	<?php foreach($complaint_types as $complaint_type){ ?>
-						  <option value="<?php echo $complaint_type->id; ?>"><?php echo $complaint_type->name; ?></option>
-						<?php } ?>
+		            	<select name="object_type_id" id="object_type_id">
+		            		<option value="">Please select an option</option>
+						<?php for($i = 0; $i <= 3; $i++){ ?>
+		            		<option value="<?php echo $object_types[$i]->id; ?>"><?php echo $object_types[$i]->display_name; ?></option>
+		            	<?php } ?>
 						</select>
 		            </div>
 	            </div>
@@ -131,6 +159,18 @@ if (isset($_POST['submit'])){
 		            	<select name="bus_personnel_id">
 		            	<?php foreach($bus_personnel as $bp){ ?>
 							<option value="<?php echo $bp->id; ?>"><?php echo $bp->first_name . ' ' . $bp->last_name; ?></option>
+						<?php } ?>
+						</select>
+		            </div>
+	            </div>
+	            
+	            
+	            <div class="control-group">
+	            <label for="complaint_type" class="control-label">Complaint Type</label>
+		            <div class="controls">
+		            	<select name="complaint_type">
+		            	<?php foreach($complaint_types as $complaint_type){ ?>
+						  <option value="<?php echo $complaint_type->id; ?>"><?php echo $complaint_type->name; ?></option>
 						<?php } ?>
 						</select>
 		            </div>
