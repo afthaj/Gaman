@@ -62,7 +62,7 @@
           
           <li><a href="<?php echo '..'.DS; ?>">Public Area</a></li>
           
-          <?php if (isset($session->id) && $session->object_type == 5 || $session->object_type == 4 ) { // object_type 5 is admin and 4 is bus_personnel ?>
+          <?php if (isset($session->id) && ($session->object_type == 5 || $session->object_type == 4) ) { // object_type 5 is admin and 4 is bus_personnel ?>
           	<li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
           	<?php 

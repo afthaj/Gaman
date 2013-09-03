@@ -92,7 +92,7 @@ if (isset($_GET['busid'])){
 	            <div class="control-group">
             	<label for="route_id" class="control-label">Route Number</label>
 	            <div class="controls">
-	            	<select name="route_id">
+	            	<select name="route_id" disabled >
 					<?php foreach($routes as $route){ ?>
 	            		<option value="<?php echo $route->id; ?>"<?php if ($bus_to_read_update->route_id == $route->id){ echo ' selected="selected"';} ?>><?php echo $route->route_number; ?></option>
 	            	<?php } ?>
@@ -103,14 +103,14 @@ if (isset($_GET['busid'])){
             <div class="control-group">
         	<label for="reg_number" class="control-label">Registration Number</label>
 	        	<div class="controls">
-	        		<input type="text" name="reg_number" value="<?php echo $bus_to_read_update->reg_number; ?>">
+	        		<input type="text" name="reg_number" disabled value="<?php echo $bus_to_read_update->reg_number; ?>" />
 	        	</div>
         	</div>
             
             <div class="control-group">
             <label for="name" class="control-label">Name of Bus</label>
 	            <div class="controls">
-	            	<input type="text" name="name" value="<?php echo $bus_to_read_update->name; ?>">
+	            	<input type="text" name="name" disabled value="<?php echo $bus_to_read_update->name; ?>">
 	            </div>
             </div>
             

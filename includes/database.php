@@ -1,7 +1,7 @@
 <?php
 
-require_once("config_mac.php");
-//require_once("config_windows.php");
+//require_once("config_mac.php");
+require_once("config_windows.php");
 
 class MySQLDatabase{
 

@@ -1,15 +1,20 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 5){
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
-	
-	$bus_personnel = BusPersonnel::find_all();
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
+} else if ($session->is_logged_in() && $session->object_type == 4){
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+} else {
+	redirect_to("login.php");
 }
+
+$bus_personnel = BusPersonnel::find_all();
+
 ?>
 
 <!DOCTYPE html>
@@ -57,11 +62,16 @@ if (!$session->is_logged_in()){
 		        <td>Role</td>
 		        <td>Username</td>
 		        <td>NIC Number</td>
+		        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
+		        <?php } ?>
 	        </tr>
         	
-        	<?php foreach($bus_personnel as $bus_person){ ?>
+        	<?php for($i = 0; $i < count($bus_personnel) ; $i++){ 
+        	
+        		if ($bus_personnel[$i]->id != $user->id) { ?>
+        		
         		<tr align="center">
         			<td>
         			<?php 
@@ -70,7 +80,7 @@ if (!$session->is_logged_in()){
 	        		
 	        		$pic = new Photograph();
 	        		
-	        		$bus_personnel_profile_picture = $pic->get_profile_picture($bus_person->id, "bus_personnel");
+	        		$bus_personnel_profile_picture = $pic->get_profile_picture($bus_personnel[$i]->id, "bus_personnel");
 	        		
 	        		if (!empty($bus_personnel_profile_picture->filename)) {
 	        			echo '<img src="../../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" />';
@@ -80,15 +90,18 @@ if (!$session->is_logged_in()){
 	        		
 	        		?>
         			</td>
-	        		<td><?php echo $bus_person->first_name; ?></td>
-	        		<td><?php echo $bus_person->last_name; ?></td>
-	        		<td><?php echo $bus_personnel_role->find_by_id($bus_person->role)->role_name; ?></td>
-	        		<td><?php echo $bus_person->username; ?></td>
-	        		<td><?php echo $bus_person->nic_number; ?></td>
-	        		<td><a href="admin_read_update_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	        		<td><?php echo $bus_personnel[$i]->first_name; ?></td>
+	        		<td><?php echo $bus_personnel[$i]->last_name; ?></td>
+	        		<td><?php echo $bus_personnel_role->find_by_id($bus_personnel[$i]->role)->role_name; ?></td>
+	        		<td><?php echo $bus_personnel[$i]->username; ?></td>
+	        		<td><?php echo $bus_personnel[$i]->nic_number; ?></td>
+	        		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
+	        		<td><a href="admin_read_update_bus_personnel.php?personnelid=<?php echo $bus_personnel[$i]->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
+	        		<td><a href="admin_delete_bus_personnel.php?personnelid=<?php echo $bus_personnel[$i]->id; ?>" class="btn btn-danger btn-block">Delete</a></td>
+	        		<?php } ?>        		
         		</tr>
-        	<?php }?>
+        		
+        	<?php } }?>
         	
         </table>
         

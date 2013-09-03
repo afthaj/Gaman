@@ -101,7 +101,7 @@ if (isset($_GET['personnelid'])){
             <div class="control-group">
             	<label for="role" class="control-label">Role</label>
 	            <div class="controls">
-	            	<select name="role">
+	            	<select name="role" disabled>
 					<?php foreach($roles as $role){ ?>
 	            		<option value="<?php echo $role->id; ?>"<?php if ($bus_personnel_to_read_update->role == $role->id){ echo ' selected="selected"';} ?>><?php echo $role->role_name; ?></option>
 	            	<?php } ?>
@@ -112,21 +112,21 @@ if (isset($_GET['personnelid'])){
             <div class="control-group">
         	<label for="first_name" class="control-label">First Name</label>
 	        	<div class="controls">
-	        		<input type="text" name="first_name" value="<?php echo $bus_personnel_to_read_update->first_name; ?>" />
+	        		<input type="text" name="first_name" disabled value="<?php echo $bus_personnel_to_read_update->first_name; ?>" />
 	        	</div>
         	</div>
             
             <div class="control-group">
             <label for="last_name" class="control-label">Last Name</label>
 	            <div class="controls">
-	            	<input type="text" name="last_name" value="<?php echo $bus_personnel_to_read_update->last_name; ?>" />
+	            	<input type="text" name="last_name" disabled value="<?php echo $bus_personnel_to_read_update->last_name; ?>" />
 	            </div>
             </div>
             
             <div class="control-group">
         	<label for="nic_number" class="control-label">NIC Number</label>
 	        	<div class="controls">
-	        		<input type="text" name="nic_number" value="<?php echo $bus_personnel_to_read_update->nic_number; ?>" />
+	        		<input type="text" name="nic_number" disabled value="<?php echo $bus_personnel_to_read_update->nic_number; ?>" />
 	        	</div>
         	</div>
 

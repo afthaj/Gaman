@@ -107,7 +107,7 @@ if (isset($_GET['routeid'])) {
 	            <div class="control-group">
 	            <label for="begin_stop" class="control-label">Begin Stop</label>
 		            <div class="controls">
-		            <select name="begin_stop">
+		            <select name="begin_stop" disabled >
 		            <?php foreach($stops as $stop){ ?>
 		            	<option value="<?php echo $stop->id; ?>"<?php if (!empty($route_to_read_update->begin_stop) && $route_to_read_update->begin_stop == $stop->id) echo ' selected = "selected"'; ?>><?php echo $stop->name; ?></option>
 		            <?php } ?>
@@ -118,7 +118,7 @@ if (isset($_GET['routeid'])) {
 	            <div class="control-group">
 	            <label for="end_stop" class="control-label">End Stop</label>
 		            <div class="controls">
-			            <select name="end_stop">
+			            <select name="end_stop" disabled >
 			            <?php 
 			            foreach($stops as $stop){
 			            ?>

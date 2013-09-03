@@ -192,7 +192,20 @@ if (isset($_GET['busid'])){
 	            <div class="control-group">
             	<label for="route_id" class="control-label">Route Number</label>
 	            <div class="controls">
-	            	<select name="route_id"<?php if(!$buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)){ echo 'disabled'; } ?>>
+	            	<select name="route_id"
+	            	<?php 
+      		
+		      		$bp = new BusPersonnel();
+		      		$bbp_obj = new BusBusPersonnel(); 
+		      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+		      		
+		      		if($bus_bp) { 
+		      		
+		      			if (!$bp->check_personnel_owner($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+		      				echo ' disabled';
+		      			}
+		      		}
+      				?>>
 					<?php foreach($routes as $route){ ?>
 	            		<option value="<?php echo $route->id; ?>"<?php if ($bus_to_read_update->route_id == $route->id){ echo ' selected="selected"';} ?>><?php echo $route->route_number; ?></option>
 	            	<?php } ?>
@@ -203,22 +216,56 @@ if (isset($_GET['busid'])){
             <div class="control-group">
         	<label for="reg_number" class="control-label">Registration Number</label>
 	        	<div class="controls">
-	        		<input type="text" name="reg_number"<?php if(!$buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)){ echo 'disabled'; } ?> value="<?php echo $bus_to_read_update->reg_number; ?>" />
+	        		<input type="text" name="reg_number"<?php 
+      		
+		      		$bp = new BusPersonnel();
+		      		$bbp_obj = new BusBusPersonnel(); 
+		      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+		      		
+		      		if($bus_bp) { 
+		      		
+		      			if (!$bp->check_personnel_owner($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+		      				echo ' disabled';
+		      			}
+		      		}
+      				?> value="<?php echo $bus_to_read_update->reg_number; ?>" />
 	        	</div>
         	</div>
             
             <div class="control-group">
             <label for="name" class="control-label">Name of Bus</label>
 	            <div class="controls">
-	            	<input type="text" name="name"<?php if(!$buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)){ echo 'disabled'; } ?> value="<?php echo $bus_to_read_update->name; ?>" />
+	            	<input type="text" name="name"<?php 
+      		
+		      		$bp = new BusPersonnel();
+		      		$bbp_obj = new BusBusPersonnel(); 
+		      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+		      		
+		      		if($bus_bp) { 
+		      		
+		      			if (!$bp->check_personnel_owner($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || !$bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+		      				echo ' disabled';
+		      			}
+		      		}
+      				?> value="<?php echo $bus_to_read_update->name; ?>" />
 	            </div>
             </div>
             
-            <?php if($buses_bus_personnel->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id)) { ?>
+            <?php 
+      		
+      		$bp = new BusPersonnel();
+      		$bbp_obj = new BusBusPersonnel(); 
+      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+      		
+      		if($bus_bp) { 
+      		
+      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+      			
+      			?>
           	<div class="form-actions">
         	    <button class="btn btn-primary" name="submit">Submit</button>
         	</div>
-        	<?php } ?>
+        	<?php } } ?>
 	        </form>
 	      
 	      	</div>
@@ -299,16 +346,17 @@ if (isset($_GET['busid'])){
 	          
       		</div>
       		
-      		<?php 
-      		
-      		$bp = new BusPersonnel();
-      		$bus_bp = BusBusPersonnel::check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
-      		
-      		if($bus_bp) { 
-      		
-      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
-      			
-      			?>
+	      		<?php 
+	      		
+	      		$bp = new BusPersonnel();
+	      		$bbp_obj = new BusBusPersonnel(); 
+	      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+	      		
+	      		if($bus_bp) { 
+	      		
+	      			if ($bp->check_personnel_owner($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_driver($bus_bp->bus_personnel_id) || $bp->check_personnel_owner_conductor($bus_bp->bus_personnel_id)){
+	      			
+	      			?>
       		
       		<div class="row-fluid">
       		
@@ -369,7 +417,8 @@ if (isset($_GET['busid'])){
 			<?php 
       		
       		$bp = new BusPersonnel();
-      		$bus_bp = BusBusPersonnel::check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
+      		$bbp_obj = new BusBusPersonnel();
+      		$bus_bp = $bbp_obj->check_if_user_is_personnel_for_a_bus($user->id, $bus_to_read_update->id); //$personnel_for_bus
       		
       		if($bus_bp) { 
       		
