@@ -2,13 +2,17 @@
 require_once("../../includes/initialize.php");
 
 if ($session->is_logged_in() && $session->object_type == 5){
+	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
 	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	
 } else if ($session->is_logged_in() && $session->object_type == 4){
+	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
 	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
 } else {
 	redirect_to("login.php");
 }
@@ -45,13 +49,20 @@ $bus_personnel = BusPersonnel::find_all();
         <!-- Start Content -->
         <div class="container-fluid">
         
+        <?php if ($session->is_logged_in() && $session->object_type == 5){ ?>
         <div class="row-fluid">
         	<br />
 	        <a href="admin_create_bus_personnel.php" class="btn btn-primary">Add New Bus Personnel</a>
-	        <br /><br />
+	        <br />
         </div>
+        <?php } ?>
         
         <div class="row-fluid">
+        
+        <div class="span12">
+        
+        <section>
+        
         <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
         
         <table class="table table-bordered table-hover">
@@ -104,6 +115,10 @@ $bus_personnel = BusPersonnel::find_all();
         	<?php } }?>
         	
         </table>
+        
+        </section>
+        
+        </div>
         
         </div>
         

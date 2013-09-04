@@ -1,55 +1,59 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 5){
+	
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
 	
-	$roles = BusPersonnelRole::find_all();
-	$buses = Bus::find_all();
-}
-
-if (isset($_POST['submit'])) {
+	if (isset($_POST['submit'])) {
 	
-	$bus_personnel_to_create = new BusPersonnel();
-	//$buses_bus_personnel_to_create = new BusBusPersonnel();
+		$bus_personnel_to_create = new BusPersonnel();
+		//$buses_bus_personnel_to_create = new BusBusPersonnel();
 	
-	$bus_personnel_to_create->role = $_POST['role'];
-	$bus_personnel_to_create->username = $_POST['username'];
-	$bus_personnel_to_create->password = $_POST['password'];
-	$bus_personnel_to_create->first_name = $_POST['first_name'];
-	$bus_personnel_to_create->last_name = $_POST['last_name'];
-	$bus_personnel_to_create->nic_number = $_POST['nic_number'];
+		$bus_personnel_to_create->role = $_POST['role'];
+		$bus_personnel_to_create->username = $_POST['username'];
+		$bus_personnel_to_create->password = $_POST['password'];
+		$bus_personnel_to_create->first_name = $_POST['first_name'];
+		$bus_personnel_to_create->last_name = $_POST['last_name'];
+		$bus_personnel_to_create->nic_number = $_POST['nic_number'];
 	
-	//$buses_bus_personnel_to_create->bus_id = $_POST['bus_id'];
+		//$buses_bus_personnel_to_create->bus_id = $_POST['bus_id'];
 	
-	if ($bus_personnel_to_create->create()){
-		
-		$session->message("Success! The new Bus Personnel has been added. ");
-		redirect_to('admin_list_bus_personnel.php');
-		
-		/*
-		$all_bus_personnel = BusPersonnel::find_all();
-		
-		for ($i = 0; $i = count($all_bus_personnel)-1; $i++){
+		if ($bus_personnel_to_create->create()){
+	
+			$session->message("Success! The new Bus Personnel has been added. ");
+			redirect_to('admin_list_bus_personnel.php');
+	
+			/*
+			 $all_bus_personnel = BusPersonnel::find_all();
+	
+			for ($i = 0; $i = count($all_bus_personnel)-1; $i++){
 			$all_bus_personnel[$i]->id = $buses_bus_personnel_to_create->bus_personnel_id;
-		}
-		
-		if ($buses_bus_personnel_to_create->create()){
+			}
+	
+			if ($buses_bus_personnel_to_create->create()){
 			$session->message("Success! The new Bus Personnel has been added. ");
 			redirect_to('admin_list_personnel.php');
-		} else {
+			} else {
 			$session->message("Error! The new Bus Personnel could not be added to the given Bus Route. ");
+			}
+			*/
+	
+		} else {
+			$session->message("Error! The new Bus Personnel could not be created. ");
 		}
-		*/
-		
-	} else {
-		$session->message("Error! The new Bus Personnel could not be created. ");
 	}
+
+} else {
+	redirect_to("login.php");
 }
+
+// common init code
+
+$roles = BusPersonnelRole::find_all();
+$buses = Bus::find_all();
 
 ?>
 

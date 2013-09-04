@@ -1,14 +1,11 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->id == 5){
+if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
 	$profile_picture = $p->get_profile_picture($user->id, "admin");
-	
-	$roles = BusPersonnelRole::find_all();
-	$buses = Bus::find_all();
 	
 	if (isset($_GET['personnelid'])){
 		$bus_personnel_to_read_update = BusPersonnel::find_by_id($_GET['personnelid']);
@@ -86,18 +83,12 @@ if ($session->is_logged_in() && $session->id == 5){
 	
 	}
 	
-} else if ($session->is_logged_in() && $session->id == 4) {
-	
-	$user = BusPersonnel::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
-	
-	$roles = BusPersonnelRole::find_all();
-	$buses = Bus::find_all();
-	
 } else {
 	redirect_to("login.php");
 }
+
+$roles = BusPersonnelRole::find_all();
+$buses = Bus::find_all();
 
 ?>
 
