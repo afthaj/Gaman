@@ -13,29 +13,38 @@ if ($session->is_logged_in() && $session->object_type == 5){
 		
 		if (isset($_POST['bus_route_id'])) {
 			
-			$complaint_to_create->object_type_id = 1;
-			$complaint_to_create->object_id = $_POST['bus_route_id'];
+			$complaint_to_create->related_object_type = 1;
+			$complaint_to_create->related_object_id = $_POST['bus_route_id'];
 			
 		} else if (isset($_POST['stop_id'])) {
 			
-			$complaint_to_create->object_type_id = 2;
-			$complaint_to_create->object_id = $_POST['stop_id'];
+			$complaint_to_create->related_object_type = 2;
+			$complaint_to_create->related_object_id = $_POST['stop_id'];
 			
 		} else if (isset($_POST['bus_id'])) {
 			
-			$complaint_to_create->object_type_id = 3;
-			$complaint_to_create->object_id = $_POST['bus_id'];
+			$complaint_to_create->related_object_type = 3;
+			$complaint_to_create->related_object_id = $_POST['bus_id'];
 			
 		} else if (isset($_POST['bus_personnel_id'])) {
 			
-			$complaint_to_create->object_type_id = 4;
-			$complaint_to_create->object_id = $_POST['bus_personnel_id'];
+			$complaint_to_create->related_object_type = 4;
+			$complaint_to_create->related_object_id = $_POST['bus_personnel_id'];
 			
 		}
 	
+		$complaint_to_create->user_object_type = $session->object_type;
+		$complaint_to_create->user_id = $user->id;
 		$complaint_to_create->complaint_type = $_POST['complaint_type'];
 		$complaint_to_create->status = $_POST['status'];
 		$complaint_to_create->content = $_POST['content'];
+		
+		if ($complaint_to_create->create()){
+			$session->message("Success! The Complaint has been submitted. ");
+			redirect_to('admin_list_complaints.php');
+		} else {
+			$session->message("Error! The Complaint could not be submitted. ");
+		}
 	
 	}
 	
@@ -44,6 +53,47 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
 	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+	if (isset($_POST['submit'])){
+	
+		$complaint_to_create = new Complaint();
+	
+		if (isset($_POST['bus_route_id'])) {
+				
+			$complaint_to_create->related_object_type = 1;
+			$complaint_to_create->related_object_id = $_POST['bus_route_id'];
+				
+		} else if (isset($_POST['stop_id'])) {
+				
+			$complaint_to_create->related_object_type = 2;
+			$complaint_to_create->related_object_id = $_POST['stop_id'];
+				
+		} else if (isset($_POST['bus_id'])) {
+				
+			$complaint_to_create->related_object_type = 3;
+			$complaint_to_create->related_object_id = $_POST['bus_id'];
+				
+		} else if (isset($_POST['bus_personnel_id'])) {
+				
+			$complaint_to_create->related_object_type = 4;
+			$complaint_to_create->related_object_id = $_POST['bus_personnel_id'];
+				
+		}
+	
+		$complaint_to_create->user_object_type = $session->object_type;
+		$complaint_to_create->user_id = $user->id;
+		$complaint_to_create->complaint_type = $_POST['complaint_type'];
+		$complaint_to_create->status = $_POST['status'];
+		$complaint_to_create->content = $_POST['content'];
+		
+		if ($complaint_to_create->create()){
+			$session->message("Success! The Complaint has been submitted. ");
+			redirect_to('admin_list_complaints.php');
+		} else {
+			$session->message("Error! The Complaint could not be submitted. ");
+		}
+		
+	}
 	
 } else {
 	redirect_to("login.php");
@@ -66,6 +116,39 @@ $object_types = ObjectType::find_all();
   <head>
     <title>Complaints &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
+    
+    <script type="text/javascript">
+
+	function change_object_type(str, related_object) {
+		
+		if (str == "") {
+			related_object.innerHTML = "";
+			return;
+			}
+			
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			request = new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				request = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				
+		request.onreadystatechange = function() {
+			
+			if (request.readyState == 4 && request.status == 200) {
+				related_object.innerHTML = request.responseText;
+				}
+			
+			}
+			
+		request.open("GET","../ajax_files/get_object_types.php?q=" + str, true);
+		
+		request.send();
+		
+		}
+	
+	</script>
     
   </head>
 
@@ -110,60 +193,17 @@ $object_types = ObjectType::find_all();
             	<div class="control-group">
 	            <label for="object_type_id" class="control-label">Related to:</label>
 		            <div class="controls">
-		            	<select name="object_type_id" id="object_type_id">
+		            	<select name="object_type_id" id="object_type_id" onChange="change_object_type(this.value, document.getElementById('related_object'))">
 		            		<option value="">Please select an option</option>
-						<?php for($i = 0; $i <= 3; $i++){ ?>
-		            		<option value="<?php echo $object_types[$i]->id; ?>"><?php echo $object_types[$i]->display_name; ?></option>
-		            	<?php } ?>
+							<?php for($i = 0; $i <= 3; $i++){ ?>
+			            		<option value="<?php echo $object_types[$i]->id; ?>"><?php echo $object_types[$i]->display_name; ?></option>
+			            	<?php } ?>
 						</select>
 		            </div>
 	            </div>
 	            
-	            <div class="control-group">
-	            <label for="bus_route_id" class="control-label">Bus Route</label>
-		            <div class="controls">
-		            	<select name="bus_route_id">
-						  <?php foreach($routes as $route){ ?>
-		            		<option value="<?php echo $route->id; ?>"><?php echo $route->route_number; ?></option>
-		            	<?php } ?>
-						</select>
-		            </div>
-		            
+	            <div class="control-group" id="related_object">
 	            </div>
-	            
-	            <div class="control-group">
-	            <label for="stop_id" class="control-label">Bus Stop</label>
-		            <div class="controls">
-		            	<select name="stop_id">
-						<?php foreach($stops as $stop){ ?>
-		            		<option value="<?php echo $stop->id; ?>"><?php echo $stop->name; ?></option>
-		            	<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="bus_id" class="control-label">Bus</label>
-		            <div class="controls">
-		            	<select name="bus_id">
-						  <?php foreach($buses as $bus){ ?>
-						  	<option value="<?php echo $bus->id; ?>"><?php echo $bus->reg_number; ?></option>
-						  <?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="bus_personnel_id" class="control-label">Bus Personnel</label>
-		            <div class="controls">
-		            	<select name="bus_personnel_id">
-		            	<?php foreach($bus_personnel as $bp){ ?>
-							<option value="<?php echo $bp->id; ?>"><?php echo $bp->first_name . ' ' . $bp->last_name; ?></option>
-						<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
 	            
 	            <div class="control-group">
 	            <label for="complaint_type" class="control-label">Complaint Type</label>
@@ -176,16 +216,9 @@ $object_types = ObjectType::find_all();
 		            </div>
 	            </div>
 	            
-	            <div class="control-group">
-	            <label for="status" class="control-label">Complaint Status</label>
-		            <div class="controls">
-		            	<select name="status">
-						<?php foreach($complaint_status as $comp_status){ ?>
-							<option value="<?php echo $comp_status->id; ?>"><?php echo $comp_status->comp_status_name; ?></option>
-						<?php } ?>
-						</select>
-		            </div>
-	            </div>
+	            
+		        <input type="hidden" name="status" value="1">
+				
 	            
 	            <div class="control-group">
 	            <label for="content" class="control-label">Details of Complaint</label>

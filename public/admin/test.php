@@ -1,12 +1,20 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+if ($session->is_logged_in() && $session->object_type == 5){
+	
+	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture_of_admin_user($admin_user->id, "admin");
+	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	
+} else if ($session->is_logged_in() && $session->object_type == 4){
+	
+	$user = BusPersonnel::find_by_id($_SESSION['id']);
+	$p = new Photograph();
+	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	
+} else {
+	redirect_to("login.php");
 }
 ?>
 
@@ -47,11 +55,39 @@ if (!$session->is_logged_in()){
 		        </div>
 	       	  </div>
 	       	  
-	       	  <div class="span6">
-	       	  	<?php echo $session->message; ?>
-	       	  	
-	       	  	
-	       	  	
+	       	  <div class="span9">
+	       	  <div class="row-fluid">
+	       	  <section>
+	       	  
+       	  	  	<?php echo $session->message; ?>
+       	  	  	
+       	  	  	<?php 
+       	  	  	
+       	  	  	$time = time();
+       	  	  	
+       	  	  	echo $time;
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print_r(getdate($time));
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print date("r", $time);
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print date("d/m/y h:i:s a", $time);
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print date("d/m/Y h:i:s a", mktime(13, 29, 45, 11, 18, 1988));
+       	  	  	
+       	  	  	?>
+       	  	  	
+       	  	  </section>
+       	  	  
+       	  	  </div>	
 	       	  </div>
        	  
 	      </div>

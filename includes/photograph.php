@@ -21,7 +21,7 @@ class Photograph extends DatabaseObject {
 	public $size;
 	
 	private $temp_path;
-	protected $upload_dir="public/img/uploads";
+	protected $upload_dir = 'img/uploads';
 	public $errors = array();
 	
 	protected $upload_errors = array(

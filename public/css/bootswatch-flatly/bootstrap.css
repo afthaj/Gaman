@@ -1098,7 +1098,7 @@ input[type="color"],
   margin-bottom: 10px;
   font-size: 15px;
   line-height: 20px;
-  color: #95a5a6;
+  color: #2c3e50;
   vertical-align: middle;
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
@@ -6650,7 +6650,7 @@ input[disabled],
 input[readonly],
 textarea[disabled],
 textarea[readonly] {
-  color: #cad2d3;
+  color: #2c3e50;
   cursor: default;
   background-color: #eaeded;
   border-color: transparent;

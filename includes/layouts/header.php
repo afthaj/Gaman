@@ -79,17 +79,17 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="ico/favicon.png">
+    <link rel="shortcut icon" href="./ico/favicon.ico">
     
     <script src="js/jquery.js"></script>
     
-    <script src="js/bootstrap.js"></script>
+    <script src="./js/bootstrap.js"></script>
     <script src="js/bootstrap-affix.js"></script>
 	<script src="js/bootstrap-alert.js"></script>
     <script src="js/bootstrap-button.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-collapse.js"></script>
-    <script src="../../js/bootstrap-dropdown.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
 	<script src="js/bootstrap-modal.js"></script>
     <script src="js/bootstrap-popover.js"></script>
     <script src="js/bootstrap-scrollspy.js"></script>
@@ -103,8 +103,8 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/prettify.js"></script>
     
-    <script defer src="js/jquery.flexslider.js"></script>
-    <script defer src="js/responsiveslides.js"></script>
+    <script defer src="./js/jquery.flexslider.js"></script>
+    <script defer src="./js/responsiveslides.js"></script>
     
     <script type="text/javascript">
 		$(window).load(function(){

@@ -17,12 +17,19 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
 	
 	$c = new Complaint();
-	$complaints = $c->find_all();
+	$complaints = $c->get_complaints_for_user($user->id, $session->object_type);
 	
 } else {
 	redirect_to("login.php");
 }
 
+$comp_type = new ComplaintType();
+$comp_status = new ComplaintStatus();
+$obj = new ObjectType();
+$route = new BusRoute();
+$stop = new BusStop();
+$bus = new Bus();
+$bp = new BusPersonnel();
 
 ?>
 
@@ -68,29 +75,58 @@ if ($session->is_logged_in() && $session->object_type == 5){
           <thead>
 	        <tr align="center">
 		        <td>Complaint Type</td>
-		        <td>Bus Route</td>
-		        <td>Bus Stop</td>
-		        <td>Bus Registration Number</td>
-		        <td>Name of Bus Personnel</td>
-		        <td>Complaint Status</td>
+		        <td>Related To</td>
+		        <td>Identfier</td>
 		        <td>Complaint Details</td>
+		        <td>Complaint Status</td>
+		        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
+		        <?php } ?>
 	        </tr>
 	      </thead>
 	      <tbody>
         	
         	<?php foreach($complaints as $complaint){ ?>
         		<tr align="center">
-	        		<td>Complaint Type</td>
-			        <td>Bus Route</td>
-			        <td>Bus Stop</td>
-			        <td>Bus Registration Number</td>
-			        <td>Name of Bus Personnel</td>
-			        <td>Complaint Status</td>
-			        <td>Complaint Details</td>
+	        		<td><?php echo $comp_type->find_by_id($complaint->complaint_type)->comp_type_name; ?></td>
+			        <td><?php echo $obj->find_by_id($complaint->related_object_type)->display_name; ?></td>
+			        <td>
+			        <?php 
+					switch ($complaint->related_object_type) {
+					    case 1:
+					        echo $route->find_by_id($complaint->related_object_id)->route_number;
+					        break;
+					    case 2:
+					        echo $stop->find_by_id($complaint->related_object_id)->name;
+					        break;
+					    case 3:
+					        echo $bus->find_by_id($complaint->related_object_id)->reg_number;
+					        break;
+				        case 4:
+				        	echo $bp->find_by_id($complaint->related_object_id)->fullname();
+				        	break;
+					}
+			        ?>
+			        </td>
+			        <td><?php echo $complaint->content; ?></td>
+			        <td><span class="btn btn-block
+			        <?php
+			        
+			        if ($comp_status->find_by_id($complaint->status)->id == 1){
+			        	echo ' btn-info';
+			        } else if ($comp_status->find_by_id($complaint->status)->id == 2){
+			        	echo ' btn-warning';
+			        } else if ($comp_status->find_by_id($complaint->status)->id == 3){
+			        	echo ' btn-success';
+			        }
+			        
+			        ?>
+			        "><?php echo $comp_status->find_by_id($complaint->status)->comp_status_name; ?></span></td>
+			        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block">Delete</a></td>
+	        		<?php } ?>        		
         		</tr>
         	<?php }?>
         	
