@@ -32,7 +32,7 @@ demand_flag:[normal day + peak time, normal day + off-peak time, weekend day + p
 
 trips(id, route_id, bus_id, begin_stop, end_stop, departure_from_begin_stop, arrival_at_end_stop)
 
-stop_activity(id, trip_id, stop_id, alighted_commuters, boarded_commuters, arrival_time, departure_time)
+stop_activities(id, trip_id, stop_id, alighted_commuters, boarded_commuters, arrival_time, departure_time)
 
 user_commuters(id, username, password, first_name, last_name, email_address)
 

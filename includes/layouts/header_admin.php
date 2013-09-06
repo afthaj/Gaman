@@ -103,9 +103,9 @@
     <script src="js/html5shiv.js"></script>
     <script src="js/prettify.js"></script>
     
-    <script defer src="../js/jquery.flexslider.js"></script>
-    <script defer src="../js/responsiveslides.js"></script>
+    <!-- flexslider -->
     
+    <script defer src="../js/jquery.flexslider.js"></script>
     <script type="text/javascript">
 		$(window).load(function(){
 	      $('.flexslider').flexslider({
@@ -116,7 +116,12 @@
 	      });
 	    });
 	</script>
+	
+	<!-- end flexslider -->
     
+    <!-- responsive slides -->
+    
+    <script defer src="../js/responsiveslides.js"></script>
     <script>
     // You can also use "$(window).load(function() {"
     $(function () {
@@ -138,4 +143,81 @@
 
     });
   </script>
+  
+  <!-- end responsive slides -->
+  
+  <!-- Google Charts -->
+  
+  <script type="text/javascript" src="../js/jsapi.js"></script>
+  <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+    
+     <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance'
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_2_div'));
+        chart.draw(data, options);
+      }
+    </script>
+    
+    <script type="text/javascript">
+    
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1', {'packages':['corechart']});
+      
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+      
+    function drawChart() {
+      var jsonData = $.ajax({
+          url: "../ajax_files/getData.php",
+          dataType:"json",
+          async: false
+          }).responseText;
+          
+      // Create our data table out of JSON data loaded from server.
+      var data = new google.visualization.DataTable(jsonData);
+
+      // Instantiate and draw our chart, passing in some options.
+      var chart = new google.visualization.PieChart(document.getElementById('chart_3_div'));
+      chart.draw(data, {width: 800, height: 480, title: 'Breakdown of Vegies'});
+    }
+
+    </script>
+    
+    
+    
+    <!-- End Google Charts -->
     

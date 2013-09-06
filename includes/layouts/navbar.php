@@ -43,6 +43,9 @@
           		<li><a href="public_create_complaint.php">Add Complaint</a></li>
           	</ul>
           </li>
+          
+          <li<?php if (isset($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
+          
         </ul>
         <ul class="nav navbar-nav pull-right">
           

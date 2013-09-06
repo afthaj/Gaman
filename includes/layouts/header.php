@@ -83,13 +83,13 @@
     
     <script src="js/jquery.js"></script>
     
-    <script src="./js/bootstrap.js"></script>
+    <script src="js/bootstrap.js"></script>
     <script src="js/bootstrap-affix.js"></script>
 	<script src="js/bootstrap-alert.js"></script>
     <script src="js/bootstrap-button.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-collapse.js"></script>
-    <script src="js/bootstrap-dropdown.js"></script>
+    <script src="../js/bootstrap-dropdown.js"></script>
 	<script src="js/bootstrap-modal.js"></script>
     <script src="js/bootstrap-popover.js"></script>
     <script src="js/bootstrap-scrollspy.js"></script>

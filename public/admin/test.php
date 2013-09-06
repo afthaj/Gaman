@@ -87,7 +87,26 @@ if ($session->is_logged_in() && $session->object_type == 5){
        	  	  	
        	  	  </section>
        	  	  
-       	  	  </div>	
+       	  	  </div>
+       	  	  
+       	  	  <div class="row-fluid">
+       	  	  <section>
+       	  	  	<div id="chart_div" style="width: 100%;"></div>
+       	  	  </section>
+       	  	  </div>
+       	  	  
+       	  	  <div class="row-fluid">
+       	  	  <section>
+       	  	  	<div id="chart_2_div" style="width: 100%;"></div>
+       	  	  </section>
+       	  	  </div>
+       	  	  
+       	  	  <div class="row-fluid">
+       	  	  <section>
+       	  	  	<div id="chart_3_div" style="width: 100%;"></div>
+       	  	  </section>
+       	  	  </div>
+	       	  
 	       	  </div>
        	  
 	      </div>
