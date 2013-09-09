@@ -150,9 +150,12 @@
   
   <script type="text/javascript" src="../js/jsapi.js"></script>
   <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
+
+  google.load("visualization", "1", {packages:["corechart"]});
+
+  google.setOnLoadCallback(drawChart);
+
+  function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Year', 'Sales', 'Expenses'],
           ['2004',  1000,      400],
@@ -163,7 +166,7 @@
 
         var options = {
           title: 'Company Performance',
-          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
+          hAxis: {title: 'Year', titleTextStyle: {color: 'blue'}}
         };
 
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
@@ -172,9 +175,12 @@
     </script>
     
      <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
+
+     google.load("visualization", "1", {packages:["corechart"]});
+
+     google.setOnLoadCallback(drawChart);
+
+     function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Year', 'Sales', 'Expenses'],
           ['2004',  1000,      400],
@@ -220,4 +226,9 @@
     
     
     <!-- End Google Charts -->
+    
+    <!-- Google Maps -->
+    
+    
+    
     
