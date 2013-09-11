@@ -67,13 +67,7 @@
           <?php if (isset($session->id) && ($session->object_type == 5 || $session->object_type == 4) ) { // object_type 5 is admin and 4 is bus_personnel ?>
           	<li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          	<?php 
-          	
-          	if (!empty($profile_picture->filename)) {
-          		echo '<img src="../' . $profile_picture->image_path() . '" width="17" class="img-circle" /> ';
-          	} else {
-          		echo '<img src="../img/default-prof-pic.jpg" width="17" class="img-circle" alt="Please upload a profile picture" /> ';
-          	}
+          	<?php
           	
           	echo $user->full_name(); ?> <b class="caret"></b>
           	</a>

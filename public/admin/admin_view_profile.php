@@ -142,8 +142,24 @@ if ($session->is_logged_in() && $session->object_type == 5){
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
-		   <h1>User Profile</h1>
-		   <h3><?php echo $user->full_name();?></h3>
+		 
+		 <div class="span9">
+		 	<h1>User Profile</h1>
+		 	<h3><?php echo $user->full_name();?></h3>
+		 </div>
+		 
+		 <div class="span3">
+		 
+		 <?php 
+         if (!empty($profile_picture->filename)) {
+         	echo '<img src="../../' . $profile_picture->image_path() . '" width="200" class="img-rounded pull-right" />'; 
+         } else {
+         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded pull-right" alt="Please upload a profile picture" />';
+         }
+         ?>
+		 
+		 </div>
+		 
 		 </div>
 	  </header>
 
@@ -181,21 +197,6 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	      <?php echo $message; ?>
 	      	      
 	        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
-	            
-	            <div class="control-group">
-	            	<label for="profile_picture" class="control-label">Profile Picture</label>
-	            
-		            <div class="controls">
-		            	<?php 
-		            	if (!empty($profile_picture->filename)) {
-		            		echo '<img src="../../' . $profile_picture->image_path() . '" width="250" class="img-rounded" />'; 
-		            	} else {
-		            		echo '<img src="../img/default-prof-pic.jpg" width="250" class="img-rounded" alt="Please upload a profile picture" />';
-		            		echo '<p>Please upload a profile picture</p>';
-		            	} 
-		            	?>
-		            </div>
-	            </div>
 	            
 	            <div class="control-group">
 	            	<label for="username" class="control-label">Username</label>

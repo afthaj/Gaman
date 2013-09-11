@@ -1010,6 +1010,7 @@ form.bs-docs-example {
 
   /* center align subhead text like the masthead */
   .subhead h1,
+  .subhead h3,
   .subhead p {
     text-align: center;
   }

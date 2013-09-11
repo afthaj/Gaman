@@ -98,8 +98,24 @@ if ($session->is_logged_in() && $session->object_type == 5){
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
-		   <h1>Admin Profile</h1>
-		   <h3><?php echo $user_to_read_update->first_name . ' ' . $user_to_read_update->last_name; ?></h3>
+		 
+		 <div class="span9">
+		 	<h1>Admin Profile</h1>
+		 	<h3><?php echo $user_to_read_update->full_name(); ?></h3>
+		 </div>
+		 
+		 <div class="span3">
+		 	
+		 <?php 
+         if (!empty($profile_picture_of_other_admin_users->filename)) {
+         	echo '<img src="../../' . $profile_picture_of_other_admin_users->image_path() . '" width="200" class="img-rounded pull-right" />'; 
+         } else {
+         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded pull-right" alt="Please upload a profile picture" />';
+         } 
+         ?>
+		 	
+		 </div>
+		 
 		 </div>
 	  </header>
 	  
@@ -132,20 +148,6 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	    <div id="myTabContent" class="tab-content">
 	      <div class="tab-pane active in" id="user_details">
 	        <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?adminid=<?php echo $_GET['adminid']; ?>" method="POST" id="tab">
-	            
-	            <div class="control-group">
-	            	<label for="profile_picture" class="control-label">Profile Picture</label>
-	            
-		            <div class="controls">
-		            	<?php 
-		            	if (!empty($profile_picture_of_other_admin_users->filename)) {
-		            		echo '<img src="../../' . $profile_picture_of_other_admin_users->image_path() . '" width="250" class="img-rounded" />'; 
-		            	} else {
-		            		echo '<input type="text" value="" name="" placeholder="No profile picture uploaded" >'; 
-		            	} 
-		            	?>
-		            </div>
-	            </div>
 	            
 	            <div class="control-group">
 	            <label for="username" class="control-label">Username</label>

@@ -5,9 +5,10 @@ require_once("database.php");
 class ObjectType extends DatabaseObject {
 	
 	protected static $table_name = "object_types";
-	protected static $db_fields = array('id', 'object_type_name', 'display_name');
+	protected static $db_fields = array('id', 'user_flag', 'object_type_name', 'display_name');
 	
 	public $id;
+	public $user_flag;
 	public $object_type_name;
 	public $display_name;
 	

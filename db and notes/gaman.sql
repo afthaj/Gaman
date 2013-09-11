@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 02, 2013 at 11:33 PM
+-- Generation Time: Sep 11, 2013 at 12:23 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -154,18 +154,22 @@ INSERT INTO `bus_personnel_roles` VALUES(5, 'Bus Owner + Conductor');
 
 CREATE TABLE `complaints` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `object_type_id` int(11) NOT NULL,
-  `object_id` int(11) NOT NULL,
+  `related_object_type` int(11) NOT NULL,
+  `related_object_id` int(11) NOT NULL,
+  `user_object_type` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `complaint_type` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `content` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `complaints`
 --
 
+INSERT INTO `complaints` VALUES(1, 1, 2, 5, 1, 1, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu egestas felis, a rutrum libero. Donec adipiscing felis et nunc pretium placerat. Donec faucibus purus at leo gravida pellentesque. Fusce eu urna non lacus eleifend condimentum ac ut ante. In ');
+INSERT INTO `complaints` VALUES(2, 1, 1, 4, 1, 0, 1, 'test complaint');
 
 -- --------------------------------------------------------
 
@@ -177,12 +181,15 @@ CREATE TABLE `complaint_status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `comp_status_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `complaint_status`
 --
 
+INSERT INTO `complaint_status` VALUES(1, 'Submitted');
+INSERT INTO `complaint_status` VALUES(2, 'Pending Review');
+INSERT INTO `complaint_status` VALUES(3, 'Reviewed and Closed');
 
 -- --------------------------------------------------------
 
@@ -209,8 +216,9 @@ CREATE TABLE `complaint_types` (
 
 CREATE TABLE `object_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `object_type_name` varchar(20) NOT NULL,
-  `display_name` varchar(20) NOT NULL,
+  `user_flag` int(1) NOT NULL,
+  `object_type_name` varchar(50) NOT NULL,
+  `display_name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
@@ -218,13 +226,13 @@ CREATE TABLE `object_types` (
 -- Dumping data for table `object_types`
 --
 
-INSERT INTO `object_types` VALUES(1, 'bus_route', 'Bus Route');
-INSERT INTO `object_types` VALUES(2, 'stop', 'Bus Stop');
-INSERT INTO `object_types` VALUES(3, 'bus', 'Bus');
-INSERT INTO `object_types` VALUES(4, 'bus_personnel', 'Bus Personnel');
-INSERT INTO `object_types` VALUES(5, 'admin', 'Admin User');
-INSERT INTO `object_types` VALUES(6, 'commuter', 'Commuter');
-INSERT INTO `object_types` VALUES(7, 'complaint', 'Complaint');
+INSERT INTO `object_types` VALUES(1, 0, 'bus_route', 'Bus Route');
+INSERT INTO `object_types` VALUES(2, 0, 'stop', 'Bus Stop');
+INSERT INTO `object_types` VALUES(3, 0, 'bus', 'Bus');
+INSERT INTO `object_types` VALUES(4, 1, 'bus_personnel', 'Bus Personnel');
+INSERT INTO `object_types` VALUES(5, 1, 'admin', 'Admin User');
+INSERT INTO `object_types` VALUES(6, 1, 'commuter', 'Commuter');
+INSERT INTO `object_types` VALUES(7, 0, 'complaint', 'Complaint');
 
 -- --------------------------------------------------------
 
@@ -244,7 +252,7 @@ CREATE TABLE `photographs` (
   `file_type` varchar(100) NOT NULL,
   `size` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `photographs`
@@ -278,7 +286,7 @@ INSERT INTO `photographs` VALUES(36, 0, 0, 3, 0, 0, 9, 'bus_personnel_prof_pic_3
 
 CREATE TABLE `photo_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `related_object` varchar(20) NOT NULL,
+  `related_object` varchar(50) NOT NULL,
   `photo_type_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
@@ -610,24 +618,24 @@ INSERT INTO `stops_routes` VALUES(161, 7, 79);
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stop_activity`
+-- Table structure for table `stop_activities`
 --
 
-CREATE TABLE `stop_activity` (
+CREATE TABLE `stop_activities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `trip_id` int(11) NOT NULL,
   `stop_id` int(11) NOT NULL,
   `alighted_commuters` int(11) NOT NULL,
   `boarded_commuters` int(11) NOT NULL,
-  `arrival_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `departure_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `arrival_time` int(11) NOT NULL,
+  `departure_time` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `trip_id` (`trip_id`),
   KEY `stop_id` (`stop_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
--- Dumping data for table `stop_activity`
+-- Dumping data for table `stop_activities`
 --
 
 
@@ -643,8 +651,8 @@ CREATE TABLE `trips` (
   `bus_id` int(11) NOT NULL,
   `begin_stop` int(11) NOT NULL,
   `end_stop` int(11) NOT NULL,
-  `departure_from_begin_stop` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `arrival_at_end_stop` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `departure_from_begin_stop` int(11) NOT NULL,
+  `arrival_at_end_stop` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `route_id` (`route_id`),
   KEY `bus_id` (`bus_id`)
@@ -728,11 +736,11 @@ ALTER TABLE `stops_routes`
   ADD CONSTRAINT `stops_routes_ibfk_2` FOREIGN KEY (`stop_id`) REFERENCES `stops` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `stop_activity`
+-- Constraints for table `stop_activities`
 --
-ALTER TABLE `stop_activity`
-  ADD CONSTRAINT `stop_activity_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `stop_activity_ibfk_2` FOREIGN KEY (`stop_id`) REFERENCES `stops` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `stop_activities`
+  ADD CONSTRAINT `stop_activities_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `trips` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `stop_activities_ibfk_2` FOREIGN KEY (`stop_id`) REFERENCES `stops` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `trips`

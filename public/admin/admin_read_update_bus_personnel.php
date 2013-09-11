@@ -110,8 +110,24 @@ $buses = Bus::find_all();
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
+		 
+		 <div class="span9">
 		   <h1>Bus Personnel Profile</h1>
-		   <h3><?php echo $bus_personnel_to_read_update->first_name . ' ' . $bus_personnel_to_read_update->last_name;?></h3>
+		   <h3><?php echo $bus_personnel_to_read_update->full_name();?></h3>
+		 </div>
+		 
+		 <div class="span3">
+		 
+		 <?php 
+         if (!empty($profile_picture_of_bus_personnel->filename)) {
+         	echo '<img src="../../' . $profile_picture_of_bus_personnel->image_path() . '" width="200" class="img-rounded pull-right" />'; 
+         } else {
+         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded pull-right" alt="Please upload a profile picture" />';
+         } 
+         ?>
+		 
+		 </div>
+		 
 		 </div>
 	  </header>
       
@@ -147,20 +163,6 @@ $buses = Bus::find_all();
 	      	<div class="tab-pane active in" id="personnel_profile">
 	      	
 	      	<form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>?personnelid=<?php echo $_GET['personnelid']; ?>" method="POST">
-            
-            <div class="control-group">
-            	<label for="profile_picture" class="control-label">Profile Picture</label>
-            
-	            <div class="controls">
-	            	<?php 
-	            	if (!empty($profile_picture_of_bus_personnel->filename)) {
-	            		echo '<img src="../../' . $profile_picture_of_bus_personnel->image_path() . '" width="250" class="img-rounded" />'; 
-	            	} else {
-	            		echo '<input type="text" value="" name="" placeholder="No profile picture uploaded" >'; 
-	            	} 
-	            	?>
-	            </div>
-            </div>
             
             <div class="control-group">
             	<label for="role" class="control-label">Role</label>

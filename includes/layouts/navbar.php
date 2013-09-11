@@ -58,13 +58,7 @@
           	?>
           	<li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          	<?php 
-          	
-          	if (!empty($profile_picture->filename)) {
-          		echo '<img src="../' . $profile_picture->image_path() . '" width="17" class="img-circle" /> ';
-          	} else {
-          		echo '<img src="img/default-prof-pic.jpg" width="17" class="img-circle" alt="Please upload a profile picture" /> ';
-          	}
+          	<?php
           	
           	echo $user->full_name(); ?> <b class="caret"></b></a>
           	<ul class="dropdown-menu">
