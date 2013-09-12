@@ -4,9 +4,7 @@ require_once("../../../includes/initialize.php");
 
 error_reporting (E_ALL ^ E_NOTICE);
 session_start(); //Do not remove this
-
 //only assign a new timestamp if the session variable is empty
-
 if (!isset($_SESSION['random_key']) || strlen($_SESSION['random_key'])==0){
     $_SESSION['random_key'] = strtotime(date('Y-m-d H:i:s')); //assign the timestamp to the session variable
 	$_SESSION['user_file_ext']= "";
@@ -15,7 +13,7 @@ if (!isset($_SESSION['random_key']) || strlen($_SESSION['random_key'])==0){
 # CONSTANTS																								#
 # You can alter the options below																		#
 #########################################################################################################
-$upload_dir = "img_uploads"; 					// The directory for the images to be saved in
+$upload_dir = "img_uploads"; 				// The directory for the images to be saved in
 $upload_path = $upload_dir."/";				// The path to where the image will be saved
 $large_image_prefix = "original_"; 			// The prefix name to large image
 $thumb_image_prefix = "thumbnail_";			// The prefix name to the thumb image
@@ -250,17 +248,14 @@ if ($_GET['a']=="delete" && strlen($_GET['t'])>0){
 	exit(); 
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title>Image Uploader and Cropper &middot; <?php echo WEB_APP_NAME; ?></title>
+	<title>Image Cropper and Uploader &middot; <?php echo WEB_APP_NAME; ?></title>
 	<script type="text/javascript" src="js/jquery-pack.js"></script>
 	<script type="text/javascript" src="js/jquery.imgareaselect.min.js"></script>
 </head>
-
 <body>
-
 <?php
 //Only display the javacript if an image has been uploaded
 if(strlen($large_photo_exists)>0){
@@ -347,6 +342,5 @@ if(strlen($large_photo_exists)>0 && strlen($thumb_photo_exists)>0){
 	Photo <input type="file" name="image" size="30" /> <input type="submit" name="upload" value="Upload" />
 	</form>
 <?php } ?>
-<!-- Copyright (c) 2008 http://www.webmotionuk.com -->
 </body>
 </html>

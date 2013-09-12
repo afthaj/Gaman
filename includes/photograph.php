@@ -5,15 +5,12 @@ require_once("database.php");
 class Photograph extends DatabaseObject {
 	
 	protected static $table_name = "photographs";
-	protected static $db_fields = array('id', 'stop_id', 'bus_id', 'bus_personnel_id', 'commuter_id', 'admin_id', 'photo_type', 'filename', 'file_type', 'size');
+	protected static $db_fields = array('id', 'related_object_type', 'related_object_id', 'photo_type', 'filename', 'file_type', 'size');
 	
 	public $id;
 	
-	public $stop_id;
-	public $bus_id;
-	public $bus_personnel_id;
-	public $commuter_id;
-	public $admin_id;
+	public $related_object_type;
+	public $related_object_id;
 	
 	public $photo_type;
 	public $filename;
@@ -225,13 +222,12 @@ class Photograph extends DatabaseObject {
 		}
 	}
 	
-	public function get_profile_picture($id=0, $photo_flag="") {
+	public function get_profile_picture($related_object_type, $id=0) {
 		global $database;
 		
-		$related_object_id = $photo_flag."_id";
-		
 		$sql  = "SELECT * FROM " . static::$table_name;
-		$sql .= " WHERE {$related_object_id} = {$id}";
+		$sql .= " WHERE related_object_type = {$related_object_type}";
+		$sql .= " AND related_object_id = {$id}";
 		$sql .= " LIMIT 1";
 		
 		$result_array = static::find_by_sql($sql);
@@ -240,26 +236,16 @@ class Photograph extends DatabaseObject {
 	
 	}
 	
-	public function get_photos_for_stop($stop_id=0){
+	public function get_photos($related_object_type, $id=0){
 		global $database;
 		
 		$sql  = "SELECT * FROM " . static::$table_name;
-		$sql .= " WHERE stop_id = " . $stop_id;
+		$sql .= " WHERE related_object_type = {$related_object_type}";
+		$sql .= " AND related_object_id = {$id}";
 		
 		return static::find_by_sql($sql);
 		
 	}
-	
-	public function get_photos_for_bus($bus_id=0){
-		global $database;
-	
-		$sql  = "SELECT * FROM " . static::$table_name;
-		$sql .= " WHERE bus_id = " . $bus_id;
-	
-		return static::find_by_sql($sql);
-	
-	}
-
 	
 }
 

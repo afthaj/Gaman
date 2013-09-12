@@ -9,19 +9,19 @@ if (!$session->is_logged_in()){
 		$user = AdminUser::find_by_id($_SESSION['id']);
 		
 		$p = new Photograph();
-		$profile_picture = $p->get_profile_picture($user->id, "admin");
+		$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 		
 	} else if ($_SESSION['object_type'] == 4 ){
 		$user = BusPersonnel::find_by_id($_SESSION['id']);
 		
 		$p = new Photograph();
-		$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+		$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 		
 	} else if ($_SESSION['object_type'] == 6 ){
 		$user = Commuter::find_by_id($_SESSION['id']);
 		
 		$p = new Photograph();
-		$profile_picture = $p->get_profile_picture($user->id, "commuter");
+		$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	}
 }
 ?>
