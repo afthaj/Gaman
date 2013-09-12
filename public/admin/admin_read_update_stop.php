@@ -23,8 +23,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	if (isset($_POST['upload'])){
 	
 		$photo_to_upload = new Photograph();
-	
-		$photo_to_upload->stop_id = $_GET['stopid'];
+		
+		$photo_to_upload->related_object_type = '2';
+		$photo_to_upload->related_object_id = $_GET['stopid'];
 		$photo_to_upload->photo_type = $_POST['photo_type'];
 	
 		$photo_to_upload->attach_file_bus_stop($_FILES['file_upload'], $photo_to_upload->stop_id, $photo_to_upload->photo_type);

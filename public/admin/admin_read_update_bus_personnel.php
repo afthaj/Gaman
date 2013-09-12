@@ -68,8 +68,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	if (isset($_POST['upload'])){
 	
 		$photo_to_upload = new Photograph();
-	
-		$photo_to_upload->bus_personnel_id = $_GET['personnelid'];
+		
+		$photo_to_upload->related_object_type = '4';
+		$photo_to_upload->related_object_id = $_GET['personnelid'];
 		$photo_to_upload->photo_type = '9'; // photo_type 9 is "User Profile"
 	
 		$photo_to_upload->attach_file_bus_personnel($_FILES['file_upload'], $bus_personnel_to_read_update->id, $bus_personnel_to_read_update->first_name, $bus_personnel_to_read_update->last_name);
@@ -222,8 +223,8 @@ $buses = Bus::find_all();
       		<table class="table table-bordered table-hover">
 	          <thead align="center">
 		        <tr>
-			        <td>Route Number</td>
 			        <td>Registration Number</td>
+			        <td>Route Number</td>
 			        <td>Name (Optional)</td>
 		        </tr>
 		      </thead>
@@ -243,8 +244,8 @@ $buses = Bus::find_all();
 	        		
 	        	?>
         		<tr>
+	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $assigned_bus->id; ?>" class="btn btn-block btn-info"><?php echo $assigned_bus->reg_number; ?></a></td>
 	        		<td><?php echo BusRoute::find_by_id($assigned_bus->route_id)->route_number; ?></td>
-	        		<td><?php echo $assigned_bus->reg_number; ?></td>
 	        		<td><?php echo $assigned_bus->name; ?></td>
         		</tr>
 	        	<?php } ?>

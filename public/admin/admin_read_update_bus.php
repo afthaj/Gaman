@@ -25,8 +25,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	if (isset($_POST['upload'])){
 	
 		$photo_to_upload = new Photograph();
-	
-		$photo_to_upload->bus_id = $_GET['busid'];
+
+		$photo_to_upload->related_object_type = '3';
+		$photo_to_upload->related_object_id = $_GET['busid'];
 		$photo_to_upload->photo_type = $_POST['photo_type'];
 	
 		$photo_to_upload->attach_file_bus($_FILES['file_upload'], $photo_to_upload->bus_id, $photo_to_upload->photo_type);
@@ -77,8 +78,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	if (isset($_POST['upload'])){
 	
 		$photo_to_upload = new Photograph();
-	
-		$photo_to_upload->bus_id = $_GET['busid'];
+		
+		$photo_to_upload->related_object_type = '3';
+		$photo_to_upload->related_object_id = $_GET['busid'];
 		$photo_to_upload->photo_type = $_POST['photo_type'];
 	
 		$photo_to_upload->attach_file_bus($_FILES['file_upload'], $photo_to_upload->bus_id, $photo_to_upload->photo_type);
@@ -163,6 +165,7 @@ if (isset($_GET['busid'])){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		   <h1>Bus Profile</h1>
+		   <h3><?php echo $bus_to_read_update->reg_number; ?></h3>
 		 </div>
 	  </header>
       
@@ -271,8 +274,7 @@ if (isset($_GET['busid'])){
 	          <thead align="center">
 		        <tr>
 			        <td>Profile Picture</td>
-			        <td>First Name</td>
-			        <td>Last Name</td>
+			        <td>Full Name</td>
 			        <td>Role</td>
 		        </tr>
 		      </thead>
@@ -286,11 +288,12 @@ if (isset($_GET['busid'])){
 		      	?>
 	        		<tr>
 		        		<td>
+		        		<a href="admin_read_update_bus_personnel.php?personnelid=<?php echo $assigned_bus_personnel->id; ?>">
 	        			<?php 
 	        			
 		        		$pic = new Photograph();
 		        		
-		        		$bus_personnel_profile_picture = $pic->get_profile_picture($assigned_bus_personnel->id, "bus_personnel");
+		        		$bus_personnel_profile_picture = $pic->get_profile_picture('4', $assigned_bus_personnel->id);
 		        		
 		        		if (!empty($bus_personnel_profile_picture->filename)) {
 		        			echo '<img src="../../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" />';
@@ -299,9 +302,9 @@ if (isset($_GET['busid'])){
 		        		}
 		        		
 		        		?>
+		        		</a>
 	        			</td>
-	        			<td><?php echo $assigned_bus_personnel->first_name; ?></td>
-		        		<td><?php echo $assigned_bus_personnel->last_name; ?></td>
+	        			<td><a class="btn btn-block btn-info" href="admin_read_update_bus_personnel.php?personnelid=<?php echo $assigned_bus_personnel->id; ?>"><?php echo $assigned_bus_personnel->full_name(); ?></a></td>
 		        		<td>
 		        		<?php			        	
 			        	

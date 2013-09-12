@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 11, 2013 at 12:23 PM
+-- Generation Time: Sep 12, 2013 at 09:15 AM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -226,7 +226,7 @@ CREATE TABLE `object_types` (
 -- Dumping data for table `object_types`
 --
 
-INSERT INTO `object_types` VALUES(1, 0, 'bus_route', 'Bus Route');
+INSERT INTO `object_types` VALUES(1, 0, 'route', 'Bus Route');
 INSERT INTO `object_types` VALUES(2, 0, 'stop', 'Bus Stop');
 INSERT INTO `object_types` VALUES(3, 0, 'bus', 'Bus');
 INSERT INTO `object_types` VALUES(4, 1, 'bus_personnel', 'Bus Personnel');
@@ -242,41 +242,39 @@ INSERT INTO `object_types` VALUES(7, 0, 'complaint', 'Complaint');
 
 CREATE TABLE `photographs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `stop_id` int(11) NOT NULL,
-  `bus_id` int(11) NOT NULL,
-  `bus_personnel_id` int(11) NOT NULL,
-  `commuter_id` int(11) NOT NULL,
-  `admin_id` int(11) NOT NULL,
+  `related_object_type` int(11) NOT NULL,
+  `related_object_id` int(11) NOT NULL,
   `photo_type` int(11) NOT NULL,
   `filename` varchar(255) NOT NULL,
   `file_type` varchar(100) NOT NULL,
   `size` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Dumping data for table `photographs`
 --
 
-INSERT INTO `photographs` VALUES(18, 0, 0, 0, 0, 8, 9, '8-Sachith-Senevirathna.jpg', 'image/jpeg', '6195');
-INSERT INTO `photographs` VALUES(19, 0, 0, 0, 0, 11, 9, '11-Janitha-Rasanga.jpg', 'image/jpeg', '261559');
-INSERT INTO `photographs` VALUES(20, 0, 0, 0, 0, 1, 9, '1-Admin-User.jpg', 'image/jpeg', '70034');
-INSERT INTO `photographs` VALUES(21, 0, 0, 0, 0, 4, 9, '4-Buddhi-De Silva.jpg', 'image/jpeg', '33102');
-INSERT INTO `photographs` VALUES(22, 1, 0, 0, 0, 0, 10, 'bus_stop_pic_1_10.jpg', 'image/jpeg', '21804');
-INSERT INTO `photographs` VALUES(23, 1, 0, 0, 0, 0, 11, 'bus_stop_pic_1_11.jpg', 'image/jpeg', '105293');
-INSERT INTO `photographs` VALUES(24, 1, 0, 0, 0, 0, 12, 'bus_stop_pic_1_12.jpg', 'image/jpeg', '90063');
-INSERT INTO `photographs` VALUES(25, 2, 0, 0, 0, 0, 10, 'bus_stop_pic_2_10.jpg', 'image/jpeg', '22031');
-INSERT INTO `photographs` VALUES(26, 2, 0, 0, 0, 0, 11, 'bus_stop_pic_2_11.jpg', 'image/jpeg', '73071');
-INSERT INTO `photographs` VALUES(27, 0, 1, 0, 0, 0, 1, 'bus_pic_1_1.jpeg', 'image/jpeg', '37090');
-INSERT INTO `photographs` VALUES(28, 0, 1, 0, 0, 0, 2, 'bus_pic_1_2.jpeg', 'image/jpeg', '43218');
-INSERT INTO `photographs` VALUES(29, 0, 2, 0, 0, 0, 1, 'bus_pic_2_1.jpg', 'image/jpeg', '37227');
-INSERT INTO `photographs` VALUES(30, 0, 2, 0, 0, 0, 2, 'bus_pic_2_2.jpg', 'image/jpeg', '68710');
-INSERT INTO `photographs` VALUES(31, 0, 3, 0, 0, 0, 1, 'bus_pic_3_1.jpg', 'image/jpeg', '34694');
-INSERT INTO `photographs` VALUES(32, 0, 3, 0, 0, 0, 5, 'bus_pic_3_5.jpg', 'image/jpeg', '53572');
-INSERT INTO `photographs` VALUES(33, 0, 1, 0, 0, 0, 6, 'bus_pic_1_6.jpeg', 'image/jpeg', '24515');
-INSERT INTO `photographs` VALUES(34, 0, 0, 1, 0, 0, 9, 'bus_personnel_prof_pic_1_John_Smith.jpg', 'image/jpeg', '31614');
-INSERT INTO `photographs` VALUES(35, 0, 0, 2, 0, 0, 9, 'bus_personnel_prof_pic_2_Bus_Driver.jpg', 'image/jpeg', '37737');
-INSERT INTO `photographs` VALUES(36, 0, 0, 3, 0, 0, 9, 'bus_personnel_prof_pic_3_Bus_Conductor.jpg', 'image/jpeg', '28270');
+INSERT INTO `photographs` VALUES(18, 5, 8, 9, '8-Sachith-Senevirathna.jpg', 'image/jpeg', '6195');
+INSERT INTO `photographs` VALUES(19, 5, 11, 9, '11-Janitha-Rasanga.jpg', 'image/jpeg', '261559');
+INSERT INTO `photographs` VALUES(20, 5, 1, 9, '1-Admin-User.jpg', 'image/jpeg', '70034');
+INSERT INTO `photographs` VALUES(21, 5, 4, 9, '4-Buddhi-De Silva.jpg', 'image/jpeg', '33102');
+INSERT INTO `photographs` VALUES(22, 2, 1, 10, 'bus_stop_pic_1_10.jpg', 'image/jpeg', '21804');
+INSERT INTO `photographs` VALUES(23, 2, 1, 11, 'bus_stop_pic_1_11.jpg', 'image/jpeg', '105293');
+INSERT INTO `photographs` VALUES(24, 2, 1, 12, 'bus_stop_pic_1_12.jpg', 'image/jpeg', '90063');
+INSERT INTO `photographs` VALUES(25, 2, 2, 10, 'bus_stop_pic_2_10.jpg', 'image/jpeg', '22031');
+INSERT INTO `photographs` VALUES(26, 2, 2, 11, 'bus_stop_pic_2_11.jpg', 'image/jpeg', '73071');
+INSERT INTO `photographs` VALUES(27, 3, 1, 1, 'bus_pic_1_1.jpeg', 'image/jpeg', '37090');
+INSERT INTO `photographs` VALUES(28, 3, 1, 2, 'bus_pic_1_2.jpeg', 'image/jpeg', '43218');
+INSERT INTO `photographs` VALUES(29, 3, 2, 1, 'bus_pic_2_1.jpg', 'image/jpeg', '37227');
+INSERT INTO `photographs` VALUES(30, 3, 2, 2, 'bus_pic_2_2.jpg', 'image/jpeg', '68710');
+INSERT INTO `photographs` VALUES(31, 3, 3, 1, 'bus_pic_3_1.jpg', 'image/jpeg', '34694');
+INSERT INTO `photographs` VALUES(32, 3, 3, 5, 'bus_pic_3_5.jpg', 'image/jpeg', '53572');
+INSERT INTO `photographs` VALUES(33, 3, 1, 6, 'bus_pic_1_6.jpeg', 'image/jpeg', '24515');
+INSERT INTO `photographs` VALUES(34, 4, 1, 9, 'bus_personnel_prof_pic_1_John_Smith.jpg', 'image/jpeg', '31614');
+INSERT INTO `photographs` VALUES(35, 4, 2, 9, 'bus_personnel_prof_pic_2_Bus_Driver.jpg', 'image/jpeg', '37737');
+INSERT INTO `photographs` VALUES(36, 4, 3, 9, 'bus_personnel_prof_pic_3_Bus_Conductor.jpg', 'image/jpeg', '28270');
+INSERT INTO `photographs` VALUES(37, 5, 7, 9, 'admin_prof_pic_7_Laleen_Pallegoda.jpg', 'image/jpeg', '27079');
 
 -- --------------------------------------------------------
 

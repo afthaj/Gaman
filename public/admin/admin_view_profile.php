@@ -45,8 +45,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	if (isset($_POST['upload'])){
 	
 		$photo = new Photograph();
-	
-		$photo->admin_id = $user->id;
+		
+		$photo->related_object_type = '5';
+		$photo->related_object_id = $user->id;
 		$photo->photo_type = 9; // photo_type 9 is "User Profile"
 		$photo->attach_file_admin_user($_FILES['file_upload'], $user->id, $user->first_name, $user->last_name);
 	
@@ -104,8 +105,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	if (isset($_POST['upload'])){
 	
 		$photo = new Photograph();
-	
-		$photo->bus_personnel_id = $user->id;
+		
+		$photo->related_object_type = '4';
+		$photo->related_object_id = $user->id;
 		$photo->photo_type = 9; // photo_type 9 is "User Profile"
 		$photo->attach_file_bus_personnel($_FILES['file_upload'], $user->id, $user->first_name, $user->last_name);
 	

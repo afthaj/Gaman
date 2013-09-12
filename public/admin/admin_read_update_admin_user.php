@@ -55,8 +55,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	if (isset($_POST['upload'])){
 	
 		$photo_to_upload = new Photograph();
-	
-		$photo_to_upload->admin_id = $_GET['adminid'];
+		
+		$photo_to_upload->related_object_type = '5';
+		$photo_to_upload->related_object_id = $_GET['adminid'];
 		$photo_to_upload->photo_type = '9'; // photo_type 9 is "User Profile"
 	
 		$photo_to_upload->attach_file_admin_user($_FILES['file_upload'], $user_to_read_update->id, $user_to_read_update->first_name, $user_to_read_update->last_name);
