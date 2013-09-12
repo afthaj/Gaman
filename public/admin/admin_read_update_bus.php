@@ -7,7 +7,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 	if (isset($_POST['submit'])){
 		$bus_to_read_update->route_id = $_POST['route_id'];
@@ -59,7 +59,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 	if (isset($_POST['submit'])){
 		$bus_to_read_update->route_id = $_POST['route_id'];
@@ -132,7 +132,7 @@ $pt = new PhotoType();
 $photo_types = $pt->get_photo_types($related_object);
 
 $p2 = new Photograph();
-$photos_of_bus = $p2->get_photos_for_bus($_GET['busid']);
+$photos_of_bus = $p2->get_photos('3', $_GET['busid']);
 
 if (isset($_GET['busid'])){
 	$bus_to_read_update = Bus::find_by_id($_GET['busid']);

@@ -5,7 +5,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 	$admin_levels = AdminLevel::find_all();
 	
@@ -13,7 +13,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 		$user_to_read_update = AdminUser::find_by_id($_GET['adminid']);
 	
 		$photo = new Photograph();
-		$profile_picture_of_other_admin_users = $photo->get_profile_picture($user_to_read_update->id, "admin");
+		$profile_picture_of_other_admin_users = $photo->get_profile_picture($session->object_type, $user_to_read_update->id);
 	} else {
 		$session->message("No Admin ID provided to view.");
 		redirect_to("admin_list_admin_users.php");

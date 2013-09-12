@@ -5,7 +5,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 	$c = new Complaint();
 	$complaints = $c->find_all();
@@ -14,7 +14,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 	$c = new Complaint();
 	$complaints = $c->get_complaints_for_user($user->id, $session->object_type);

@@ -5,13 +5,13 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 } else if ($session->is_logged_in() && $session->object_type == 4){
 	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 } else {
 	redirect_to("login.php");
@@ -91,7 +91,7 @@ $bus_personnel = BusPersonnel::find_all();
 	        		
 	        		$pic = new Photograph();
 	        		
-	        		$bus_personnel_profile_picture = $pic->get_profile_picture($bus_personnel[$i]->id, "bus_personnel");
+	        		$bus_personnel_profile_picture = $pic->get_profile_picture('4', $bus_personnel[$i]->id);
 	        		
 	        		if (!empty($bus_personnel_profile_picture->filename)) {
 	        			echo '<img src="../../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" />';

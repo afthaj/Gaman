@@ -5,7 +5,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 	if (isset($_POST['submit'])){
 		$stop_to_read_update->name = $_POST['name'];
@@ -42,11 +42,14 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "bus_personnel");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 } else {
 	redirect_to("login.php");
 }
+
+
+// GET request stuff and init code
 
 if (isset($_GET['stopid'])){
 	$stop_to_read_update = BusStop::find_by_id($_GET['stopid']);
@@ -64,7 +67,7 @@ $pt = new PhotoType();
 $photo_types = $pt->get_photo_types($related_object);
 
 $p2 = new Photograph();
-$photos_of_stop = $p2->get_photos_for_stop($_GET['stopid']);
+$photos_of_stop = $p2->get_photos('2', $_GET['stopid']);
 
 $stops = BusStop::find_all();
 

@@ -5,7 +5,7 @@ if ($session->is_logged_in() && $session->object_type == 5) {
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "admin");
+	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
 	$users = AdminUser::find_all();
 
@@ -74,7 +74,7 @@ if ($session->is_logged_in() && $session->object_type == 5) {
         		
         		$pic = new Photograph();
         		
-        		$user_profile_picture = $pic->get_profile_picture($users[$i]->id, "admin");
+        		$user_profile_picture = $pic->get_profile_picture('5', $users[$i]->id);
         		
         		if (!empty($user_profile_picture->filename)) {
         			echo '<img src="../../' . $user_profile_picture->image_path() . '" width="100" class="img-rounded" />';
