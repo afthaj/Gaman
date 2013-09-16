@@ -176,9 +176,9 @@ if ($session->is_logged_in() && $session->object_type == 5){
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
 	        	<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<a href="admin_list_admin_users.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
+	        		<a href="admin_list_admin_users.php" class="btn btn-primary"><i class="icon-arrow-left icon-white"></i> Back to List of Admin Users</a>
 	        	<?php } else if ($session->is_logged_in() && $session->object_type == 4) {?>
-	        		<a href="index.php" class="btn btn-primary"> &larr; Back to Home</a>
+	        		<a href="index.php" class="btn btn-primary"><i class="icon-arrow-left icon-white"></i> Back to Home</a>
 	        	<?php } ?>
 	        </div>
         </div>

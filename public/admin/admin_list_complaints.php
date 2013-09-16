@@ -2,6 +2,7 @@
 require_once("../../includes/initialize.php");
 
 if ($session->is_logged_in() && $session->object_type == 5){
+	//admin_user
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
@@ -11,6 +12,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	$complaints = $c->find_all();
 	
 } else if ($session->is_logged_in() && $session->object_type == 4){
+	//bus_personnel
 	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
@@ -64,7 +66,7 @@ $bp = new BusPersonnel();
       	
       	<div class="row-fluid">
 	        <br />
-	        <a href="admin_create_complaint.php" class="btn btn-primary">Add New Complaint</a>
+	        <a href="admin_create_complaint.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Complaint</a>
 	        <br/> <br />
         </div>
         
@@ -74,15 +76,13 @@ $bp = new BusPersonnel();
         <table class="table table-bordered table-hover">
           <thead>
 	        <tr align="center">
-		        <td>Complaint Type</td>
+		        <td class="span4">Complaint Type</td>
 		        <td>Related To</td>
 		        <td>Identfier</td>
 		        <td>Complaint Details</td>
 		        <td>Complaint Status</td>
-		        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
-		        <?php } ?>
 	        </tr>
 	      </thead>
 	      <tbody>
@@ -123,10 +123,8 @@ $bp = new BusPersonnel();
 			        
 			        ?>
 			        "><?php echo $comp_status->find_by_id($complaint->status)->comp_status_name; ?></span></td>
-			        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block">Delete</a></td>
-	        		<?php } ?>        		
+	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i> Edit</a></td>
+	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete</a></td>
         		</tr>
         	<?php }?>
         	

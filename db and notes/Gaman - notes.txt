@@ -111,7 +111,7 @@ View Route Timetable
 Generate Route Timetable
 }
 
-----------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
 
 Commuter
 (
@@ -130,7 +130,7 @@ View Route Timetable
 View Fare Table
 }
 
-----------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------
 
 BusPersonnel
 (
@@ -149,3 +149,56 @@ View Route Statistics (passenger demand graphs, time statistics and graphs)
 Search for Bus Route
 View Route Timetable
 }
+
+--------------------------------------------------------------------------------------------------------
+
+complaint_types
+{
+routes{
+bus delays,
+overcrowded buses,
+lack of buses,
+lack of buses during the route's operational hours,
+}, 
+stops{
+no proper bus stop,
+buses don't stop at the correct area in the bus stop,
+bus stop not marked correctly,
+insufficient area for buses to stop
+}, 
+buses{
+loitering at bus stop,
+not issuing a valid ticket,
+overcrowding the bus,
+stopping at undesignated bus stops,
+
+reckless driving,
+neglecting road rules,
+diverting attention while driving,
+
+providing the improper balance money,
+not providing the balance money at all,
+overcharging a fare,
+
+rude/discourteous service,
+unhygienic/non-presentable appearance and/or attire,
+
+failure to display the fare table in the bus,
+operating without a valid driver's license,
+operating without a valid conductor's license,
+operating without a valid route permit,
+}, 
+bus_personnel{
+reckless driving,
+neglecting road rules,
+diverting attention while driving,
+
+providing the improper balance money,
+not providing the balance money at all,
+overcharging a fare,
+
+discourteous service,
+unhygienic/non-presentable appearance,
+}
+}
+

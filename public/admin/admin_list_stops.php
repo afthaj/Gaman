@@ -55,13 +55,13 @@ $stops = BusStop::find_all();
       <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
       <div class="span3">
       	<div class="sidenav" data-spy="affix" data-offset-top="200">
-      		<a href="admin_create_stop.php" class="btn btn-primary">Add New Bus Stop</a>
+      		<a href="admin_create_stop.php" class="btn btn-primary btn-block"><i class="icon-plus icon-white"></i> Add New Bus Stop</a>
       	</div>
       </div>
       <?php } else { ?>
       <div class="span3">
       	<div class="sidenav" data-spy="affix" data-offset-top="200">
-      		<a href="index.php" class="btn btn-primary">&larr; Back to Home</a>
+      		<a href="index.php" class="btn btn-primary btn-block"><i class="icon-left-arrow icon-white"></i> Back to Home</a>
       	</div>
       </div>
       <?php } ?>
@@ -92,9 +92,9 @@ $stops = BusStop::find_all();
 	  	<td align="left"><?php echo $stop->name; ?></td>
 	  	<td align="center"><?php echo $stop->location_latitude; ?></td>
 	  	<td align="center"><?php echo $stop->location_longitude; ?></td>
-      	<td><a href="admin_read_update_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block">Details</a></td>
+      	<td><a href="admin_read_update_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Details</a></td>
 	  	<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	  	<td><a href="admin_delete_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-danger btn-block">Delete</a></td>
+	  	<td><a href="admin_delete_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete</a></td>
 	  	<?php } ?>        		
       </tr>
       <?php }?>

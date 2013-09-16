@@ -54,7 +54,7 @@ $stop = new BusStop();
       	<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
       	<div class="row-fluid">
 	        <br />
-	        <a href="admin_create_route.php" class="btn btn-primary">Add New Route</a>
+	        <a href="admin_create_route.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Route</a>
 	        <br />
         </div>
         <?php } ?>
@@ -91,10 +91,10 @@ $stop = new BusStop();
 	        		<td><?php echo $stop->find_by_id($route->end_stop)->name; ?></td>
 	        		<td><?php echo $route->length; ?></td>
 	        		<td><?php echo $route->trip_time; ?></td>
-	        		<td><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block">Route Profile</a></td>
+	        		<td><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Route Profile</a></td>
 	        		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<td><a href="admin_view_route_data.php?routeid=<?php echo $route->id; ?>" class="btn btn-success btn-block">Route Data</a></td>
-	        		<td><a href="admin_delete_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-danger btn-block">Delete Route</a></td>
+	        		<td><a href="admin_view_route_data.php?routeid=<?php echo $route->id; ?>" class="btn btn-success btn-block"><i class="icon-globe icon-white"></i> Route Data</a></td>
+	        		<td><a href="admin_delete_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete Route</a></td>
 	        		<?php } ?>        		
         		</tr>
         	<?php } ?>

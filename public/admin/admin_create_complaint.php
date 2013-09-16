@@ -2,6 +2,7 @@
 require_once("../../includes/initialize.php");
 
 if ($session->is_logged_in() && $session->object_type == 5){
+	//admin_user
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
@@ -49,6 +50,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 	}
 	
 } else if ($session->is_logged_in() && $session->object_type == 4){
+	//bus_personnel
 	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
@@ -108,6 +110,7 @@ $bus_personnel = BusPersonnel::find_all();
 $complaint_types = ComplaintType::find_all();
 $complaint_status = ComplaintStatus::find_all();
 $object_types = ObjectType::find_all();
+$object_type_object = new ObjectType();
 
 ?>
 
@@ -119,10 +122,10 @@ $object_types = ObjectType::find_all();
     
     <script type="text/javascript">
 
-	function change_object_type(str, related_object) {
+	function change_related_object_type(comp_type, related_object_type) {
 		
-		if (str == "") {
-			related_object.innerHTML = "";
+		if (comp_type == "") {
+			related_object_type.innerHTML = "";
 			return;
 			}
 			
@@ -137,14 +140,86 @@ $object_types = ObjectType::find_all();
 		request.onreadystatechange = function() {
 			
 			if (request.readyState == 4 && request.status == 200) {
-				related_object.innerHTML = request.responseText;
+				related_object_type.innerHTML = request.responseText;
 				}
 			
 			}
 			
-		request.open("GET","../ajax_files/get_object_types.php?q=" + str, true);
+		request.open("GET","../ajax_files/get_object_types_to_create_complaint.php?q=" + comp_type, true);
 		
 		request.send();
+		
+		}
+
+	function change_related_object_id(str, related_object_id) {
+		
+		if (str == "") {
+			related_object_id.innerHTML = "";
+			return;
+			}
+			
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			request = new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				request = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				
+		request.onreadystatechange = function() {
+			
+			if (request.readyState == 4 && request.status == 200) {
+				related_object_id.innerHTML = request.responseText;
+				}
+			
+			}
+			
+		request.open("GET","../ajax_files/get_objects_to_create_complaint.php?q=" + str, true);
+		
+		request.send();
+		
+		}
+
+	function change_related_object_type_and_id(str, related_object_type, related_object_id) {
+		
+		if (str == "") {
+			related_object_id.innerHTML = "";
+			return;
+			}
+			
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			request = new XMLHttpRequest();
+			request2 = new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				request = new ActiveXObject("Microsoft.XMLHTTP");
+				request2 = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				
+		request.onreadystatechange = function() {
+			
+			if (request.readyState == 4 && request.status == 200) {
+				related_object_id.innerHTML = request.responseText;
+				}
+			
+			}
+
+		request2.onreadystatechange = function() {
+			
+			if (request2.readyState == 4 && request2.status == 200) {
+				related_object_type.innerHTML = request2.responseText;
+				}
+			
+			}
+			
+		request.open("GET","../ajax_files/get_objects_to_create_complaint.php?q=" + str, true);
+		
+		request.send();
+
+		request2.open("GET","../ajax_files/get_object_types_to_create_complaint.php?q=" + str, true);
+		
+		request2.send();
 		
 		}
 	
@@ -179,7 +254,7 @@ $object_types = ObjectType::find_all();
        	  <div class="span3">
        	  
 	       	  <div class="sidenav" data-spy="affix" data-offset-top="200">
-		      	<a href="index.php" class="btn btn-primary"> &larr; Back to Home Page</a>
+		      	<a href="admin_list_complaints.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Complaints</a>
 		      </div>
        	  
        	  </div>
@@ -191,31 +266,27 @@ $object_types = ObjectType::find_all();
        	  	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="form-horizontal">
             
             	<div class="control-group">
-	            <label for="object_type_id" class="control-label">Related to:</label>
-		            <div class="controls">
-		            	<select name="object_type_id" id="object_type_id" onChange="change_object_type(this.value, document.getElementById('related_object'))">
-		            		<option value="">Please select an option</option>
-							<?php for($i = 0; $i <= 3; $i++){ ?>
-			            		<option value="<?php echo $object_types[$i]->id; ?>"><?php echo $object_types[$i]->display_name; ?></option>
-			            	<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group" id="related_object">
-	            </div>
-	            
-	            <div class="control-group">
 	            <label for="complaint_type" class="control-label">Complaint Type</label>
 		            <div class="controls">
-		            	<select name="complaint_type">
-		            	<?php foreach($complaint_types as $complaint_type){ ?>
-						  <option value="<?php echo $complaint_type->id; ?>"><?php echo $complaint_type->name; ?></option>
+		            	<select name="complaint_type" onChange="change_related_object_type_and_id(this.value, document.getElementById('related_object_type'), document.getElementById('related_object_id'))">
+		            	<option value="">Please Select</option>
+		            	<?php for ($i = 0; $i < count($complaint_types); $i++){ ?>
+							<option value="<?php echo $complaint_types[$i]->id; ?>"><?php echo $object_type_object->find_by_id($complaint_types[$i]->related_object_type)->display_name . ' - ' . $complaint_types[$i]->comp_type_name; ?></option>
 						<?php } ?>
 						</select>
 		            </div>
 	            </div>
 	            
+	            <div class="control-group">
+	            <label for="related_object_type" class="control-label">Related to:</label>
+					<div class="controls">
+					<select name="related_object_type" id="related_object_type">
+					</select>
+					</div>
+	            </div>
+	            
+	            <div class="control-group" id="related_object_id">
+	            </div>
 	            
 		        <input type="hidden" name="status" value="1">
 				

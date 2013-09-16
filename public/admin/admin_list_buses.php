@@ -51,7 +51,7 @@ $buses = Bus::find_all();
         <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
         <div class="row-fluid">
         	<br />
-	        <a href="admin_create_bus.php" class="btn btn-primary">Add New Bus</a>
+	        <a href="admin_create_bus.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Bus</a>
 	        <br />
         </div>
         <?php } ?>
@@ -78,8 +78,8 @@ $buses = Bus::find_all();
 	        		<td><?php echo BusRoute::find_by_id($bus->route_id)->route_number; ?></td>
 	        		<td><?php echo $bus->reg_number; ?></td>
 	        		<td><?php if (!empty($bus->name)) {echo $bus->name;} ?></td>
-	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i> Edit</a></td>
+	        		<td><a href="admin_delete_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete</a></td>        		
         		</tr>
         	<?php }?>
         	

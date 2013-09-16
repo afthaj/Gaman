@@ -63,7 +63,7 @@ $routes = BusRoute::find_all();
         
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_list_buses.php" class="btn btn-primary"> &larr; Back to Buses List</a>
+        		<a href="admin_list_buses.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Buses</a>
         	</div>
         </div>
 

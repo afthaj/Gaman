@@ -44,7 +44,7 @@ if ($session->is_logged_in() && $session->object_type == 5) {
         
         <div class="row-fluid">
 	        <br />
-	        <a href="admin_create_admin_user.php" class="btn btn-primary">Add New Admin User</a>
+	        <a href="admin_create_admin_user.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Admin User</a>
 	        <br /><br />
         </div>
         
@@ -88,8 +88,8 @@ if ($session->is_logged_in() && $session->object_type == 5) {
         		<td><?php echo $users[$i]->username; ?></td>
         		<td><?php echo $users[$i]->email_address; ?></td>
         		<td><?php echo $admin_level->get_admin_level($users[$i]->admin_level)->admin_level_name; ?></td>
-        		<td><a href="admin_read_update_admin_user.php?adminid=<?php echo $users[$i]->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-        		<td><a href="admin_delete_admin_user.php?adminid=<?php echo $user->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+        		<td><a href="admin_read_update_admin_user.php?adminid=<?php echo $users[$i]->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i> Edit</a></td>
+        		<td><a href="admin_delete_admin_user.php?adminid=<?php echo $user->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete</a></td>        		
         		</tr>
         		
         	<?php 

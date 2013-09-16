@@ -68,7 +68,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
       
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_list_admin_users.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
+        		<a href="admin_list_admin_users.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Admin Users</a>
         	</div>  
         </div>
                 

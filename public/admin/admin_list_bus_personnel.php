@@ -52,7 +52,7 @@ $bus_personnel = BusPersonnel::find_all();
         <?php if ($session->is_logged_in() && $session->object_type == 5){ ?>
         <div class="row-fluid">
         	<br />
-	        <a href="admin_create_bus_personnel.php" class="btn btn-primary">Add New Bus Personnel</a>
+	        <a href="admin_create_bus_personnel.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Bus Personnel</a>
 	        <br />
         </div>
         <?php } ?>
@@ -107,8 +107,8 @@ $bus_personnel = BusPersonnel::find_all();
 	        		<td><?php echo $bus_personnel[$i]->username; ?></td>
 	        		<td><?php echo $bus_personnel[$i]->nic_number; ?></td>
 	        		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<td><a href="admin_read_update_bus_personnel.php?personnelid=<?php echo $bus_personnel[$i]->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="admin_delete_bus_personnel.php?personnelid=<?php echo $bus_personnel[$i]->id; ?>" class="btn btn-danger btn-block">Delete</a></td>
+	        		<td><a href="admin_read_update_bus_personnel.php?personnelid=<?php echo $bus_personnel[$i]->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i> Edit</a></td>
+	        		<td><a href="admin_delete_bus_personnel.php?personnelid=<?php echo $bus_personnel[$i]->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete</a></td>
 	        		<?php } ?>        		
         		</tr>
         		

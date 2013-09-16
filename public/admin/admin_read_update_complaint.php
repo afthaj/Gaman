@@ -1,95 +1,109 @@
 <?php
 require_once("../../includes/initialize.php");
 
+//init code
+$comp_object = new Complaint();
+$complaint_to_read_update = $comp_object->find_by_id($_GET['complaintid']);
+
+$routes = BusRoute::find_all();
+$stops = BusStop::find_all();
+$buses = Bus::find_all();
+$bus_personnel = BusPersonnel::find_all();
+$complaint_types = ComplaintType::find_all();
+$complaint_status = ComplaintStatus::find_all();
+$object_types = ObjectType::find_all();
+$object_type_object = new ObjectType();
+
+//check login
 if ($session->is_logged_in() && $session->object_type == 5){
+	//admin_user
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
 	$p = new Photograph();
 	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
-	$admin_levels = AdminLevel::find_all();
-	
 	if (isset($_POST['submit'])){
-		$user->username = $_POST['username'];
-		$user->first_name = $_POST['first_name'];
-		$user->last_name = $_POST['last_name'];
-		$user->email_address = $_POST['email_address'];
-		$user->admin_level = $_POST['admin_level'];
-	
-		if ($user->update()){
-			$session->message("Success! Your details were updated. ");
-			redirect_to('admin_view_profile.php');
-		} else {
-			$session->message("Error! Your details could not be updated. ");
-		}
-	}
-	
-	if (isset($_POST['update'])){
-	
-		if ($_POST['old_password'] == $user->password){
+		
+		if (isset($_POST['bus_route_id'])) {
 				
-			$user->password = $_POST['new_password'];
+			$complaint_to_read_update->related_object_type = 1;
+			$complaint_to_read_update->related_object_id = $_POST['bus_route_id'];
 				
-			if ($user->update()){
-				$session->message("Success! Your password was updated. ");
-				redirect_to('admin_view_profile.php');
-			} else {
-				$session->message("Error! Your password could not be updated. ");
-			}
-		} else {
-			$session->message("Error! The existing password did not match. ");
+		} else if (isset($_POST['stop_id'])) {
+				
+			$complaint_to_read_update->related_object_type = 2;
+			$complaint_to_read_update->related_object_id = $_POST['stop_id'];
+				
+		} else if (isset($_POST['bus_id'])) {
+				
+			$complaint_to_read_update->related_object_type = 3;
+			$complaint_to_read_update->related_object_id = $_POST['bus_id'];
+				
+		} else if (isset($_POST['bus_personnel_id'])) {
+				
+			$complaint_to_read_update->related_object_type = 4;
+			$complaint_to_read_update->related_object_id = $_POST['bus_personnel_id'];
+				
 		}
-	
+		
+		$complaint_to_read_update->complaint_type = $_POST['complaint_type'];
+		$complaint_to_read_update->status = $_POST['status'];
+		$complaint_to_read_update->content = $_POST['content'];
+		
+		if ($complaint_to_read_update->update()){
+			$session->message("Success! The Complaint details have been changed. ");
+			redirect_to('admin_list_complaints.php');
+		} else {
+			$session->message("Error! The Complaint details could not be changed. ");
+		}
 	}
 	
 } else if ($session->is_logged_in() && $session->object_type == 4) {
+	//bus_personnel
 	
 	$user = BusPersonnel::find_by_id($_SESSION['id']);
 	$p = new Photograph();
 	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
 	
-	$roles = BusPersonnelRole::find_all();
-	$buses = Bus::find_all();
-	
 	if (isset($_POST['submit'])){
-		$user->username = $_POST['username'];
-		$user->first_name = $_POST['first_name'];
-		$user->last_name = $_POST['last_name'];
-		$user->nic_number = $_POST['nic_number'];
-		$user->telephone_number = $_POST['telephone_number'];
-	
-		if ($user->update()){
-			$session->message("Success! Your details were updated. ");
-			redirect_to('admin_view_profile.php');
-		} else {
-			$session->message("Error! Your details could not be updated. ");
+		
+		if (isset($_POST['bus_route_id'])) {
+				
+			$complaint_to_read_update->related_object_type = 1;
+			$complaint_to_read_update->related_object_id = $_POST['bus_route_id'];
+				
+		} else if (isset($_POST['stop_id'])) {
+				
+			$complaint_to_read_update->related_object_type = 2;
+			$complaint_to_read_update->related_object_id = $_POST['stop_id'];
+				
+		} else if (isset($_POST['bus_id'])) {
+				
+			$complaint_to_read_update->related_object_type = 3;
+			$complaint_to_read_update->related_object_id = $_POST['bus_id'];
+				
+		} else if (isset($_POST['bus_personnel_id'])) {
+				
+			$complaint_to_read_update->related_object_type = 4;
+			$complaint_to_read_update->related_object_id = $_POST['bus_personnel_id'];
+				
 		}
-	}
-	
-	if (isset($_POST['update'])){
-	
-		if ($_POST['old_password'] == $user->password){
-	
-			$user->password = $_POST['new_password'];
-	
-			if ($user->update()){
-				$session->message("Success! Your password was updated. ");
-				redirect_to('admin_view_profile.php');
-			} else {
-				$session->message("Error! Your password could not be updated. ");
-			}
+		
+		$complaint_to_read_update->complaint_type = $_POST['complaint_type'];
+		$complaint_to_read_update->status = $_POST['status'];
+		$complaint_to_read_update->content = $_POST['content'];
+		
+		if ($complaint_to_read_update->update()){
+			$session->message("Success! The Complaint details have been changed. ");
+			redirect_to('admin_list_complaints.php');
 		} else {
-			$session->message("Error! The existing password did not match. ");
+			$session->message("Error! The Complaint details could not be changed. ");
 		}
-	
 	}
 	
 } else {
 	redirect_to("login.php");
 }
-
-$comp_object = new Complaint();
-$complaint_to_read_update = $comp_object->find_by_id($_GET['complaintid']);
 
 ?>
 
@@ -99,6 +113,111 @@ $complaint_to_read_update = $comp_object->find_by_id($_GET['complaintid']);
     <title>Complaint Details &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
+  
+  <script type="text/javascript">
+
+	function change_related_object_type(comp_type, related_object_type) {
+		
+		if (comp_type == "") {
+			related_object_type.innerHTML = "";
+			return;
+			}
+			
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			request = new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				request = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				
+		request.onreadystatechange = function() {
+			
+			if (request.readyState == 4 && request.status == 200) {
+				related_object_type.innerHTML = request.responseText;
+				}
+			
+			}
+			
+		request.open("GET","../ajax_files/get_object_types_to_read_update_complaint.php?q=" + comp_type, true);
+		
+		request.send();
+		
+		}
+
+	function change_related_object_id(str, related_object_id) {
+		
+		if (str == "") {
+			related_object_id.innerHTML = "";
+			return;
+			}
+			
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			request = new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				request = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				
+		request.onreadystatechange = function() {
+			
+			if (request.readyState == 4 && request.status == 200) {
+				related_object_id.innerHTML = request.responseText;
+				}
+			
+			}
+			
+		request.open("GET","../ajax_files/get_objects_to_read_update_complaint.php?q=" + str, true);
+		
+		request.send();
+		
+		}
+
+	function change_related_object_type_and_id(str, related_object_type, related_object_id) {
+		
+		if (str == "") {
+			related_object_id.innerHTML = "";
+			return;
+			}
+			
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			request = new XMLHttpRequest();
+			request2 = new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				request = new ActiveXObject("Microsoft.XMLHTTP");
+				request2 = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				
+		request.onreadystatechange = function() {
+			
+			if (request.readyState == 4 && request.status == 200) {
+				related_object_id.innerHTML = request.responseText;
+				}
+			
+			}
+
+		request2.onreadystatechange = function() {
+			
+			if (request2.readyState == 4 && request2.status == 200) {
+				related_object_type.innerHTML = request2.responseText;
+				}
+			
+			}
+			
+		request.open("GET","../ajax_files/get_objects_to_read_update_complaint.php?q=" + str, true);
+		
+		request.send();
+
+		request2.open("GET","../ajax_files/get_object_types_to_read_update_complaint.php?q=" + str, true);
+		
+		request2.send();
+		
+		}
+	
+	</script>
 
   <body>
 
@@ -114,19 +233,6 @@ $complaint_to_read_update = $comp_object->find_by_id($_GET['complaintid']);
 		 
 		 <div class="span9">
 		 	<h1>Complaint Details</h1>
-		 	<h3><?php echo $user->full_name();?></h3>
-		 </div>
-		 
-		 <div class="span3">
-		 
-		 <?php 
-         if (!empty($profile_picture->filename)) {
-         	echo '<img src="../../' . $profile_picture->image_path() . '" width="200" class="img-rounded pull-right" />'; 
-         } else {
-         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded pull-right" alt="Please upload a profile picture" />';
-         }
-         ?>
-		 
 		 </div>
 		 
 		 </div>
@@ -143,9 +249,9 @@ $complaint_to_read_update = $comp_object->find_by_id($_GET['complaintid']);
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
 	        	<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<a href="admin_list_admin_users.php" class="btn btn-primary"> &larr; Back to Admin Users List</a>
+	        		<a href="admin_list_complaints.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Complaints' List</a>
 	        	<?php } else if ($session->is_logged_in() && $session->object_type == 4) {?>
-	        		<a href="index.php" class="btn btn-primary"> &larr; Back to Home</a>
+	        		<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home</a>
 	        	<?php } ?>
 	        </div>
         </div>
@@ -154,148 +260,46 @@ $complaint_to_read_update = $comp_object->find_by_id($_GET['complaintid']);
 	    
 	    <section>
 	    
-	    <ul class="nav nav-tabs">
-	      <li class="active"><a href="#user_details" data-toggle="tab">Profile</a></li>
-	      <li><a href="#password_update" data-toggle="tab">Password</a></li>
-	      <li><a href="#profile_picture" data-toggle="tab">Profile Picture</a></li>
-	    </ul>
-	    
-	    <div id="myTabContent" class="tab-content">
-	      <div class="tab-pane active in" id="user_details">
-	      
-	      <?php echo $message; ?>
-	      	      
-	        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
-	            
-	            <div class="control-group">
-	            	<label for="username" class="control-label">Username</label>
-	            
+	    <form action="<?php echo $_SERVER['PHP_SELF']; ?>?complaintid=<?php echo $complaint_to_read_update->id; ?>" method="POST" class="form-horizontal">
+            
+            	<div class="control-group">
+	            <label for="complaint_type" class="control-label">Complaint Type</label>
 		            <div class="controls">
-		            	<input type="text" name="username" value="<?php echo $user->username; ?>" />
-		            </div>
-	            </div>
-	            
-	            <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	            <div class="control-group">
-	            	<label for="admin_level" class="control-label">Admin Level</label>
-	            
-		            <div class="controls">
-			            <select name="admin_level">
-			            <?php for ($i = 0; $i < count($admin_levels); $i++) {?>
-			            	<option value="<?php echo $admin_levels[$i]->id; ?>"<?php if (!empty($user->admin_level) && $user->admin_level == $admin_levels[$i]->id) echo ' selected = "selected"'; ?>><?php echo $admin_levels[$i]->admin_level_name; ?></option>
-			            <?php } ?>
+		            	<select name="complaint_type" onChange="change_related_object_type_and_id(this.value, document.getElementById('related_object_type'), document.getElementById('related_object_id'))">
+		            	<option value="">Please Select</option>
+		            	<?php for ($i = 0; $i < count($complaint_types); $i++){ ?>
+							<option value="<?php echo $complaint_types[$i]->id; ?>"<?php if($complaint_types[$i]->id == $complaint_to_read_update->complaint_type){echo ' selected="selected"';} ?>><?php echo $object_type_object->find_by_id($complaint_types[$i]->related_object_type)->display_name . ' - ' . $complaint_types[$i]->comp_type_name; ?></option>
+						<?php } ?>
 						</select>
 		            </div>
 	            </div>
-	            <?php } else if ($session->is_logged_in() && $session->object_type == 4) {?>
-	            <div class="control-group">
-	            <label for="role" class="control-label">Role</label>
-		            <div class="controls">
-		            	<select name="role"<?php if (!($session->is_logged_in() && $session->object_type == 5)){ echo ' disabled';}?>>
-		            	<?php foreach($roles as $role){ ?>
-		            		<option value="<?php echo $role->id; ?>"<?php if($user->role==$role->id){echo ' selected="selected"';}?>><?php echo $role->role_name; ?></option>
-		            	<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            <?php } ?>
 	            
 	            <div class="control-group">
-	            	<label for="first_name" class="control-label">First Name</label>
-	            
-		            <div class="controls">
-		            	<input type="text" name="first_name" value="<?php echo $user->first_name; ?>" />
-		            </div>
+	            <label for="related_object_type" class="control-label">Related to:</label>
+					<div class="controls">
+					<select name="related_object_type" id="related_object_type" >
+					
+					</select>
+					</div>
 	            </div>
 	            
-	            <div class="control-group">
-	            	<label for="last_name" class="control-label">Last Name</label>
+	            <div class="control-group" id="related_object_id">
+	            </div>
 	            
+		        <input type="hidden" name="status" value="1">
+				
+	            
+	            <div class="control-group">
+	            <label for="content" class="control-label">Details of Complaint</label>
 		            <div class="controls">
-		            	<input type="text" name="last_name" value="<?php echo $user->last_name; ?>" />
+		            	<textarea rows="5" name="content"><?php echo $complaint_to_read_update->content; ?></textarea>
 		            </div>
 	            </div>
 	            
-	            <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	            <div class="control-group">
-	            	<label for="email_address" class="control-label">Email Address</label>
-		            <div class="controls">
-		            	<input type="text" name="email_address" value="<?php echo $user->email_address; ?>" />
-		            </div>
-	           </div>
-	           <?php } else if ($session->is_logged_in() && $session->object_type == 4) {?>
-	           <div class="control-group">
-	            	<label for="nic_number" class="control-label">NIC Number</label>
-		            <div class="controls">
-		            	<input type="text" name="nic_number" value="<?php echo $user->nic_number; ?>" />
-		            </div>
-	           </div>
-	           
-	           <div class="control-group">
-	            	<label for="telephone_number" class="control-label">Telephone Number</label>
-		            <div class="controls">
-		            	<input type="text" name="telephone_number" value="<?php echo $user->telephone_number; ?>" />
-		            </div>
-	           </div>
-	            <?php } ?> 
-	            
-	           <div class="form-actions">
-	           		<button class="btn btn-primary" name="submit">Submit</button>
-	           </div>
+	          	<div class="form-actions">
+	        	    <button class="btn btn-primary" name="submit">Submit</button>
+	        	</div>
 	        </form>
-	        
-	      </div>
-	      
-	      <div class="tab-pane fade" id="password_update">
-	    	
-	    	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
-	    		<div class="control-group">
-	        		<label for="old_password" class="control-label">Old Password</label>
-	        	
-		        	<div class="controls">
-		        		<input type="password" name="old_password">
-		        	</div>
-	        	</div>
-	    		
-	    		<div class="control-group">
-	        		<label for="new_password" class="control-label">New Password</label>
-	        	
-		        	<div class="controls">
-		        		<input type="password" name="new_password">
-		        	</div>
-	        	</div>
-	        	
-	        	<div class="form-actions">
-	        	    <button class="btn btn-primary" name="update">Update</button>
-	        	</div>
-	        	
-	    	</form>
-	      </div>
-	      
-	      <div class="tab-pane fade" id="profile_picture">
-	      
-		  <?php 
-          if (!empty($profile_picture->filename)) {
-          	echo '<h5>You have already uploaded a Profile Picture</h5>';
-          	echo '<a href="#" class="btn btn-danger"/>Delete and Reupload</a>';
-          } else { 
-          ?>
-		  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
-		      <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
-		        	
-		      <div class="control-group">
-		      	<input type="file" name="file_upload" />
-		      </div>
-		        	
-		      <div class="form-actions">
-		      	<button type="submit" class="btn btn-primary" name="upload">Upload</button>
-		      </div>	        	
-	      </form>
-	      <?php } ?>
-	    	
-	      </div>
-	      
-	  	  </div>
 	  	
 	  	</section>
 	  	

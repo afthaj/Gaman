@@ -7,12 +7,18 @@ $stops = BusStop::find_all();
 $buses = Bus::find_all();
 $bus_personnel = BusPersonnel::find_all();
 $object_type = new ObjectType();
+$bp_role = new BusPersonnelRole();
+$bus_route_object = new BusRoute();
+$bus_object = new Bus();
+$complaint_type = new ComplaintType();
 
 $q = $_GET['q'];
 
-$selected_object_type = $object_type->find_by_id($q);
+$selected_complaint_type = $complaint_type->find_by_id($q);
 
-if ($selected_object_type->object_type_name == 'bus_route') {
+$selected_object_type = $object_type->find_by_id($selected_complaint_type->related_object_type);
+
+if ($selected_object_type->object_type_name == 'route') {
 	
 	echo '<label for="bus_route_id" class="control-label">Bus Route</label>';
 	echo '<div class="controls">';
@@ -50,7 +56,7 @@ if ($selected_object_type->object_type_name == 'bus_route') {
 	
 	foreach ($buses as $bus){
 		echo '<option value="' . $bus->id . '">';
-		echo $bus->reg_number;
+		echo $bus_route_object->find_by_id($bus->route_id)->route_number . ' - ' . $bus->reg_number;
 		echo '</option>';
 	}
 	
@@ -65,7 +71,7 @@ if ($selected_object_type->object_type_name == 'bus_route') {
 	
 	foreach ($bus_personnel as $bp){
 		echo '<option value="' . $bp->id . '">';
-		echo $bp->full_name();
+		echo $bp->full_name() . ' - ' . $bp_role->find_by_id($bp->role)->role_name;
 		echo '</option>';
 	}
 	
