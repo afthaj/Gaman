@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 12, 2013 at 09:15 AM
+-- Generation Time: Sep 19, 2013 at 04:11 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -162,14 +162,17 @@ CREATE TABLE `complaints` (
   `status` int(11) NOT NULL,
   `content` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `complaints`
 --
 
-INSERT INTO `complaints` VALUES(1, 1, 2, 5, 1, 1, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu egestas felis, a rutrum libero. Donec adipiscing felis et nunc pretium placerat. Donec faucibus purus at leo gravida pellentesque. Fusce eu urna non lacus eleifend condimentum ac ut ante. In ');
-INSERT INTO `complaints` VALUES(2, 1, 1, 4, 1, 0, 1, 'test complaint');
+INSERT INTO `complaints` VALUES(1, 1, 2, 5, 1, 2, 1, 'Buses are consistently overcrowded');
+INSERT INTO `complaints` VALUES(2, 2, 12, 4, 1, 5, 1, 'There''s no proper bus stop for the commuters to stand at');
+INSERT INTO `complaints` VALUES(3, 3, 3, 5, 1, 9, 1, 'The bus loiters consistently at the Rajagiriya Bus Stop');
+INSERT INTO `complaints` VALUES(4, 2, 19, 4, 1, 8, 1, 'There isn''t enough room for buses to stop sometimes');
+INSERT INTO `complaints` VALUES(5, 3, 7, 5, 1, 20, 1, 'The conductor smelled of alcohol');
 
 -- --------------------------------------------------------
 
@@ -199,14 +202,40 @@ INSERT INTO `complaint_status` VALUES(3, 'Reviewed and Closed');
 
 CREATE TABLE `complaint_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `related_object_type` int(11) NOT NULL,
   `comp_type_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  KEY `related_object_type` (`related_object_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `complaint_types`
 --
 
+INSERT INTO `complaint_types` VALUES(1, 1, 'Bus Delays');
+INSERT INTO `complaint_types` VALUES(2, 1, 'Overcrowded Buses');
+INSERT INTO `complaint_types` VALUES(3, 1, 'Lack of Buses');
+INSERT INTO `complaint_types` VALUES(4, 1, 'Lack of Buses during the Route''s Operational Hours');
+INSERT INTO `complaint_types` VALUES(5, 2, 'No proper Bus Stop');
+INSERT INTO `complaint_types` VALUES(6, 2, 'Buses don''t stop at the correct area in the Bus Stop');
+INSERT INTO `complaint_types` VALUES(7, 2, 'Bus Stop not marked correctly');
+INSERT INTO `complaint_types` VALUES(8, 2, 'Insufficient area for Buses to stop');
+INSERT INTO `complaint_types` VALUES(9, 3, 'Loitering at Bus Stop');
+INSERT INTO `complaint_types` VALUES(10, 3, 'Not issuing a valid ticket');
+INSERT INTO `complaint_types` VALUES(11, 3, 'Overcrowding the Bus');
+INSERT INTO `complaint_types` VALUES(12, 3, 'Stopping at undesignated Bus Stops');
+INSERT INTO `complaint_types` VALUES(13, 3, 'Reckless driving');
+INSERT INTO `complaint_types` VALUES(14, 3, 'Neglecting road rules');
+INSERT INTO `complaint_types` VALUES(15, 3, 'Diverting attention while driving');
+INSERT INTO `complaint_types` VALUES(16, 3, 'Providing the improper balance money');
+INSERT INTO `complaint_types` VALUES(17, 3, 'Not providing the balance money at all');
+INSERT INTO `complaint_types` VALUES(18, 3, 'Overcharging a bus fare');
+INSERT INTO `complaint_types` VALUES(19, 3, 'Rude/discourteous service');
+INSERT INTO `complaint_types` VALUES(20, 3, 'Unhygienic/non-presentable appearance and/or attire');
+INSERT INTO `complaint_types` VALUES(21, 3, 'Failure to display the Fare Table in the Bus');
+INSERT INTO `complaint_types` VALUES(22, 3, 'Operating without a valid Driver''s license');
+INSERT INTO `complaint_types` VALUES(23, 3, 'Operating without a valid Conductor''s license');
+INSERT INTO `complaint_types` VALUES(24, 3, 'Operating without a valid Route Permit');
 
 -- --------------------------------------------------------
 
@@ -683,7 +712,7 @@ CREATE TABLE `user_admins` (
 -- Dumping data for table `user_admins`
 --
 
-INSERT INTO `user_admins` VALUES(1, 5, 'user', '123', 3, 'Admin', 'User', 'aftha.jaldin88@gmail.com');
+INSERT INTO `user_admins` VALUES(1, 5, 'admin', '123', 3, 'Admin', 'User', 'aftha.jaldin88@gmail.com');
 INSERT INTO `user_admins` VALUES(2, 5, 'afthaj', 'afthaj', 3, 'Aftha', 'Jaldin', 'afthajaldin@yahoo.com');
 INSERT INTO `user_admins` VALUES(4, 5, 'buddhi', 'buddhi123', 3, 'Buddhi', 'De Silva', 'gbidsilva@gmail.com');
 INSERT INTO `user_admins` VALUES(7, 5, 'laleen', 'laleen123', 3, 'Laleen', 'Pallegoda', 'laleen.kp@gmail.com');
@@ -725,6 +754,12 @@ INSERT INTO `user_commuters` VALUES(1, 6, 'gencomm', 'gencomm123', 'Generic', 'C
 ALTER TABLE `buses_bus_personnel`
   ADD CONSTRAINT `buses_bus_personnel_ibfk_1` FOREIGN KEY (`bus_id`) REFERENCES `buses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `buses_bus_personnel_ibfk_2` FOREIGN KEY (`bus_personnel_id`) REFERENCES `bus_personnel` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `complaint_types`
+--
+ALTER TABLE `complaint_types`
+  ADD CONSTRAINT `complaint_types_ibfk_1` FOREIGN KEY (`related_object_type`) REFERENCES `object_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `stops_routes`
