@@ -1,7 +1,10 @@
 <?php
 
-require_once("config_mac.php");
-//require_once("config_windows.php");
+if (PHP_OS == 'WINNT'){
+	require_once("config_windows.php");
+} else {
+	require_once("config_mac.php");
+}
 
 class MySQLDatabase{
 

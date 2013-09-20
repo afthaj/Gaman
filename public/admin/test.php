@@ -83,9 +83,19 @@ if ($session->is_logged_in() && $session->object_type == 5){
        	  	  	
        	  	  	print date("d/m/Y h:i:s a", mktime(13, 29, 45, 11, 18, 1988));
        	  	  	
+<<<<<<< HEAD
        	  	  	echo '<br /><br />';
        	  	  	
        	  	  	echo mktime(00, 00, 00, 11, 18, 1988);
+=======
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	echo PHP_OS;
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	echo php_uname('s');
+>>>>>>> 6ce94a42c6930bd677d616da8c3d666624d12109
        	  	  	
        	  	  	?>
        	  	  	
