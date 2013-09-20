@@ -2,7 +2,7 @@
 
 defined('DS') ? null : define('DS', DIRECTORY_SEPARATOR);
 
-<<<<<<< HEAD
+
 if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32' || PHP_OS == 'Windows'){
 	//windows
 	
@@ -15,14 +15,6 @@ if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32' || PHP_OS == 'Windows'){
 	defined('SITE_ROOT') ? null : define('SITE_ROOT', DS.'Users'.DS.'aftha'.DS.'Sites'.DS.'2. Eclipse Workspace'.DS.'Gaman'.DS.'public');
 	require_once("config_mac.php");
 	
-=======
-if (PHP_OS == 'WINNT'){
-	defined('SITE_ROOT') ? null : define('SITE_ROOT', 'C:'.DS.'xampp'.DS.'htdocs'.DS.'webdev'.DS.'Gaman');
-	require_once("config_windows.php");
-} else {
-	defined('SITE_ROOT') ? null : define('SITE_ROOT', DS.'Users'.DS.'aftha'.DS.'Sites'.DS.'2. Eclipse Workspace'.DS.'Gaman'.DS.'public');
-	require_once("config_mac.php");
->>>>>>> 6ce94a42c6930bd677d616da8c3d666624d12109
 }
 
 require_once("functions.php");
