@@ -37,6 +37,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
 		$complaint_to_create->user_object_type = $session->object_type;
 		$complaint_to_create->user_id = $user->id;
 		$complaint_to_create->complaint_type = $_POST['complaint_type'];
+		$complaint_to_create->date_time_submitted = time();
 		$complaint_to_create->status = $_POST['status'];
 		$complaint_to_create->content = $_POST['content'];
 		

@@ -1,16 +1,18 @@
 <?php
 require_once("../../includes/initialize.php");
 
+//init code
+$admin_user_object = new AdminUser();
+$bus_personnel_object = new BusPersonnel();
+$object_type_object = new ObjectType();
 
- if ($session->is_logged_in()){
- 	redirect_to("index.php");
- }
- 
- $ot_object = new ObjectType();
- $object_type_admin = $ot_object->get_object_type_by_name("admin");
- 
- $ot_object2 = new ObjectType();
- $object_type_bus_personnel = $ot_object2->get_object_type_by_name("bus_personnel");
+$object_type_admin = $object_type_object->get_object_type_by_name("admin");
+$object_type_bus_personnel = $object_type_object->get_object_type_by_name("bus_personnel");
+
+//check login
+if ($session->is_logged_in()){
+	redirect_to("index.php");
+}
 
 if (isset($_POST['submit'])){
 	
@@ -20,8 +22,7 @@ if (isset($_POST['submit'])){
 		
 		$username = trim($_POST['username']);
 		$password = trim($_POST['password']);
-
-		$admin_user_object = new AdminUser();
+		
 		$found_user_admin = $admin_user_object->authenticate($username, $password);
 		
 		if ($found_user_admin){
@@ -36,7 +37,6 @@ if (isset($_POST['submit'])){
 		$username = trim($_POST['username']);
 		$password = trim($_POST['password']);
 		
-		$bus_personnel_object = new BusPersonnel();
 		$found_user_bus_personnel = $bus_personnel_object->authenticate($username, $password);
 		
 		if ($found_user_bus_personnel){

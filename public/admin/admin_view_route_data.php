@@ -1,20 +1,35 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 5){
+//init code
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+$route_object = new BusRoute();
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
+	if ($session->object_type == 5){
+		//admin user
 	
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+	} else {
+		$session->message("Error! You must login to view the requested page. ");
+		redirect_to("login.php");
+	}
+	
+	//GET request stuff
 	if (isset($_GET['routeid'])){
-		$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
+		$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
 	} else {
 		$session->message("No Route ID provided to view.");
 		redirect_to("admin_list_routes.php");
 	}
 	
 } else {
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
 

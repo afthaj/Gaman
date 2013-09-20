@@ -2,102 +2,59 @@
 require_once("../../includes/initialize.php");
 
 //init code
-$comp_object = new Complaint();
-$complaint_to_read_update = $comp_object->find_by_id($_GET['complaintid']);
-
-$routes = BusRoute::find_all();
-$stops = BusStop::find_all();
-$buses = Bus::find_all();
-$bus_personnel = BusPersonnel::find_all();
-$complaint_types = ComplaintType::find_all();
-$complaint_status = ComplaintStatus::find_all();
-$object_types = ObjectType::find_all();
+$complaint_object = new Complaint();
+$complaint_type_object = new ComplaintType();
+$complaint_status_object = new ComplaintStatus();
 $object_type_object = new ObjectType();
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+$bus_personnel_object = new BusPersonnel();
+$route_object = new BusRoute();
+$stop_object = new BusStop();
+$bus_object = new Bus();
+
+$complaint_statuses = $complaint_status_object->find_all();
+
+//GET request stuff
+$complaint_to_read_update = $complaint_object->find_by_id($_GET['complaintid']);
 
 //check login
-if ($session->is_logged_in() && $session->object_type == 5){
-	//admin_user
+if ($session->is_logged_in()){
 	
-	$user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
+	if ($session->object_type == 5){
+		//admin_user
 	
-	if (isset($_POST['submit'])){
-		
-		if (isset($_POST['bus_route_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 1;
-			$complaint_to_read_update->related_object_id = $_POST['bus_route_id'];
-				
-		} else if (isset($_POST['stop_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 2;
-			$complaint_to_read_update->related_object_id = $_POST['stop_id'];
-				
-		} else if (isset($_POST['bus_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 3;
-			$complaint_to_read_update->related_object_id = $_POST['bus_id'];
-				
-		} else if (isset($_POST['bus_personnel_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 4;
-			$complaint_to_read_update->related_object_id = $_POST['bus_personnel_id'];
-				
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+		if (isset($_POST['submit'])){
+
+			$complaint_to_read_update->status = $_POST['status'];
+			$complaint_to_read_update->content = $_POST['content'];
+	
+			if ($complaint_to_read_update->update()){
+				$session->message("Success! The Complaint details have been changed. ");
+				redirect_to('admin_list_complaints.php');
+			} else {
+				$session->message("Error! The Complaint details could not be changed. ");
+			}
 		}
+	} else if ($session->object_type == 4) {
+		//bus_personnel
 		
-		$complaint_to_read_update->complaint_type = $_POST['complaint_type'];
-		$complaint_to_read_update->status = $_POST['status'];
-		$complaint_to_read_update->content = $_POST['content'];
+		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 		
-		if ($complaint_to_read_update->update()){
-			$session->message("Success! The Complaint details have been changed. ");
-			redirect_to('admin_list_complaints.php');
-		} else {
-			$session->message("Error! The Complaint details could not be changed. ");
-		}
-	}
-	
-} else if ($session->is_logged_in() && $session->object_type == 4) {
-	//bus_personnel
-	
-	$user = BusPersonnel::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
-	
-	if (isset($_POST['submit'])){
-		
-		if (isset($_POST['bus_route_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 1;
-			$complaint_to_read_update->related_object_id = $_POST['bus_route_id'];
-				
-		} else if (isset($_POST['stop_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 2;
-			$complaint_to_read_update->related_object_id = $_POST['stop_id'];
-				
-		} else if (isset($_POST['bus_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 3;
-			$complaint_to_read_update->related_object_id = $_POST['bus_id'];
-				
-		} else if (isset($_POST['bus_personnel_id'])) {
-				
-			$complaint_to_read_update->related_object_type = 4;
-			$complaint_to_read_update->related_object_id = $_POST['bus_personnel_id'];
-				
-		}
-		
-		$complaint_to_read_update->complaint_type = $_POST['complaint_type'];
-		$complaint_to_read_update->status = $_POST['status'];
-		$complaint_to_read_update->content = $_POST['content'];
-		
-		if ($complaint_to_read_update->update()){
-			$session->message("Success! The Complaint details have been changed. ");
-			redirect_to('admin_list_complaints.php');
-		} else {
-			$session->message("Error! The Complaint details could not be changed. ");
+		if (isset($_POST['submit'])){
+
+			$complaint_to_read_update->content = $_POST['content'];
+			
+			if ($complaint_to_read_update->update()){
+				$session->message("Success! The Complaint details have been changed. ");
+				redirect_to('admin_list_complaints.php');
+			} else {
+				$session->message("Error! The Complaint details could not be changed. ");
+			}
 		}
 	}
 	
@@ -113,111 +70,6 @@ if ($session->is_logged_in() && $session->object_type == 5){
     <title>Complaint Details &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
-  
-  <script type="text/javascript">
-
-	function change_related_object_type(comp_type, related_object_type) {
-		
-		if (comp_type == "") {
-			related_object_type.innerHTML = "";
-			return;
-			}
-			
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			request = new XMLHttpRequest();
-			} else {
-				// code for IE6, IE5
-				request = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				
-		request.onreadystatechange = function() {
-			
-			if (request.readyState == 4 && request.status == 200) {
-				related_object_type.innerHTML = request.responseText;
-				}
-			
-			}
-			
-		request.open("GET","../ajax_files/get_object_types_to_read_update_complaint.php?q=" + comp_type, true);
-		
-		request.send();
-		
-		}
-
-	function change_related_object_id(str, related_object_id) {
-		
-		if (str == "") {
-			related_object_id.innerHTML = "";
-			return;
-			}
-			
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			request = new XMLHttpRequest();
-			} else {
-				// code for IE6, IE5
-				request = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				
-		request.onreadystatechange = function() {
-			
-			if (request.readyState == 4 && request.status == 200) {
-				related_object_id.innerHTML = request.responseText;
-				}
-			
-			}
-			
-		request.open("GET","../ajax_files/get_objects_to_read_update_complaint.php?q=" + str, true);
-		
-		request.send();
-		
-		}
-
-	function change_related_object_type_and_id(str, related_object_type, related_object_id) {
-		
-		if (str == "") {
-			related_object_id.innerHTML = "";
-			return;
-			}
-			
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			request = new XMLHttpRequest();
-			request2 = new XMLHttpRequest();
-			} else {
-				// code for IE6, IE5
-				request = new ActiveXObject("Microsoft.XMLHTTP");
-				request2 = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				
-		request.onreadystatechange = function() {
-			
-			if (request.readyState == 4 && request.status == 200) {
-				related_object_id.innerHTML = request.responseText;
-				}
-			
-			}
-
-		request2.onreadystatechange = function() {
-			
-			if (request2.readyState == 4 && request2.status == 200) {
-				related_object_type.innerHTML = request2.responseText;
-				}
-			
-			}
-			
-		request.open("GET","../ajax_files/get_objects_to_read_update_complaint.php?q=" + str, true);
-		
-		request.send();
-
-		request2.open("GET","../ajax_files/get_object_types_to_read_update_complaint.php?q=" + str, true);
-		
-		request2.send();
-		
-		}
-	
-	</script>
 
   <body>
 
@@ -265,28 +117,55 @@ if ($session->is_logged_in() && $session->object_type == 5){
             	<div class="control-group">
 	            <label for="complaint_type" class="control-label">Complaint Type</label>
 		            <div class="controls">
-		            	<select name="complaint_type" onChange="change_related_object_type_and_id(this.value, document.getElementById('related_object_type'), document.getElementById('related_object_id'))">
-		            	<option value="">Please Select</option>
-		            	<?php for ($i = 0; $i < count($complaint_types); $i++){ ?>
-							<option value="<?php echo $complaint_types[$i]->id; ?>"<?php if($complaint_types[$i]->id == $complaint_to_read_update->complaint_type){echo ' selected="selected"';} ?>><?php echo $object_type_object->find_by_id($complaint_types[$i]->related_object_type)->display_name . ' - ' . $complaint_types[$i]->comp_type_name; ?></option>
-						<?php } ?>
-						</select>
+			            <textarea rows="3" name="complaint_type" disabled="disabled"><?php echo $complaint_type_object->find_by_id($complaint_to_read_update->complaint_type)->comp_type_name; ?></textarea>
 		            </div>
 	            </div>
 	            
 	            <div class="control-group">
 	            <label for="related_object_type" class="control-label">Related to:</label>
 					<div class="controls">
-					<select name="related_object_type" id="related_object_type" >
-					
-					</select>
+					<input type="text" name="related_object_type" disabled="disabled" value="<?php echo $object_type_object->find_by_id($complaint_to_read_update->related_object_type)->display_name; ?>" />
 					</div>
 	            </div>
 	            
-	            <div class="control-group" id="related_object_id">
+	            <div class="control-group">
+	            <label for="related_object_id" class="control-label">Identifier:</label>
+					<div class="controls">
+					<input type="text" name="related_object_id" disabled="disabled" value="<?php 
+					
+					if ($complaint_to_read_update->related_object_type == 1){
+						//complaint is about a Route
+						echo $route_object->find_by_id($complaint_to_read_update->related_object_id)->route_number;
+						
+					} else if ($complaint_to_read_update->related_object_type == 2){
+						//complaint is about a Stop
+						echo $stop_object->find_by_id($complaint_to_read_update->related_object_id)->name;
+						
+					} else if ($complaint_to_read_update->related_object_type == 3){
+						//complaint is about a Bus
+						echo $bus_object->find_by_id($complaint_to_read_update->related_object_id)->reg_number;
+						
+					} else if ($complaint_to_read_update->related_object_type == 4){
+						//complaint is about a Bus Personnel
+						echo $bus_personnel_object->find_by_id($complaint_to_read_update->related_object_id)->full_name();
+						
+					}
+					?>" />
+					</div>
 	            </div>
 	            
-		        <input type="hidden" name="status" value="1">
+	            <?php if ($session->object_type == 5) { ?>
+		        <div class="control-group">
+	            <label for="content" class="control-label">Details of Complaint</label>
+		            <div class="controls">
+	            	<select name="status">
+	            	<?php foreach ($complaint_statuses as $complaint_status) { ?>
+	            		<option value="<?php echo $complaint_status->id; ?>"<?php if($complaint_to_read_update->status == $complaint_status->id){echo ' selected="selected"';}?>><?php echo $complaint_status->comp_status_name; ?> </option>
+	            	<?php } ?>
+	            	</select>
+		            </div>
+	            </div>
+		        <?php } ?>
 				
 	            
 	            <div class="control-group">

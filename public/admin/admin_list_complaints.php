@@ -1,30 +1,11 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 5){
-	//admin_user
-	
-	$user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
-	
-	$c = new Complaint();
-	$complaints = $c->find_all();
-	
-} else if ($session->is_logged_in() && $session->object_type == 4){
-	//bus_personnel
-	
-	$user = BusPersonnel::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
-	
-	$c = new Complaint();
-	$complaints = $c->get_complaints_for_user($user->id, $session->object_type);
-	
-} else {
-	redirect_to("login.php");
-}
-
+//init code
+$admin_user_object = new AdminUser();
+$bus_personnel_object = new BusPersonnel();
+$photo_object = new Photograph();
+$complaint_object = new Complaint();
 $comp_type = new ComplaintType();
 $comp_status = new ComplaintStatus();
 $obj = new ObjectType();
@@ -32,6 +13,50 @@ $route = new BusRoute();
 $stop = new BusStop();
 $bus = new Bus();
 $bp = new BusPersonnel();
+
+//pagination code
+$current_page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+$per_page = 20;
+$total_count = $complaint_object->count_all();
+$pagination = new Pagination($current_page, $per_page, $total_count);
+
+
+//check user login
+if ($session->is_logged_in()){
+	
+	if ($session->object_type == 5){
+		//admin_user
+	
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+		$sql  = "SELECT * FROM complaints";
+		$sql .= " LIMIT " . $per_page;
+		$sql .= " OFFSET " . $pagination->offset();
+	
+		$complaints = $complaint_object->find_by_sql($sql);
+	
+	} else if ($session->is_logged_in() && $session->object_type == 4){
+		//bus_personnel
+	
+		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+		$sql  = "SELECT * FROM complaints";
+		$sql .= " WHERE user_object_type = " . $session->object_type;
+		$sql .= " AND user_id = " . $user->id;
+		$sql .= " LIMIT " . $per_page;
+		$sql .= " OFFSET " . $pagination->offset();
+	
+		$complaints = $complaint_object->find_by_sql($sql);
+	
+		//$complaints = $complaint_object->get_complaints_for_user($user->id, $session->object_type);
+	
+	}
+	
+} else {
+	redirect_to("login.php");
+}
 
 ?>
 
@@ -79,6 +104,8 @@ $bp = new BusPersonnel();
 		        <td class="span4">Complaint Type</td>
 		        <td>Related To</td>
 		        <td>Identfier</td>
+		        <td>Date Submitted</td>
+		        <td>Time Submitted</td>
 		        <td>Complaint Details</td>
 		        <td>Complaint Status</td>
 		        <td>&nbsp;</td>
@@ -109,6 +136,8 @@ $bp = new BusPersonnel();
 					}
 			        ?>
 			        </td>
+			        <td><?php echo date("d M Y", $complaint->date_time_submitted); ?></td>
+			        <td><?php echo date("h:i:s a", $complaint->date_time_submitted); ?></td>
 			        <td><?php echo $complaint->content; ?></td>
 			        <td><span class="btn btn-block
 			        <?php
@@ -123,8 +152,8 @@ $bp = new BusPersonnel();
 			        
 			        ?>
 			        "><?php echo $comp_status->find_by_id($complaint->status)->comp_status_name; ?></span></td>
-	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i> Edit</a></td>
-	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete</a></td>
+	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i></a></td>
+	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i></a></td>
         		</tr>
         	<?php }?>
         	
@@ -132,6 +161,39 @@ $bp = new BusPersonnel();
         </table>
         
         </div>
+        
+        <!-- Start Pagination -->
+		
+		
+		<?php 
+		if ($pagination->total_pages() > 1){
+			
+			echo '<div class="span12 pagination pagination-centered">';
+			echo '<ul>';
+			
+			echo $pagination->has_previous_page() ? '<li><a href="' . $_SERVER['PHP_SELF'] . '?page='.$pagination->previous_page().'">&laquo;</a></li>' : '<li class="disabled"><a href="">&laquo;</a></li>';
+			
+			for ($i=1; $i <= $pagination->total_pages(); $i++) {
+				
+				echo '<li';
+				echo $i == $pagination->current_page ? ' class="active"' : '';
+				echo '>';
+				echo '<a href="' . $_SERVER['PHP_SELF'] . '?page=';
+				echo $i;
+				echo '">'.$i.'</a>';
+				echo '</li>';
+				
+			}
+			
+			echo $pagination->has_next_page() ? '<li><a href="' . $_SERVER['PHP_SELF'] . '?page='.$pagination->next_page().'">&raquo;</a></li>' : '<li class="disabled"><a href="">&raquo;</a></li>';
+			
+			echo '</ul>';
+			echo '</div>';
+		}
+		?>
+		
+		
+		<!-- End Pagination -->
         
       </div>
       <!-- End Content -->

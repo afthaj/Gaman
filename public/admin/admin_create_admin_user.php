@@ -1,36 +1,49 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 5){
+//init code
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
+	if ($session->object_type == 5){
+		//admin user
 	
-	$admin_levels = AdminLevel::find_all();
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 	
-	if (isset($_POST['submit'])) {
+		$admin_levels = AdminLevel::find_all();
 	
-		$user_to_create = new AdminUser();
+		if (isset($_POST['submit'])) {
 	
-		$user_to_create->username = $_POST['username'];
-		$user_to_create->password = $_POST['password'];
-		$user_to_create->admin_level = $_POST['admin_level'];
-		$user_to_create->first_name = $_POST['first_name'];
-		$user_to_create->last_name = $_POST['last_name'];
-		$user_to_create->email_address = $_POST['email_address'];
+			$user_to_create = new AdminUser();
 	
-		if ($user_to_create->create()){
-			$session->message("Success! The Admin User has been added. ");
-			redirect_to('admin_list_admin_users.php');
-		} else {
-			$session->message("Error! The Admin User could not be added. ");
+			$user_to_create->username = $_POST['username'];
+			$user_to_create->password = $_POST['password'];
+			$user_to_create->admin_level = $_POST['admin_level'];
+			$user_to_create->first_name = $_POST['first_name'];
+			$user_to_create->last_name = $_POST['last_name'];
+			$user_to_create->email_address = $_POST['email_address'];
+	
+			if ($user_to_create->create()){
+				$session->message("Success! The Admin User has been added. ");
+				redirect_to('admin_list_admin_users.php');
+			} else {
+				$session->message("Error! The Admin User could not be added. ");
+			}
 		}
-	}
 	
+	} else {
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+	}
 } else {
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
+
 
 
 

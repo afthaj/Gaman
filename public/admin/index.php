@@ -1,28 +1,33 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	//redirect_to("login.php");
-} else {
-	// object_type = 5 is admin, 4 is bus_personnel, 6 is commuter 
-	 if ($_SESSION['object_type'] == 5 ){
-		$user = AdminUser::find_by_id($_SESSION['id']);
-		
-		$p = new Photograph();
-		$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
-		
+//init code
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+$bus_personnel_object = new BusPersonnel();
+
+if ($session->is_logged_in()){
+	// object_type = 5 is admin, 4 is bus_personnel, 6 is commuter
+	
+	if ($_SESSION['object_type'] == 5 ){
+		//admin user
+		 
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
 	} else if ($_SESSION['object_type'] == 4 ){
-		$user = BusPersonnel::find_by_id($_SESSION['id']);
-		
-		$p = new Photograph();
-		$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
-		
-	} else if ($_SESSION['object_type'] == 6 ){
-		$user = Commuter::find_by_id($_SESSION['id']);
-		
-		$p = new Photograph();
-		$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
+		//bus_personnel
+	
+		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+	} else {
+		//everybody else
+		redirect_to("index.php");
 	}
+	
+} else {
+	//redirect_to("login.php");
 }
 ?>
 

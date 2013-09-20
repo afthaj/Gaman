@@ -1,24 +1,43 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 5) {
+//init code
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+$bus_personnel_object = new BusPersonnel();
+$stop = new BusStop();
+
+$routes = BusRoute::find_all();
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
+	if ($session->object_type == 5) {
+		//admin user
 	
-} else if ($session->is_logged_in() && $session->object_type == 4) {
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 	
-	$user = BusPersonnel::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
+	} else if ($session->object_type == 4) {
+		//bus personnel
+		
+		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		
+	} else {
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+	}
 	
 } else {
+	//not logged in... GTFO!
+	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
 
-$routes = BusRoute::find_all();
-$stop = new BusStop();
 
 ?>
 
@@ -74,7 +93,7 @@ $stop = new BusStop();
 		        <td>Begin Stop</td>
 		        <td>End Stop</td>
 		        <td>Length (km)</td>
-		        <td>Trip Time (hh:mm:ss)</td>
+		        <td>Trip Time</td>
 		        <td>&nbsp;</td>
 		        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
 		        <td>&nbsp;</td>

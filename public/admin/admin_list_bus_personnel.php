@@ -1,23 +1,40 @@
 <?php
 require_once("../../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 5){
-	
-	$user = AdminUser::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
-	
-} else if ($session->is_logged_in() && $session->object_type == 4){
-	
-	$user = BusPersonnel::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($session->object_type, $user->id);
-	
-} else {
-	redirect_to("login.php");
-}
+//init code
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+$bus_personnel_object = new BusPersonnel();
+$bus_personnel_role_object = new BusPersonnelRole();
 
 $bus_personnel = BusPersonnel::find_all();
+
+//check login
+if ($session->is_logged_in()){
+	
+	if ($session->object_type == 5){
+		//admin user
+	
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+	} else if ($session->object_type == 4){
+		//bus personnel
+	
+		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+	} else {
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+	}
+	
+} else {
+	$session->message("Error! You must login to view the requested page. ");
+	redirect_to("login.php");
+}
 
 ?>
 
@@ -79,19 +96,18 @@ $bus_personnel = BusPersonnel::find_all();
 		        <?php } ?>
 	        </tr>
         	
-        	<?php for($i = 0; $i < count($bus_personnel) ; $i++){ 
-        	
-        		if ($bus_personnel[$i]->id != $user->id) { ?>
+        	<?php for($i = 0; $i < count($bus_personnel) ; $i++){
+        		
+        		if ($session->object_type == 4 && $bus_personnel[$i]->id == $user->id) { 
+        			//don't display a row when the user's id is the same as the bus personnel id in teh foreach loop
+        			 
+        		} else { ?>
         		
         		<tr align="center">
         			<td>
         			<?php 
-        		
-	        		$bus_personnel_role = new BusPersonnelRole();
-	        		
-	        		$pic = new Photograph();
-	        		
-	        		$bus_personnel_profile_picture = $pic->get_profile_picture('4', $bus_personnel[$i]->id);
+        			
+	        		$bus_personnel_profile_picture = $photo_object->get_profile_picture('4', $bus_personnel[$i]->id);
 	        		
 	        		if (!empty($bus_personnel_profile_picture->filename)) {
 	        			echo '<img src="../../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" />';
@@ -103,7 +119,7 @@ $bus_personnel = BusPersonnel::find_all();
         			</td>
 	        		<td><?php echo $bus_personnel[$i]->first_name; ?></td>
 	        		<td><?php echo $bus_personnel[$i]->last_name; ?></td>
-	        		<td><?php echo $bus_personnel_role->find_by_id($bus_personnel[$i]->role)->role_name; ?></td>
+	        		<td><?php echo $bus_personnel_role_object->find_by_id($bus_personnel[$i]->role)->role_name; ?></td>
 	        		<td><?php echo $bus_personnel[$i]->username; ?></td>
 	        		<td><?php echo $bus_personnel[$i]->nic_number; ?></td>
 	        		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
@@ -112,7 +128,7 @@ $bus_personnel = BusPersonnel::find_all();
 	        		<?php } ?>        		
         		</tr>
         		
-        	<?php } }?>
+        	<?php } } ?>
         	
         </table>
         

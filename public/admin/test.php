@@ -51,7 +51,7 @@ if ($session->is_logged_in() && $session->object_type == 5){
        	  	
 	       	  <div class="span3">
 	       	  	<div class="sidenav" data-spy="affix" data-offset-top="200">
-		        	<a href="#" class="btn btn-primary"> &larr; Back </a>
+		        	<a href="index.php" class="btn btn-primary btn-block"> &larr; Back </a>
 		        </div>
 	       	  </div>
 	       	  
@@ -82,6 +82,10 @@ if ($session->is_logged_in() && $session->object_type == 5){
        	  	  	echo '<br /><br />';
        	  	  	
        	  	  	print date("d/m/Y h:i:s a", mktime(13, 29, 45, 11, 18, 1988));
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	echo mktime(00, 00, 00, 11, 18, 1988);
        	  	  	
        	  	  	?>
        	  	  	
