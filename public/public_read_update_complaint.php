@@ -80,9 +80,23 @@ if ($session->is_logged_in() && $session->object_type == 6) {
        	  </div>
        	  
        	  <div class="span9">
-       	  	<?php echo $session->message; ?>
        	  	
        	  	<section>
+       	  	
+       	  	<?php 
+        
+	        if(!empty($session->message)){
+	        	
+	        	echo '<div class="alert">';
+	        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+	        	//echo '<p>';
+	        	echo $session->message;
+	        	//echo '</p>';
+	        	echo '</div>';
+	        }
+	        
+	        ?>
+       	  	
        	  	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="form-horizontal">
             
 	            <div class="control-group">

@@ -90,7 +90,7 @@ if ($session->is_logged_in()){
 	        		<td><?php echo $stop->find_by_id($route->end_stop)->name; ?></td>
 	        		<td><?php echo $route->length; ?></td>
 	        		<td><?php echo format_trip_time($route->trip_time); ?></td>
-	        		<td><a href="public_read_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block">Route Profile</a></td>        		
+	        		<td><a href="public_read_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Route Profile</a></td>        		
         		</tr>
         	<?php }?>
         	

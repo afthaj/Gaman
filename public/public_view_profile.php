@@ -12,7 +12,7 @@ if ($session->is_logged_in()){
 		//commuter
 	
 		$user = $commuter_object->find_by_id($_SESSION['id']);
-		$profile_picture = $photo_object->get_profile_picture($user->id, "commuter");
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 	
 		if (isset($_POST['submit'])){
 			$user->username = $_POST['username'];
@@ -36,7 +36,7 @@ if ($session->is_logged_in()){
 	
 				if ($admin_user->update()){
 					$session->message("Success! The password was updated. ");
-					redirect_to('admin_view_profile.php');
+					redirect_to('public_view_profile.php');
 				} else {
 					$session->message("Error! The user details could not be updated. ");
 				}
@@ -98,8 +98,22 @@ if ($session->is_logged_in()){
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
-		   <h1>User Profile</h1>
-		   <h3><?php echo $user->full_name();?></h3>
+		 
+		 <div class="span3">
+		 <?php 
+		 	if (!empty($profile_picture->filename)) { 
+		 		echo '<img src="../' . $profile_picture->image_path() . '" width="200" class="img-rounded" />';  
+		 	} else { 
+		 		echo '<img src="img/default-prof-pic.jpg" width="200" class="img-rounded" alt="Please upload a profile picture" />'; 
+		 	} 
+		 ?>
+		 </div>
+		 
+		 <div class="span9">
+		   <h1><?php echo $user->full_name(); ?></h1>
+		   <h3>User profile</h3>
+		 </div>
+		 
 		 </div>
 	  </header>
 
@@ -112,8 +126,10 @@ if ($session->is_logged_in()){
         <div class="row-fluid">
         
         <div class="span3">
-	        <div class="sidenav" data-spy="affix" data-offset-top="200">
+	        <div class="sidenav" data-spy="affix" data-offset-top="300">
 	        	<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home Page</a>
+	        	<a href="#" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> View Feedback Given</a>
+	        	<a href="public_list_complaints.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> View Complaints Submitted</a>
 	        </div>
         </div>
         
@@ -145,21 +161,6 @@ if ($session->is_logged_in()){
 	      <div class="tab-pane active in" id="user_details">
 	      	      
 	        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
-	            
-	            <div class="control-group">
-	            	<label for="profile_picture" class="control-label">Profile Picture</label>
-	            
-		            <div class="controls">
-		            	<?php 
-		            	if (!empty($profile_picture->filename)) {
-		            		echo '<img src="../' . $profile_picture->image_path() . '" width="250" class="img-rounded" />'; 
-		            	} else {
-		            		echo '<img src="img/default-prof-pic.jpg" width="250" class="img-rounded" alt="Please upload a profile picture" />';
-		            		echo '<p>Please upload a profile picture</p>';
-		            	} 
-		            	?>
-		            </div>
-	            </div>
 	            
 	            <div class="control-group">
 	            	<label for="username" class="control-label">Username</label>

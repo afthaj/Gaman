@@ -141,15 +141,15 @@ if ($session->is_logged_in()){
 			        <td><?php echo date("d M Y", $complaint->date_time_submitted); ?></td>
 			        <td><?php echo date("h:i:s a", $complaint->date_time_submitted); ?></td>
 			        <td><?php echo $complaint->content; ?></td>
-			        <td><span class="btn btn-block
+			        <td><span class="label 
 			        <?php
 			        
 			        if ($comp_status->find_by_id($complaint->status)->id == 1){
-			        	echo ' btn-info';
+			        	echo ' label-info';
 			        } else if ($comp_status->find_by_id($complaint->status)->id == 2){
-			        	echo ' btn-warning';
+			        	echo ' label-warning';
 			        } else if ($comp_status->find_by_id($complaint->status)->id == 3){
-			        	echo ' btn-success';
+			        	echo ' label-success';
 			        }
 			        
 			        ?>

@@ -134,7 +134,7 @@ if ($session->is_logged_in()){
 	  	<td align="left"><?php echo $stop->name; ?></td>
 	  	<td align="center"><?php echo $stop->location_latitude; ?></td>
 	  	<td align="center"><?php echo $stop->location_longitude; ?></td>
-      	<td><a href="public_read_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block">View Details</a></td>
+      	<td><a href="public_read_stop.php?stopid=<?php echo $stop->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> View Details</a></td>
       </tr>
       <?php }?>
       </table>

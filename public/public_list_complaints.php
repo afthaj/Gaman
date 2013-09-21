@@ -5,6 +5,13 @@ require_once("../includes/initialize.php");
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
 $complaint_object = new Complaint();
+$complaint_type_object = new ComplaintType();
+$object_type_object = new ObjectType();
+$complaint_status_object = new ComplaintStatus();
+$route_object = new BusRoute();
+$stop_object = new BusStop();
+$bus_object = new Bus();
+$bus_personnel_object = new BusPersonnel();
 
 //pagination code
 $current_page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -44,6 +51,7 @@ if ($session->is_logged_in()){
 	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -77,23 +85,36 @@ if ($session->is_logged_in()){
       	
       	<div class="row-fluid">
 	        <br />
-	        <a href="public_create_complaint.php" class="btn btn-primary">Add New Complaint</a>
+	        <a href="public_create_complaint.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Complaint</a>
 	        <br/> <br />
         </div>
         
         <div class="row-fluid">
-        <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
+        
+        <?php 
+        
+	        if(!empty($session->message)){
+	        	
+	        	echo '<div class="alert">';
+	        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+	        	//echo '<p>';
+	        	echo $session->message;
+	        	//echo '</p>';
+	        	echo '</div>';
+	        }
+	        
+		?>
         
         <table class="table table-bordered table-hover">
           <thead>
 	        <tr align="center">
 		        <td>Complaint Type</td>
-		        <td>Bus Route</td>
-		        <td>Bus Stop</td>
-		        <td>Bus Registration Number</td>
-		        <td>Name of Bus Personnel</td>
-		        <td>Complaint Status</td>
+		        <td>Related To</td>
+		        <td>Identifier</td>
+		        <td>Date Submitted</td>
+		        <td>Time Submitted</td>
 		        <td>Complaint Details</td>
+		        <td>Complaint Status</td>
 		        <td>&nbsp;</td>
 		        <td>&nbsp;</td>
 	        </tr>
@@ -102,15 +123,44 @@ if ($session->is_logged_in()){
         	
         	<?php foreach($complaints as $complaint){ ?>
         		<tr align="center">
-	        		<td>Complaint Type</td>
-			        <td>Bus Route</td>
-			        <td>Bus Stop</td>
-			        <td>Bus Registration Number</td>
-			        <td>Name of Bus Personnel</td>
-			        <td>Complaint Status</td>
-			        <td>Complaint Details</td>
-	        		<td><a href="public_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block">Edit</a></td>
-	        		<td><a href="public_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block">Delete</a></td>        		
+	        		<td><?php echo $complaint_type_object->find_by_id($complaint->complaint_type)->comp_type_name; ?></td>
+			        <td><?php echo $object_type_object->find_by_id($complaint->related_object_type)->display_name; ?></td>
+			        <td>
+			        <?php 
+					switch ($complaint->related_object_type) {
+					    case 1:
+					        echo $route_object->find_by_id($complaint->related_object_id)->route_number;
+					        break;
+					    case 2:
+					        echo $stop_object->find_by_id($complaint->related_object_id)->name;
+					        break;
+					    case 3:
+					        echo $bus_object->find_by_id($complaint->related_object_id)->reg_number;
+					        break;
+				        case 4:
+				        	echo $bus_personnel_object->find_by_id($complaint->related_object_id)->fullname();
+				        	break;
+					}
+			        ?>
+			        </td>
+			        <td><?php echo date("d M Y", $complaint->date_time_submitted); ?></td>
+			        <td><?php echo date("h:i:s a", $complaint->date_time_submitted); ?></td>
+			        <td><?php echo $complaint->content; ?></td>
+			        <td><span class="label 
+			        <?php
+			        
+			        if ($complaint_status_object->find_by_id($complaint->status)->id == 1){
+			        	echo ' label-info';
+			        } else if ($complaint_status_object->find_by_id($complaint->status)->id == 2){
+			        	echo ' label-warning';
+			        } else if ($complaint_status_object->find_by_id($complaint->status)->id == 3){
+			        	echo ' label-success';
+			        }
+			        
+			        ?>
+			        "><?php echo $complaint_status_object->find_by_id($complaint->status)->comp_status_name; ?></span></td>
+	        		<td><a href="public_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></a></td>
+	        		<td><a href="public_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i></a></td>        		
         		</tr>
         	<?php }?>
         	

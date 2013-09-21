@@ -85,8 +85,12 @@ if ($session->is_logged_in()){
       <div class="row-fluid">
       
         <div class="span3">
-	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="public_list_bus_personnel.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Bus Personnel List</a>
+	        <div class="sidenav" data-spy="affix" data-offset-top="300">
+	        	<a href="public_list_bus_personnel.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Bus Personnel</a>
+	        	<?php if (!empty($user->id)){ ?>
+	        	<a href="#" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<?php } ?>
 	        </div>
         </div>
         
@@ -183,8 +187,8 @@ if ($session->is_logged_in()){
 	        		
 	        	?>
         		<tr>
-	        		<td><?php echo $route_object->find_by_id($assigned_bus->route_id)->route_number; ?></td>
-	        		<td><?php echo $assigned_bus->reg_number; ?></td>
+	        		<td><a href="public_read_route.php?routeid=<?php echo $route_object->find_by_id($assigned_bus->route_id)->id; ?>" class="btn btn-primary btn-block"><?php echo $route_object->find_by_id($assigned_bus->route_id)->route_number; ?></a></td>
+	        		<td><a href="public_read_bus.php?busid=<?php echo $assigned_bus->id; ?>" class="btn btn-success btn-block"><?php echo $assigned_bus->reg_number; ?></a></td>
 	        		<td><?php echo $assigned_bus->name; ?></td>
         		</tr>
 	        	<?php } ?>

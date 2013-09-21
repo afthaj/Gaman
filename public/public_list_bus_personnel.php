@@ -101,7 +101,7 @@ if ($session->is_logged_in()){
 	        		<td><?php echo $bus_personnel_role_object->find_by_id($bus_person->role)->role_name; ?></td>
 	        		<td><?php echo $bus_person->username; ?></td>
 	        		<td><?php echo $bus_person->nic_number; ?></td>
-	        		<td><a href="public_read_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-warning btn-block">View Details</a></td>        		
+	        		<td><a href="public_read_bus_personnel.php?personnelid=<?php echo $bus_person->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> View Details</a></td>        		
         		</tr>
         	<?php }?>
         	

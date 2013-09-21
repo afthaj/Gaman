@@ -6,7 +6,7 @@ $photo_object = new Photograph();
 $commuter_object = new Commuter();
 $route_object = new BusRoute();
 $stop_route_object = new StopRoute();
-$stop = new BusStop();
+$stop_object = new BusStop();
 
 $routes = BusRoute::find_all();
 $stops = BusStop::find_all();
@@ -64,7 +64,11 @@ if (isset($_GET['routeid'])) {
       
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="public_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Routes List</a>
+	        	<a href="public_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Bus Routes</a>
+	        	<?php if (!empty($user->id)){ ?>
+	        	<a href="#" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<?php } ?>
 	        </div>
         </div>
         
@@ -116,33 +120,21 @@ if (isset($_GET['routeid'])) {
 	        	<div class="control-group">
 	        	<label for="trip_time" class="control-label">Trip Time<br /></label>
 		        	<div class="controls">
-		        		<input type="text" name="trip_time" class="uneditable-input" id="disabledInput" disabled value="<?php echo $route_to_read_update->trip_time; ?>">
+		        		<input type="text" name="trip_time" disabled="disabled" value="<?php echo $route_to_read_update->trip_time; ?>">
 		        	</div>
 	        	</div>
 	            
 	            <div class="control-group">
 	            <label for="begin_stop" class="control-label">Begin Stop</label>
 		            <div class="controls">
-		            <select name="begin_stop" disabled >
-		            <?php foreach($stops as $stop){ ?>
-		            	<option value="<?php echo $stop->id; ?>"<?php if (!empty($route_to_read_update->begin_stop) && $route_to_read_update->begin_stop == $stop->id) echo ' selected = "selected"'; ?>><?php echo $stop->name; ?></option>
-		            <?php } ?>
-					</select>
+		            	<textarea rows="3" name="begin_stop" disabled="disabled"><?php echo $stop_object->find_by_id($route_to_read_update->begin_stop)->name; ?></textarea>
 		            </div>
 	            </div>
 	            
 	            <div class="control-group">
 	            <label for="end_stop" class="control-label">End Stop</label>
 		            <div class="controls">
-			            <select name="end_stop" disabled >
-			            <?php 
-			            foreach($stops as $stop){
-			            ?>
-			            	<option value="<?php echo $stop->id; ?>"<?php if (!empty($route_to_read_update->end_stop) && $route_to_read_update->end_stop == $stop->id) echo ' selected = "selected"'; ?>><?php echo $stop->name; ?></option>
-			            <?php
-			            }
-			            ?>
-						</select>
+			            <textarea rows="3" name="begin_stop" disabled="disabled"><?php echo $stop_object->find_by_id($route_to_read_update->end_stop)->name; ?></textarea>
 		            </div>
 	            </div>
 
@@ -158,7 +150,7 @@ if (isset($_GET['routeid'])) {
 	      				<li class="">&nbsp;</li>
 	      				
 	      				<?php for ($i = 0; $i < count($stops_routes); $i++){ ?>
-			        		<li><a href="public_read_stop.php?stopid=<?php echo BusStop::find_by_id($stops_routes[$i]->stop_id)->id; ?>" class="btn btn-success"><?php echo BusStop::find_by_id($stops_routes[$i]->stop_id)->name; ?></a></li>
+			        		<li><a href="public_read_stop.php?stopid=<?php echo $stop_object->find_by_id($stops_routes[$i]->stop_id)->id; ?>" class="btn btn-success"><?php echo $stop_object->find_by_id($stops_routes[$i]->stop_id)->name; ?></a></li>
 			        		<?php if ( $i != count($stops_routes)-1 ) { echo '<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-arrow-down"></i></li>'; } ?>
 		        		<?php } ?>
 		        		

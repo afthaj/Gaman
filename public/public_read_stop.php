@@ -57,8 +57,7 @@ if (!empty($_GET['stopid'])){
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
-		   <h1>Bus Stop Profile</h1>
-		   <h3><?php echo $stop_to_read_update->name; ?></h3>
+		   <h1><?php echo $stop_to_read_update->name; ?></h1>
 		 </div>
 	  </header>
       
@@ -70,7 +69,11 @@ if (!empty($_GET['stopid'])){
       
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="public_list_stops.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Stops List</a>
+	        	<a href="public_list_stops.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Bus Stops</a>
+	        	<?php if (!empty($user->id)){ ?>
+	        	<a href="#" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<?php } ?>
 	        </div>
         </div>
         
@@ -110,7 +113,7 @@ if (!empty($_GET['stopid'])){
 	            <div class="control-group">
 	            <label for="name" class="control-label">Name of Bus Stop</label>
 		            <div class="controls">
-		            	<input type="text" class="uneditable-input" id="disabledInput" disabled name="name" value="<?php echo $stop_to_read_update->name; ?>">
+		            	<textarea rows="3" name="name" disabled="disabled"><?php echo $stop_to_read_update->name; ?></textarea>
 		            </div>
 	            </div>
 	            

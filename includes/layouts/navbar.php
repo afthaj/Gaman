@@ -17,30 +17,30 @@
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="public_list_stops.php">View All Stops</a></li>
-          		<li><a href="#">Search for Bus Stop</a></li>
+          		<li><a href="public_list_stops.php"><i class="icon-info-sign icon-white"></i> View All Stops</a></li>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li>
           		<li class="divider"></li>
-          		<li><a href="public_list_routes.php">View All Bus Routes</a></li>
-          		<li><a href="#">Search for Bus Route</a></li>
+          		<li><a href="public_list_routes.php"><i class="icon-info-sign icon-white"></i> View All Bus Routes</a></li>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Route</a></li>
           	</ul>
           </li>
           
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel<b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="public_list_bus_personnel.php">View All Personnel</a></li>
-          		<li><a href="#">Search for Personnel</a></li>
+          		<li><a href="public_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>
           		<li class="divider"></li>
-          		<li><a href="public_list_buses.php">View All Buses</a></li>
-          		<li><a href="#">Search for Bus</a></li>
+          		<li><a href="public_list_buses.php"><i class="icon-info-sign icon-white"></i> View All Buses</a></li>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus</a></li>
           	</ul>
           </li>
           
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Complaints <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="public_list_complaints.php">View All Complaints</a></li>
-          		<li><a href="public_create_complaint.php">Add Complaint</a></li>
+          		<li><a href="public_list_complaints.php"><i class="icon-info-sign icon-white"></i> View All Complaints</a></li>
+          		<li><a href="public_create_complaint.php"><i class="icon-plus icon-white"></i> Add Complaint</a></li>
           	</ul>
           </li>
           
@@ -58,12 +58,11 @@
           	?>
           	<li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          	<?php
-          	
-          	echo $user->full_name(); ?> <b class="caret"></b></a>
+          	<i class="icon-user icon-white"></i> <?php if (!empty($user->id)) { echo $user->full_name(); } ?> <b class="caret"></b>
+          	</a>
           	<ul class="dropdown-menu">
-          		<li><a href="public_view_profile.php">View Profile</a></li>
-          		<li><a href="logout.php">Logout</a></li>
+          		<li><a href="public_view_profile.php"><i class="icon-info-sign icon-white"></i> View Profile</a></li>
+          		<li><a href="logout.php"><i class="icon-off icon-white"></i> Logout</a></li>
           	</ul>
           	</li>
           <?php	} else { ?>

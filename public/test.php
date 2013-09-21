@@ -1,11 +1,22 @@
 <?php
 require_once("../includes/initialize.php");
 
-if (!$session->is_logged_in()){
-	//redirect_to("login.php");
-} else {
-	$admin_user = AdminUser::find_by_id($_SESSION['id']);
+//init code
+$photo_object = new Photograph();
+$commuter_object = new Commuter();
+
+//check login
+if ($session->is_logged_in()){
+	
+	if ($session->object_type == 6) {
+		//commuter
+	
+		$user = $commuter_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	}
+	
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,17 +49,58 @@ if (!$session->is_logged_in()){
       <div class="container-fluid">
        	  
        	  <div class="row-fluid">
-       	  	<div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="#" class="btn btn-primary"> &larr; Back </a>
-	        </div>
        	  <div class="span3">
+       	  	<div class="sidenav" data-spy="affix" data-offset-top="200">
+	        	<a href="#" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home Page</a>
+	        </div>
        	  </div>
        	  
-       	  <div class="span6">
-       	  	<?php echo $session->message; ?>
-       	  	
-       	  	
-       	  	
+       	  <div class="span9">
+       	  
+       	  <div class="row-fluid">
+	       	  <section>
+	       	  
+       	  	  	<?php echo $session->message; ?>
+       	  	  	
+       	  	  	<?php 
+       	  	  	
+       	  	  	$time = time();
+       	  	  	
+       	  	  	echo $time;
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print_r(getdate($time));
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print date("r", $time);
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print date("d/m/y h:i:s a", $time);
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	print date("d/m/Y h:i:s a", mktime(13, 29, 45, 11, 18, 1988));
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	echo mktime(00, 00, 00, 11, 18, 1988);
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	echo PHP_OS;
+       	  	  	
+       	  	  	echo '<br /><br />';
+       	  	  	
+       	  	  	echo php_uname('s');
+       	  	  	
+       	  	  	?>
+       	  	  	
+       	  	  </section>
+       	  	  
+       	  	  </div>
+       	  
        	  </div>
        	  
 	      </div>

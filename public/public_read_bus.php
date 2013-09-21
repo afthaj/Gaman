@@ -9,6 +9,7 @@ $bus_object = new Bus();
 $bus_personnel_role_object = new BusPersonnelRole();
 $bus_bus_personnel_object = new BusBusPersonnel();
 $bus_personnel_object = new BusPersonnel();
+$route_object = new BusRoute();
 
 $routes = BusRoute::find_all();
 $buses = Bus::find_all();
@@ -58,7 +59,8 @@ if ($session->is_logged_in()){
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
-		   <h1>Bus Profile</h1>
+		   <h1><?php echo $bus_to_read_update->reg_number; ?></h1>
+		   <h3>Route Number: <?php echo $route_object->find_by_id($bus_to_read_update->route_id)->route_number; ?></h3>
 		 </div>
 	  </header>
       
@@ -71,6 +73,10 @@ if ($session->is_logged_in()){
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
 	        	<a href="public_list_buses.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Buses</a>
+	        	<?php if (!empty($user->id)){ ?>
+	        	<a href="#" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<?php } ?>
 	        </div>
         </div>
         
@@ -109,11 +115,7 @@ if ($session->is_logged_in()){
 	            <div class="control-group">
             	<label for="route_id" class="control-label">Route Number</label>
 	            <div class="controls">
-	            	<select name="route_id" disabled >
-					<?php foreach($routes as $route){ ?>
-	            		<option value="<?php echo $route->id; ?>"<?php if ($bus_to_read_update->route_id == $route->id){ echo ' selected="selected"';} ?>><?php echo $route->route_number; ?></option>
-	            	<?php } ?>
-					</select>
+	            	<input type="text" name="route_id" disabled value="<?php echo $route_object->find_by_id($bus_to_read_update->route_id)->route_number; ?>" />
 	            </div>
             </div>
             

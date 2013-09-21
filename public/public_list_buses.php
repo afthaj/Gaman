@@ -4,6 +4,7 @@ require_once("../includes/initialize.php");
 //init code
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
+$route_object = new BusRoute();
 
 $buses = Bus::find_all();
 
@@ -63,10 +64,10 @@ if ($session->is_logged_in()){
         	
         	<?php foreach($buses as $bus){ ?>
         		<tr align="center">
-	        		<td><?php echo BusRoute::find_by_id($bus->route_id)->route_number; ?></td>
+	        		<td><?php echo $route_object->find_by_id($bus->route_id)->route_number; ?></td>
 	        		<td><?php echo $bus->reg_number; ?></td>
 	        		<td><?php if (!empty($bus->name)) {echo $bus->name;} ?></td>
-	        		<td><a href="public_read_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-warning btn-block">View Details</a></td>
+	        		<td><a href="public_read_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> View Details</a></td>
         		</tr>
         	<?php }?>
         	
