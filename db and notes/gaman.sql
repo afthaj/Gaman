@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2013 at 09:04 PM
+-- Generation Time: Sep 22, 2013 at 12:53 AM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -168,7 +168,7 @@ CREATE TABLE `complaints` (
   PRIMARY KEY (`id`),
   KEY `complaint_type` (`complaint_type`),
   KEY `status` (`status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `complaints`
@@ -184,6 +184,9 @@ INSERT INTO `complaints` VALUES(7, 1, 6, 5, 1, 4, 1379599906, 1, 'Buses are not 
 INSERT INTO `complaints` VALUES(8, 3, 2, 5, 1, 15, 1379599940, 1, 'This particular bus driver was talking on the phone while driving, endangering the lives of the passengers');
 INSERT INTO `complaints` VALUES(9, 3, 5, 5, 1, 16, 1379599972, 1, 'Conductor didn''t give the proper balance money back to me.');
 INSERT INTO `complaints` VALUES(10, 3, 2, 5, 1, 10, 1379599995, 1, 'Conductor didn''t issue a ticket to me');
+INSERT INTO `complaints` VALUES(11, 1, 1, 6, 1, 1, 1379788569, 1, 'Bus delays are very common in this bus route');
+INSERT INTO `complaints` VALUES(12, 3, 1, 6, 1, 10, 1379789236, 1, 'The bus conductor did not issue a ticket to me.');
+INSERT INTO `complaints` VALUES(13, 2, 18, 6, 1, 6, 1379789291, 1, 'Buses don''t stop at the proper place in the bus stop');
 
 -- --------------------------------------------------------
 
@@ -369,7 +372,7 @@ CREATE TABLE `routes` (
 -- Dumping data for table `routes`
 --
 
-INSERT INTO `routes` VALUES(1, 177, 20, 45, 26, 1);
+INSERT INTO `routes` VALUES(1, 177, 20, 35, 26, 1);
 INSERT INTO `routes` VALUES(2, 171, 15, 30, 27, 40);
 INSERT INTO `routes` VALUES(3, 170, 20, 45, 47, 52);
 INSERT INTO `routes` VALUES(4, 190, 23, 45, 53, 52);
@@ -782,15 +785,15 @@ ALTER TABLE `buses_bus_personnel`
 -- Constraints for table `bus_personnel`
 --
 ALTER TABLE `bus_personnel`
-  ADD CONSTRAINT `bus_personnel_ibfk_2` FOREIGN KEY (`role`) REFERENCES `bus_personnel_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `bus_personnel_ibfk_1` FOREIGN KEY (`object_type`) REFERENCES `object_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `bus_personnel_ibfk_1` FOREIGN KEY (`object_type`) REFERENCES `object_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bus_personnel_ibfk_2` FOREIGN KEY (`role`) REFERENCES `bus_personnel_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `complaints`
 --
 ALTER TABLE `complaints`
-  ADD CONSTRAINT `complaints_ibfk_2` FOREIGN KEY (`status`) REFERENCES `complaint_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `complaints_ibfk_1` FOREIGN KEY (`complaint_type`) REFERENCES `complaint_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `complaints_ibfk_1` FOREIGN KEY (`complaint_type`) REFERENCES `complaint_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `complaints_ibfk_2` FOREIGN KEY (`status`) REFERENCES `complaint_status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `complaint_types`
@@ -802,8 +805,8 @@ ALTER TABLE `complaint_types`
 -- Constraints for table `photographs`
 --
 ALTER TABLE `photographs`
-  ADD CONSTRAINT `photographs_ibfk_2` FOREIGN KEY (`photo_type`) REFERENCES `photo_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `photographs_ibfk_1` FOREIGN KEY (`related_object_type`) REFERENCES `object_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `photographs_ibfk_1` FOREIGN KEY (`related_object_type`) REFERENCES `object_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `photographs_ibfk_2` FOREIGN KEY (`photo_type`) REFERENCES `photo_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `stops_routes`
@@ -830,8 +833,8 @@ ALTER TABLE `trips`
 -- Constraints for table `user_admins`
 --
 ALTER TABLE `user_admins`
-  ADD CONSTRAINT `user_admins_ibfk_2` FOREIGN KEY (`admin_level`) REFERENCES `admin_levels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_admins_ibfk_1` FOREIGN KEY (`object_type`) REFERENCES `object_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_admins_ibfk_1` FOREIGN KEY (`object_type`) REFERENCES `object_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_admins_ibfk_2` FOREIGN KEY (`admin_level`) REFERENCES `admin_levels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_commuters`
