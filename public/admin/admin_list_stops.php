@@ -79,13 +79,28 @@ if ($session->is_logged_in()){
       	</div>
       </div>
       <?php } ?>
+      
       <div class="span9">
+      
+      <!-- add in a select/search box to choose the route, so that users can easily choose the stop -->
+      
+      <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
       
       <section>
       
       <table class="table table-bordered table-hover">  
-      
-      <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
       
       <tr>
 	   <td rowspan="2" align="center">Stop Name</td>

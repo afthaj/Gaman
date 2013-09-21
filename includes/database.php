@@ -1,8 +1,12 @@
 <?php
 
-if (PHP_OS == 'WINNT'){
+if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32' || PHP_OS == 'Windows'){
+	//windows
+	
 	require_once("config_windows.php");
 } else {
+	//OS X and linux
+	
 	require_once("config_mac.php");
 }
 

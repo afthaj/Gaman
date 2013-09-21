@@ -1,23 +1,48 @@
 <?php
 require_once("../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 6) {
+//init code
+$photo_object = new Photograph();
+$commuter_object = new Commuter();
+$complaint_object = new Complaint();
+
+//pagination code
+$current_page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+$per_page = 20;
+$total_count = $complaint_object->count_all();
+$pagination = new Pagination($current_page, $per_page, $total_count);
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = Commuter::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	if ($session->object_type == 6) {
+		//commuter
 	
-	$c = new Complaint();
-	$complaints = $c->find_all();
+		$user = $commuter_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		
+		$sql  = "SELECT * FROM complaints";
+		$sql .= " WHERE user_object_type = " . $session->object_type;
+		$sql .= " AND user_id = " . $user->id;
+		$sql .= " LIMIT " . $per_page;
+		if ($current_page != 1){
+			$sql .= " OFFSET " . $pagination->offset();
+		}
+		
+		$complaints = $complaint_object->find_by_sql($sql);
 	
-} else if ($session->is_logged_in() && $session->object_type != 6) {
+	} else {
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+	}
 	
+} else {
+	//not logged in... GTFO!
+	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
-	
-} else if (!$session->is_logged_in() && $session->object_type != 6) {
-	
-	redirect_to("login.php");
-	
 }
 ?>
 
@@ -93,6 +118,37 @@ if ($session->is_logged_in() && $session->object_type == 6) {
         </table>
         
         </div>
+        
+        <!-- Start Pagination -->
+        
+		<?php 
+		if ($pagination->total_pages() > 1){
+			
+			echo '<div class="span12 pagination pagination-centered">';
+			echo '<ul>';
+			
+			echo $pagination->has_previous_page() ? '<li><a href="' . $_SERVER['PHP_SELF'] . '?page='.$pagination->previous_page().'">&laquo;</a></li>' : '<li class="disabled"><a href="">&laquo;</a></li>';
+			
+			for ($i=1; $i <= $pagination->total_pages(); $i++) {
+				
+				echo '<li';
+				echo $i == $pagination->current_page ? ' class="active"' : '';
+				echo '>';
+				echo '<a href="' . $_SERVER['PHP_SELF'] . '?page=';
+				echo $i;
+				echo '">'.$i.'</a>';
+				echo '</li>';
+				
+			}
+			
+			echo $pagination->has_next_page() ? '<li><a href="' . $_SERVER['PHP_SELF'] . '?page='.$pagination->next_page().'">&raquo;</a></li>' : '<li class="disabled"><a href="">&raquo;</a></li>';
+			
+			echo '</ul>';
+			echo '</div>';
+		}
+		?>
+		
+		<!-- End Pagination -->
         
       </div>
       <!-- End Content -->

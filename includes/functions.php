@@ -39,4 +39,41 @@ function datetime_to_text($datetime=""){
 	return strftime("%B %d, %Y at %I:%M %p", $unixdatetime);
 }
 
+function format_trip_time($triptime){
+	
+	if ($triptime < 60) {
+		
+		return "{$triptime} mins";
+		
+	} else if ($triptime == 60) {
+		
+		return "1 hr";
+		
+	} else if ($triptime > 60) {
+		
+		$time_in_hours = intval($triptime/60);
+		$time_in_minutes = $triptime - ($time_in_hours * 60);
+		
+		if ($time_in_hours == 1){
+			
+			if ($time_in_minutes == 1){
+				return "{$time_in_hours} hr and {$time_in_minutes} min";
+			} else {
+				return "{$time_in_hours} hr and {$time_in_minutes} mins";
+			}
+			
+		} else {
+			
+			if ($time_in_minutes == 1){
+				return "{$time_in_hours} hrs and {$time_in_minutes} min";
+			} else {
+				return "{$time_in_hours} hrs and {$time_in_minutes} mins";
+			}
+			
+		}
+		
+	}
+	
+}
+
 ?>

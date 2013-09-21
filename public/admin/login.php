@@ -115,7 +115,21 @@ if (isset($_POST['submit'])){
         	<h2 class="form-signin-heading">Please sign in</h2>
         </div>
         
-        <?php echo $session->message; ?>
+        <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
+        
+        
         
         <div class="control-group">
         	<div class="controls">

@@ -12,7 +12,7 @@
       
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <li<?php if (isset($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php">Home</a></li>
+          <li<?php if (!empty($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php"><i class="icon-home icon-white"></i></a></li>
           
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
@@ -44,7 +44,7 @@
           	</ul>
           </li>
           
-          <li<?php if (isset($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
+          <li<?php if (!empty($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
           
         </ul>
         <ul class="nav navbar-nav pull-right">
@@ -53,7 +53,7 @@
           
           <?php 
           
-          if (isset($session->id) && $session->object_type == 6) { // object_type 6 commuter
+          if (!empty($session->id) && $session->object_type == 6) { // object_type 6 commuter
           	
           	?>
           	<li class="dropdown">

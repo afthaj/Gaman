@@ -1,42 +1,53 @@
 <?php
 require_once("../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 6) {
+//init code
+$photo_object = new Photograph();
+$commuter_object = new Commuter();
+
+$routes = BusRoute::find_all();
+$stops = BusStop::find_all();
+$buses = Bus::find_all();
+$bus_personnel = BusPersonnel::find_all();
+$complaint_types = ComplaintType::find_all();
+$complaint_status = ComplaintStatus::find_all();
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = Commuter::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	if ($session->object_type == 6) {
+		//commuter
 	
-	$routes = BusRoute::find_all();
-	$stops = BusStop::find_all();
-	$buses = Bus::find_all();
-	$bus_personnel = BusPersonnel::find_all();
-	$complaint_types = ComplaintType::find_all();
-	$complaint_status = ComplaintStatus::find_all();
+		$user = $commuter_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($user->id, "commuter");
 	
-	if (isset($_POST['submit'])){
-		$complaint_to_create = new Complaint();
+		if (isset($_POST['submit'])){
+			$complaint_to_create = new Complaint();
 	
-		$complaint_to_create->bus_route_id = $_POST['bus_route_id'];
-		$complaint_to_create->stop_id = $_POST['stop_id'];
-		$complaint_to_create->bus_id = $_POST['bus_id'];
-		$complaint_to_create->bus_personnel_id = $_POST['bus_personnel_id'];
+			$complaint_to_create->bus_route_id = $_POST['bus_route_id'];
+			$complaint_to_create->stop_id = $_POST['stop_id'];
+			$complaint_to_create->bus_id = $_POST['bus_id'];
+			$complaint_to_create->bus_personnel_id = $_POST['bus_personnel_id'];
 	
-		$complaint_to_create->complaint_type = $_POST['complaint_type'];
-		$complaint_to_create->status = $_POST['status'];
-		$complaint_to_create->content = $_POST['content'];
-	
-	
+			$complaint_to_create->complaint_type = $_POST['complaint_type'];
+			$complaint_to_create->status = $_POST['status'];
+			$complaint_to_create->content = $_POST['content'];
+			
+		}
+		
+	} else {
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
 	}
 	
-} else if ($session->is_logged_in() && $session->object_type != 6) {
+} else {
+	//not logged in... GTFO!
 	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
-	
-} else if (!$session->is_logged_in() && $session->object_type != 6) {
-	
-	redirect_to("login.php");
-}
+} 
 
 ?>
 
@@ -74,7 +85,7 @@ if ($session->is_logged_in() && $session->object_type == 6) {
        	  <div class="span3">
        	  
 	       	  <div class="sidenav" data-spy="affix" data-offset-top="200">
-		      	<a href="index.php" class="btn btn-primary"> &larr; Back to Home Page</a>
+		      	<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home Page</a>
 		      </div>
        	  
        	  </div>

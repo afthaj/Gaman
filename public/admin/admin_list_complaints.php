@@ -46,8 +46,10 @@ if ($session->is_logged_in()){
 		$sql .= " WHERE user_object_type = " . $session->object_type;
 		$sql .= " AND user_id = " . $user->id;
 		$sql .= " LIMIT " . $per_page;
-		$sql .= " OFFSET " . $pagination->offset();
-	
+		if ($current_page != 1){
+			$sql .= " OFFSET " . $pagination->offset();
+		}
+		
 		$complaints = $complaint_object->find_by_sql($sql);
 	
 		//$complaints = $complaint_object->get_complaints_for_user($user->id, $session->object_type);
@@ -163,8 +165,7 @@ if ($session->is_logged_in()){
         </div>
         
         <!-- Start Pagination -->
-		
-		
+        
 		<?php 
 		if ($pagination->total_pages() > 1){
 			
@@ -191,7 +192,6 @@ if ($session->is_logged_in()){
 			echo '</div>';
 		}
 		?>
-		
 		
 		<!-- End Pagination -->
         

@@ -1,27 +1,32 @@
 <?php
 require_once("../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 6){
-	
-	$user = Commuter::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "commuter");
-	
-	
-} else if ($session->is_logged_in() && $session->object_type != 6) {
-	
-	//redirect_to("login.php");
-	
-}
+//init code
+$photo_object = new Photograph();
+$commuter_object = new Commuter();
+$route_object = new BusRoute();
+$stop_route_object = new StopRoute();
+$stop = new BusStop();
 
+$routes = BusRoute::find_all();
 $stops = BusStop::find_all();
 
+//check login
+if ($session->is_logged_in()){
+
+	if ($session->object_type == 6){
+		//commuter
+		
+		$user = $commuter_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		
+	}
+
+}
+
 if (isset($_GET['routeid'])) {
-	$route_to_read_update = BusRoute::find_by_id($_GET['routeid']);
-
-	$sr = new StopRoute();
-
-	$stops_routes = $sr->get_stops_for_route($route_to_read_update->id);
+	$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
+	$stops_routes = $stop_route_object->get_stops_for_route($route_to_read_update->id);
 
 } else {
 	$session->message("No Route ID provided to view.");
@@ -47,8 +52,7 @@ if (isset($_GET['routeid'])) {
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
-		   <h1>Route Profile</h1>
-		   <h3>Route Number: <?php echo $route_to_read_update->route_number;?></h3>
+		   <h1>Route Number: <?php echo $route_to_read_update->route_number;?></h1>
 		 </div>
 	  </header>
       
@@ -60,7 +64,7 @@ if (isset($_GET['routeid'])) {
       
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="public_list_routes.php" class="btn btn-primary"> &larr; Back to Routes List</a>
+	        	<a href="public_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Routes List</a>
 	        </div>
         </div>
         
@@ -70,7 +74,19 @@ if (isset($_GET['routeid'])) {
         
         <section>
         
-        <?php echo $session->message; ?>
+        <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
         
         <ul class="nav nav-tabs">
 	      <li class="active"><a href="#route_stops_list" data-toggle="tab">List of Stops</a></li>
@@ -98,7 +114,7 @@ if (isset($_GET['routeid'])) {
 	        	</div>
 	        	
 	        	<div class="control-group">
-	        	<label for="trip_time" class="control-label">Trip Time<br />(Format = HH:MM:SS)</label>
+	        	<label for="trip_time" class="control-label">Trip Time<br /></label>
 		        	<div class="controls">
 		        		<input type="text" name="trip_time" class="uneditable-input" id="disabledInput" disabled value="<?php echo $route_to_read_update->trip_time; ?>">
 		        	</div>

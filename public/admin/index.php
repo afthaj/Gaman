@@ -23,11 +23,14 @@ if ($session->is_logged_in()){
 	
 	} else {
 		//everybody else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
 		redirect_to("index.php");
 	}
 	
 } else {
-	//redirect_to("login.php");
+	$session->message("Error! You must login to view the requested page. ");
+	redirect_to("login.php");
 }
 ?>
 
@@ -60,7 +63,19 @@ if ($session->is_logged_in()){
 
         <!-- Start Content -->
         
-        <?php echo $session->message; ?>
+        <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
         
         <div class="marketing">
         

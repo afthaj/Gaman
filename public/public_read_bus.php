@@ -1,36 +1,41 @@
 <?php
 require_once("../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 6){
-
-	$user = Commuter::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "commuter");
-
-
-} else if ($session->is_logged_in() && $session->object_type != 6) {
-
-	//redirect_to("login.php");
-
-}
+//init code
+$photo_object = new Photograph();
+$commuter_object = new Commuter();
+$photo_type_object = new PhotoType();
+$bus_object = new Bus();
+$bus_personnel_role_object = new BusPersonnelRole();
+$bus_bus_personnel_object = new BusBusPersonnel();
+$bus_personnel_object = new BusPersonnel();
 
 $routes = BusRoute::find_all();
 $buses = Bus::find_all();
 $bus_personnel = BusPersonnel::find_all();
 
-$related_object = "bus";
-$pt = new PhotoType();
-$photo_types = $pt->get_photo_types($related_object);
+$photo_types = $photo_type_object->get_photo_types("bus");
+$photos_of_bus = $photo_object->get_photos(3, $_GET['busid']);
 
-$p2 = new Photograph();
-$photos_of_bus = $p2->get_photos_for_bus($_GET['busid']);
-
-if (isset($_GET['busid'])){
-	$bus_to_read_update = Bus::find_by_id($_GET['busid']);
+//GET request stuff
+if (!empty($_GET['busid'])){
+	$bus_to_read_update = $bus_object->find_by_id($_GET['busid']);
 
 } else {
 	$session->message("No Bus ID provided to view.");
 	redirect_to("public_list_buses.php");
+}
+
+//check login
+if ($session->is_logged_in()){
+	
+	if ($session->object_type == 6){
+		//commuter
+		
+		$user = $commuter_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		
+	}
 }
 
 ?>
@@ -65,7 +70,7 @@ if (isset($_GET['busid'])){
       
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="public_list_buses.php" class="btn btn-primary"> &larr; Back to Buses List</a>
+	        	<a href="public_list_buses.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Buses</a>
 	        </div>
         </div>
         
@@ -75,7 +80,19 @@ if (isset($_GET['busid'])){
         
         <section>
         
-        <?php echo $session->message; ?>
+        <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
         
         <ul class="nav nav-tabs">
 	      <li class="active"><a href="#bus_pictures" data-toggle="tab">Pictures of the Bus</a></li>
@@ -127,10 +144,9 @@ if (isset($_GET['busid'])){
       		
       		<div class="row-fluid">
       		
-		      <?php 
+		      <?php
 		      
-		      $bbp_object = new BusBusPersonnel();
-		      $buses_bus_personnel = $bbp_object->get_personnel_for_bus($bus_to_read_update->id);
+		      $buses_bus_personnel = $bus_bus_personnel_object->get_personnel_for_bus($bus_to_read_update->id);
 		      
 		      if ($buses_bus_personnel) { ?>
 		      
@@ -138,8 +154,7 @@ if (isset($_GET['busid'])){
 	          <thead align="center">
 		        <tr>
 			        <td>Profile Picture</td>
-			        <td>First Name</td>
-			        <td>Last Name</td>
+			        <td>Name</td>
 			        <td>Role</td>
 		        </tr>
 		      </thead>
@@ -147,35 +162,29 @@ if (isset($_GET['busid'])){
 		      <tbody align="center">
 		      
 		      <?php foreach($buses_bus_personnel as $bbp){
-		      
-		      	$bus_personnel_object = new BusPersonnel();
+		      	
 		      	$assigned_bus_personnel = $bus_personnel_object->find_by_id($bbp->bus_personnel_id);
 		      	
 		      	?>
 	        		<tr>
 		        		<td>
 	        			<?php 
-	        			
-		        		$pic = new Photograph();
 		        		
-		        		$bus_personnel_profile_picture = $pic->get_profile_picture($assigned_bus_personnel->id, "bus_personnel");
+		        		$bus_personnel_profile_picture = $photo_object->get_profile_picture(4, $assigned_bus_personnel->id);
 		        		
 		        		if (!empty($bus_personnel_profile_picture->filename)) {
-		        			echo '<img src="../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" />';
+		        			echo '<a href="public_read_bus_personnel.php?personnelid=' . $assigned_bus_personnel->id . '"><img src="../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" /></a>';
 		        		} else {
 		        			echo '<img src="img/default-prof-pic.jpg" width="100" class="img-rounded" alt="Please upload a profile picture" />';
 		        		}
 		        		
 		        		?>
 	        			</td>
-	        			<td><?php echo $assigned_bus_personnel->first_name; ?></td>
-		        		<td><?php echo $assigned_bus_personnel->last_name; ?></td>
+	        			<td><a href="public_read_bus_personnel.php?personnelid=<?php echo $assigned_bus_personnel->id; ?>" class="btn btn-info btn-block"><?php echo $assigned_bus_personnel->full_name(); ?></a></td>
 		        		<td>
-		        		<?php			        	
+		        		<?php
 			        	
-			        	$bus_personnel_role = new BusPersonnelRole();
-			        	
-		        		echo $bus_personnel_role->find_by_id($assigned_bus_personnel->role)->role_name;
+		        		echo $bus_personnel_role_object->find_by_id($assigned_bus_personnel->role)->role_name;
 		        		
 		        		?>
 		        		</td>
@@ -207,7 +216,7 @@ if (isset($_GET['busid'])){
 		        
 					<li>
 					<img src="<?php echo '../'.$photos_of_bus[$i]->image_path(); ?>" alt="">
-					<p class="caption"><?php echo PhotoType::find_by_id($photos_of_bus[$i]->photo_type)->photo_type_name; ?></p>
+					<p class="caption"><?php echo $photo_type_object->find_by_id($photos_of_bus[$i]->photo_type)->photo_type_name; ?></p>
 					</li>
 				
 		        <?php } ?>

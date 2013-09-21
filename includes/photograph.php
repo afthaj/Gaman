@@ -21,8 +21,8 @@ class Photograph extends DatabaseObject {
 	
 	// change $upload_dir when changing between Mac and PC
 	
-	//protected $upload_dir = 'img/uploads';
-	protected $upload_dir = 'public/img/uploads';
+	protected $upload_dir = 'img/uploads';
+	//protected $upload_dir = 'public/img/uploads';
 	
 	public $errors = array();
 	
@@ -148,17 +148,6 @@ class Photograph extends DatabaseObject {
 	
 			return true;
 		}
-	}
-	
-	public function comment_count(){
-		global $database;
-		
-		$sql = "SELECT COUNT(*) from comments WHERE photograph_id = ". $database->escape_value($this->id);
-		
-		$result_set = $database->query($sql);
-		$row = $database->fetch_array($result_set);
-		
-		return array_shift($row);
 	}
 	
 	public function save(){

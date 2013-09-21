@@ -1,4 +1,4 @@
-<div class="navbar navbar-fixed-top">
+<div class="navbar navbar-fixed-top navbar-invers">
   <div class="navbar-inner">
     <div class="container-fluid">
       
@@ -12,7 +12,7 @@
       
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <li<?php if (isset($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php"><i class="icon-home icon-white"></i></a></li>
+          <li<?php if (!empty($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php"><i class="icon-home icon-white"></i></a></li>
           
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
@@ -57,17 +57,17 @@
           	</ul>
           </li>
           
-          <li<?php if (isset($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
+          <li<?php if (!empty($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
 
         </ul>
         <ul class="nav navbar-nav pull-right">
           
           <li><a href="<?php echo '..'.DS; ?>">Public Area</a></li>
           
-          <?php if (isset($session->id) && ($session->object_type == 5 || $session->object_type == 4) ) { // object_type 5 is admin and 4 is bus_personnel ?>
+          <?php if (!empty($session->id) && ($session->object_type == 5 || $session->object_type == 4) ) { // object_type 5 is admin and 4 is bus_personnel ?>
           	<li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          	<i class="icon-user icon-white"></i> <?php if (isset($user->id)) { echo $user->full_name(); } ?> <b class="caret"></b>
+          	<i class="icon-user icon-white"></i> <?php if (!empty($user->id)) { echo $user->full_name(); } ?> <b class="caret"></b>
           	</a>
           	<ul class="dropdown-menu">
           		<li><a href="admin_view_profile.php"><i class="icon-wrench icon-white"></i> View Profile</a></li>

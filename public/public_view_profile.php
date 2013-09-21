@@ -1,69 +1,81 @@
 <?php
 require_once("../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 6){
+//init code
+$photo_object = new Photograph();
+$commuter_object = new Commuter();
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = Commuter::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	if ($session->object_type == 6){
+		//commuter
 	
-	if (isset($_POST['submit'])){
-		$user->username = $_POST['username'];
-		$user->first_name = $_POST['first_name'];
-		$user->last_name = $_POST['last_name'];
-		$user->email_address = $_POST['email_address'];
+		$user = $commuter_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($user->id, "commuter");
 	
-		if ($user->update()){
-			$session->message("Success! Your details were updated. ");
-			redirect_to('public_view_profile.php');
-		} else {
-			$session->message("Error! Your details could not be updated. ");
-		}
-	}
+		if (isset($_POST['submit'])){
+			$user->username = $_POST['username'];
+			$user->first_name = $_POST['first_name'];
+			$user->last_name = $_POST['last_name'];
+			$user->email_address = $_POST['email_address'];
 	
-	if (isset($_POST['update'])){
-	
-		if ($_POST['old_password'] == $user->password){
-				
-			$user->password = $_POST['new_password'];
-				
-			if ($admin_user->update()){
-				$session->message("Success! The password was updated. ");
-				redirect_to('admin_view_profile.php');
+			if ($user->update()){
+				$session->message("Success! Your details were updated. ");
+				redirect_to('public_view_profile.php');
 			} else {
-				$session->message("Error! The user details could not be updated. ");
+				$session->message("Error! Your details could not be updated. ");
 			}
-		} else {
-			$session->message("Error! The existing password did not match. ");
 		}
 	
-	}
+		if (isset($_POST['update'])){
 	
-	if (isset($_POST['upload'])){
+			if ($_POST['old_password'] == $user->password){
 	
-		$photo = new Photograph();
+				$user->password = $_POST['new_password'];
 	
-		$photo->commuter_id = $user->id;
-		$photo->photo_type = 9; // photo_type 9 is "User Profile"
-		$photo->attach_file_commuter($_FILES['file_upload'], $user->id, $user->first_name, $user->last_name);
+				if ($admin_user->update()){
+					$session->message("Success! The password was updated. ");
+					redirect_to('admin_view_profile.php');
+				} else {
+					$session->message("Error! The user details could not be updated. ");
+				}
+			} else {
+				$session->message("Error! The existing password did not match. ");
+			}
 	
-		if ($photo->save()){
-			$session->message("Success! The photo was uploaded successfully. ");
-			redirect_to('public_view_profile.php');
-		} else {
-			$message = join("<br />", $photo->errors);
 		}
 	
+		if (isset($_POST['upload'])){
+	
+			$photo = new Photograph();
+	
+			$photo->commuter_id = $user->id;
+			$photo->photo_type = 9; // photo_type 9 is "User Profile"
+			$photo->attach_file_commuter($_FILES['file_upload'], $user->id, $user->first_name, $user->last_name);
+	
+			if ($photo->save()){
+				$session->message("Success! The photo was uploaded successfully. ");
+				redirect_to('public_view_profile.php');
+			} else {
+				$message = join("<br />", $photo->errors);
+			}
+	
+		}
+	
+	} else {
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+		
 	}
 	
-} else if ($session->is_logged_in() && $session->object_type != 6) {
+} else {
+	//not logged in... GTFO!
 	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
-	
-} else if (!$session->is_logged_in() && $session->object_type != 6) {
-	
-	redirect_to("login.php");
-	
 }
 
 ?>
@@ -101,13 +113,27 @@ if ($session->is_logged_in() && $session->object_type == 6){
         
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<a href="index.php" class="btn btn-primary"> &larr; Back to Home Page</a>
+	        	<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home Page</a>
 	        </div>
         </div>
         
         <div class="span9">
 	    
 	    <section>
+	    
+	    <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
 	    
 	    <ul class="nav nav-tabs">
 	      <li class="active"><a href="#user_details" data-toggle="tab">Profile</a></li>
@@ -117,8 +143,6 @@ if ($session->is_logged_in() && $session->object_type == 6){
 	    
 	    <div id="myTabContent" class="tab-content">
 	      <div class="tab-pane active in" id="user_details">
-	      
-	      <?php if (!empty($message)) { echo '<div class="alert alert-success">' . $message . '</div>'; }?>
 	      	      
 	        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="tab" class="form-horizontal">
 	            

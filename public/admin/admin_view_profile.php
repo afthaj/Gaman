@@ -159,11 +159,6 @@ if ($session->is_logged_in()){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		 
-		 <div class="span9">
-		 	<h1>User Profile</h1>
-		 	<h3><?php echo $user->full_name();?></h3>
-		 </div>
-		 
 		 <div class="span3">
 		 
 		 <?php 
@@ -174,6 +169,11 @@ if ($session->is_logged_in()){
          }
          ?>
 		 
+		 </div>
+		 
+		 <div class="span9">
+		 	<h1>User Profile</h1>
+		 	<h3><?php echo $user->full_name();?></h3>
 		 </div>
 		 
 		 </div>

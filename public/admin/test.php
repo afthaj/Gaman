@@ -1,6 +1,10 @@
 <?php
 require_once("../../includes/initialize.php");
 
+//init code
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+
 if ($session->is_logged_in() && $session->object_type == 5){
 	
 	$user = AdminUser::find_by_id($_SESSION['id']);
