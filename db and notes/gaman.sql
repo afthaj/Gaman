@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2013 at 12:53 AM
+-- Generation Time: Sep 22, 2013 at 11:50 PM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -164,11 +164,11 @@ CREATE TABLE `complaints` (
   `complaint_type` int(11) NOT NULL,
   `date_time_submitted` int(11) NOT NULL,
   `status` int(11) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `content` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `complaint_type` (`complaint_type`),
   KEY `status` (`status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `complaints`
@@ -187,6 +187,10 @@ INSERT INTO `complaints` VALUES(10, 3, 2, 5, 1, 10, 1379599995, 1, 'Conductor di
 INSERT INTO `complaints` VALUES(11, 1, 1, 6, 1, 1, 1379788569, 1, 'Bus delays are very common in this bus route');
 INSERT INTO `complaints` VALUES(12, 3, 1, 6, 1, 10, 1379789236, 1, 'The bus conductor did not issue a ticket to me.');
 INSERT INTO `complaints` VALUES(13, 2, 18, 6, 1, 6, 1379789291, 1, 'Buses don''t stop at the proper place in the bus stop');
+INSERT INTO `complaints` VALUES(14, 1, 1, 6, 1, 2, 1379833500, 1, 'The buses are consistently overcrowded on this route');
+INSERT INTO `complaints` VALUES(15, 2, 5, 6, 1, 7, 1379836155, 1, 'There is no sign board that informs commuters of the bus stop at this bus stop.');
+INSERT INTO `complaints` VALUES(16, 3, 6, 6, 1, 11, 1379838343, 1, 'The bus was overcrowded purposefully without regard to passenger safety');
+INSERT INTO `complaints` VALUES(17, 1, 1, 5, 1, 4, 1379847113, 1, 'during the weekends, the buses don''t run for all of the operational hours');
 
 -- --------------------------------------------------------
 
@@ -250,6 +254,29 @@ INSERT INTO `complaint_types` VALUES(21, 3, 'Failure to display the Fare Table i
 INSERT INTO `complaint_types` VALUES(22, 3, 'Operating without a valid Driver''s license');
 INSERT INTO `complaint_types` VALUES(23, 3, 'Operating without a valid Conductor''s license');
 INSERT INTO `complaint_types` VALUES(24, 3, 'Operating without a valid Route Permit');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback_items`
+--
+
+CREATE TABLE `feedback_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `related_object_type` int(11) NOT NULL,
+  `related_object_id` int(11) NOT NULL,
+  `user_object_type` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `date_time_submitted` int(11) NOT NULL,
+  `content` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `feedback_items`
+--
+
+INSERT INTO `feedback_items` VALUES(1, 1, 1, 6, 1, 1379841516, 'This route is very good. The AC buses are fairly comfortable and prompt. The normal buses loiter a little too much at certain stops.');
 
 -- --------------------------------------------------------
 

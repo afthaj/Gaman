@@ -98,6 +98,7 @@
     <script src="js/bootstrap-transition.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
     
+    
     <script src="js/application.js"></script>
     <script src="js/holder.js"></script>
     <script src="js/html5shiv.js"></script>

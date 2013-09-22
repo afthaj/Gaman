@@ -5,6 +5,8 @@ require_once("../includes/initialize.php");
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
 
+$stop_route_object = new StopRoute();
+
 //check login
 if ($session->is_logged_in()){
 	
@@ -40,6 +42,21 @@ if ($session->is_logged_in()){
 		  <div class="container">
 		    <h1><?php echo WEB_APP_NAME; ?></h1>
 		    <p><?php echo WEB_APP_CATCH_PHRASE; ?></p>
+		    
+		    <div class="example-countries">
+		    
+		    <select>
+		    	<option></option>
+		    </select>
+		    
+		    <select>
+		    	<option></option>
+		    </select>
+        	<br />
+        	<button class="btn btn-primary">Find Bus Route</button>
+        	
+        	</div>
+		    
 		  </div>
 		</div>
       
@@ -66,20 +83,7 @@ if ($session->is_logged_in()){
         
         <div class="row-fluid">
         
-        <div class="span4">
-        <h2>Subheading 1</h2>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rhoncus consectetur lectus, sit amet semper nisi lacinia varius. Etiam a tempus eros, ac dictum nisl. Quisque eu dignissim metus. Fusce id pretium risus. Phasellus adipiscing elit in mi semper tincidunt. Nullam lorem tortor, dapibus et nisl ac, fringilla scelerisque sem. Praesent commodo ipsum ut congue elementum.</p>
-        </div>
         
-        <div class="span4">
-        <h2>Subheading 2</h2>
-        <p class="lead">Aenean aliquam leo libero, ut tempor lorem cursus vitae. Donec porttitor diam orci, nec mollis diam pulvinar a. In tempus fermentum libero tempus mollis. Vestibulum volutpat nulla sed neque consequat, vel venenatis magna vestibulum. Duis placerat quam non pretium congue.</p>
-        </div>
-        
-        <div class="span4">
-        <h2>Subheading 3</h2>
-        <p class="lead">Aenean pharetra nisi a lorem tincidunt mattis. Quisque arcu eros, varius eu sapien sit amet, luctus volutpat neque. Maecenas turpis massa, ornare at ipsum ut, elementum cursus sem. Nunc ac lacus faucibus, lacinia nisl vel, venenatis metus. Curabitur luctus enim sapien, et euismod nisl mollis eu.</p>
-        </div>
         
         </div>
         

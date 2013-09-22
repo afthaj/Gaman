@@ -25,6 +25,16 @@ class ObjectType extends DatabaseObject {
 		
 	}
 	
+	public function get_main_object_types(){
+		global $database;
+	
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE id < 5";
+	
+		return self::find_by_sql($sql);
+	
+	}
+	
 	
 }
 

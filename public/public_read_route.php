@@ -7,6 +7,12 @@ $commuter_object = new Commuter();
 $route_object = new BusRoute();
 $stop_route_object = new StopRoute();
 $stop_object = new BusStop();
+$complaint_object = new Complaint();
+$complaint_type_object = new ComplaintType();
+$object_type_object = new ObjectType();
+$complaint_status_object = new ComplaintStatus();
+$bus_object = new Bus();
+$bus_personnel_object = new BusPersonnel();
 
 $routes = BusRoute::find_all();
 $stops = BusStop::find_all();
@@ -19,15 +25,15 @@ if ($session->is_logged_in()){
 		
 		$user = $commuter_object->find_by_id($_SESSION['id']);
 		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
-		
 	}
-
 }
 
 if (isset($_GET['routeid'])) {
 	$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
 	$stops_routes = $stop_route_object->get_stops_for_route($route_to_read_update->id);
-
+	if ($user->id){
+		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 1, $route_to_read_update->id);
+	}
 } else {
 	$session->message("No Route ID provided to view.");
 	redirect_to("public_list_routes.php");
@@ -63,11 +69,15 @@ if (isset($_GET['routeid'])) {
       <div class="row-fluid">
       
         <div class="span3">
-	        <div class="sidenav" data-spy="affix" data-offset-top="200">
+	        <div class="sidenav" data-spy="affix" data-offset-top="150">
 	        	<a href="public_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Bus Routes</a>
 	        	<?php if (!empty($user->id)){ ?>
-	        	<a href="#" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="public_create_feedback.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
 	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<br />
+	        	<div class="well">
+	        		<p>Complaints submitted on the Route: <span class="badge"><?php echo count($complaints_by_user); ?></span></p>
+	        	</div>
 	        	<?php } ?>
 	        </div>
         </div>
@@ -95,9 +105,29 @@ if (isset($_GET['routeid'])) {
         <ul class="nav nav-tabs">
 	      <li class="active"><a href="#route_stops_list" data-toggle="tab">List of Stops</a></li>
 	      <li><a href="#route_profile" data-toggle="tab">Route Profile</a></li>
+	      <?php if (!empty($user->id)){ ?>
+	      <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
+	      <?php } ?>
 	    </ul>
 	    
 	    <div id="tab_content" class="tab-content">
+	    
+	    	<div class="tab-pane active in" id="route_stops_list">
+	      		
+	      		<div>
+	      			<ul class="bus-stops-list">
+	      				<li class=""><h2>Route Number: <?php echo $route_to_read_update->route_number; ?></h2></li>
+	      				<li class="">&nbsp;</li>
+	      				
+	      				<?php for ($i = 0; $i < count($stops_routes); $i++){ ?>
+			        		<li><a href="public_read_stop.php?stopid=<?php echo $stop_object->find_by_id($stops_routes[$i]->stop_id)->id; ?>" class="btn btn-success"><?php echo $stop_object->find_by_id($stops_routes[$i]->stop_id)->name; ?></a></li>
+			        		<?php if ( $i != count($stops_routes)-1 ) { echo '<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-arrow-down"></i></li>'; } ?>
+		        		<?php } ?>
+		        		
+	      			</ul>
+	      		</div>
+	      	
+	   		</div>
 	      	
 	      	<div class="tab-pane fade" id="route_profile">
 	      	
@@ -120,7 +150,7 @@ if (isset($_GET['routeid'])) {
 	        	<div class="control-group">
 	        	<label for="trip_time" class="control-label">Trip Time<br /></label>
 		        	<div class="controls">
-		        		<input type="text" name="trip_time" disabled="disabled" value="<?php echo $route_to_read_update->trip_time; ?>">
+		        		<input type="text" name="trip_time" disabled="disabled" value="<?php echo format_trip_time($route_to_read_update->trip_time); ?>">
 		        	</div>
 	        	</div>
 	            
@@ -141,24 +171,55 @@ if (isset($_GET['routeid'])) {
 	        </form>
 	      
 	      	</div>
-	      
-	      	<div class="tab-pane active in" id="route_stops_list">
-	      		
-	      		<div>
-	      			<ul class="bus-stops-list">
-	      				<li class=""><h2>Route Number: <?php echo $route_to_read_update->route_number; ?></h2></li>
-	      				<li class="">&nbsp;</li>
-	      				
-	      				<?php for ($i = 0; $i < count($stops_routes); $i++){ ?>
-			        		<li><a href="public_read_stop.php?stopid=<?php echo $stop_object->find_by_id($stops_routes[$i]->stop_id)->id; ?>" class="btn btn-success"><?php echo $stop_object->find_by_id($stops_routes[$i]->stop_id)->name; ?></a></li>
-			        		<?php if ( $i != count($stops_routes)-1 ) { echo '<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-arrow-down"></i></li>'; } ?>
-		        		<?php } ?>
-		        		
-	      			</ul>
-	      		</div>
 	      	
-	   		</div>
-	      
+	      	<?php if ($user->id){ ?>
+	      	<div class="tab-pane fade" id="complaints">
+	      	<?php if ($complaints_by_user) { 
+	      		
+	      		foreach ($complaints_by_user as $complaint) { ?>
+	      		
+	      		<div class="well">
+	      			<h4>Complaint Type: <?php echo $complaint_type_object->find_by_id($complaint->complaint_type)->comp_type_name; ?></h4>
+	      			<p>Details: <?php echo $complaint->content; ?></p>
+	      			<p>Status: <span class="label 
+			        <?php
+			        
+			        if ($complaint_status_object->find_by_id($complaint->status)->id == 1){
+			        	echo ' label-info';
+			        } else if ($complaint_status_object->find_by_id($complaint->status)->id == 2){
+			        	echo ' label-warning';
+			        } else if ($complaint_status_object->find_by_id($complaint->status)->id == 3){
+			        	echo ' label-success';
+			        }
+			        
+			        ?>"><?php echo $complaint_status_object->find_by_id($complaint->status)->comp_status_name; ?></span>
+			        </p>
+	      			<p>Related to: <span class="badge"><?php echo $object_type_object->find_by_id($complaint->related_object_type)->display_name; ?></span> &middot; Identifier: <span class="badge"><?php 
+					switch ($complaint->related_object_type) {
+					    case 1:
+					        echo $route_object->find_by_id($complaint->related_object_id)->route_number;
+					        break;
+					    case 2:
+					        echo $stop_object->find_by_id($complaint->related_object_id)->name;
+					        break;
+					    case 3:
+					        echo $bus_object->find_by_id($complaint->related_object_id)->reg_number;
+					        break;
+				        case 4:
+				        	echo $bus_personnel_object->find_by_id($complaint->related_object_id)->fullname();
+				        	break;
+					}
+			        ?></span> &middot; Submitted on <span class="badge"><?php echo date("d M Y", $complaint->date_time_submitted); ?></span> at <span class="badge"><?php echo date("h:i:s a", $complaint->date_time_submitted); ?></span>
+	      			</p>
+	      		</div>
+	      	<?php } 
+	      	
+	      	} else { 
+	      		echo '<h4>You have not submitted any Complaints on this Bus Route</h4>'; 
+	      	} ?>	
+	      	</div>
+	      	<?php } ?>
+	      	
 	    </div>
 	    
 	    </section>

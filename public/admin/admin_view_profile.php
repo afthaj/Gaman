@@ -129,11 +129,17 @@ if ($session->is_logged_in()){
 		}
 	
 	} else {
-		redirect_to("login.php");
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
 	}
 	
 } else {
-		redirect_to("login.php");
+	//not logged in... GTFO!
+	
+	$session->message("Error! You must login to view the requested page. ");
+	redirect_to("login.php");
 }
 
 
@@ -163,9 +169,9 @@ if ($session->is_logged_in()){
 		 
 		 <?php 
          if (!empty($profile_picture->filename)) {
-         	echo '<img src="../../' . $profile_picture->image_path() . '" width="200" class="img-rounded pull-right" />'; 
+         	echo '<img src="../../' . $profile_picture->image_path() . '" width="200" class="img-rounded" />'; 
          } else {
-         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded pull-right" alt="Please upload a profile picture" />';
+         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded" alt="Please upload a profile picture" />';
          }
          ?>
 		 

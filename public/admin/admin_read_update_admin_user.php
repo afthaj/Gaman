@@ -108,21 +108,21 @@ if ($session->is_logged_in()){
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
 		 
-		 <div class="span9">
-		 	<h1>Admin Profile</h1>
-		 	<h3><?php echo $user_to_read_update->full_name(); ?></h3>
-		 </div>
-		 
 		 <div class="span3">
 		 	
 		 <?php 
          if (!empty($profile_picture_of_other_admin_users->filename)) {
-         	echo '<img src="../../' . $profile_picture_of_other_admin_users->image_path() . '" width="200" class="img-rounded pull-right" />'; 
+         	echo '<img src="../../' . $profile_picture_of_other_admin_users->image_path() . '" width="200" class="img-rounded" />'; 
          } else {
-         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded pull-right" alt="Please upload a profile picture" />';
+         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded" alt="Please upload a profile picture" />';
          } 
          ?>
 		 	
+		 </div>
+		 
+		 <div class="span9">
+		 	<h1>Admin Profile</h1>
+		 	<h3><?php echo $user_to_read_update->full_name(); ?></h3>
 		 </div>
 		 
 		 </div>

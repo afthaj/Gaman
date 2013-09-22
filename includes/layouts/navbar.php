@@ -36,13 +36,18 @@
           	</ul>
           </li>
           
+          <?php if ($user->id) { ?>
           <li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Complaints <b class="caret"></b></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Feedback <b class="caret"></b></a>
           	<ul class="dropdown-menu">
           		<li><a href="public_list_complaints.php"><i class="icon-info-sign icon-white"></i> View All Complaints</a></li>
           		<li><a href="public_create_complaint.php"><i class="icon-plus icon-white"></i> Add Complaint</a></li>
+          		<li class="divider"></li>
+          		<li><a href="public_list_feedback_items.php"><i class="icon-info-sign icon-white"></i> View Feedback Provided</a></li>
+          		<li><a href="public_create_feedback.php"><i class="icon-plus icon-white"></i> Provide Feedback</a></li>
           	</ul>
           </li>
+          <?php } ?>
           
           <li<?php if (!empty($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
           

@@ -80,7 +80,19 @@ if ($session->is_logged_in()){
         
         <section>
         
-        <?php if (!empty($session->message)) {echo $session->message; echo "<br /><br />";} ?>
+        <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
         
         <table class="table table-bordered table-hover">
 	        <tr align="center">

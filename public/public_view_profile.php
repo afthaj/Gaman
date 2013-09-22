@@ -128,7 +128,7 @@ if ($session->is_logged_in()){
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="300">
 	        	<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home Page</a>
-	        	<a href="#" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> View Feedback Given</a>
+	        	<a href="public_list_feedback_items.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> View Feedback Given</a>
 	        	<a href="public_list_complaints.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> View Complaints Submitted</a>
 	        </div>
         </div>

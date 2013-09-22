@@ -37,6 +37,7 @@ require_once("commuter.php");
 require_once("complaint_status.php");
 require_once("complaint_type.php");
 require_once("complaint.php");
+require_once("feedback_item.php");
 require_once("object_type.php");
 require_once("photo_type.php");
 require_once("photograph.php");
