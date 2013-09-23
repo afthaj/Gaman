@@ -68,7 +68,7 @@ if ($session->is_logged_in()){
 		<?php 
 		if ($pagination->total_pages() > 1){
 			
-			echo '<div class="span12 pagination pagination-centered">';
+			echo '<div class="pagination pagination-centered">';
 			echo '<ul>';
 			
 			echo $pagination->has_previous_page() ? '<li><a href="' . $_SERVER['PHP_SELF'] . '?page='.$pagination->previous_page().'">&laquo;</a></li>' : '<li class="disabled"><a href="">&laquo;</a></li>';

@@ -126,7 +126,7 @@ theme colours:
   font-size: 24px;
   font-weight: 300;
   line-height: 1.25;
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 /* Link styles (used on .masthead-links as well) */
@@ -213,7 +213,6 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
   color: #fff;
 }
 .masthead p {
-  font-size: 40px;
   font-weight: 200;
   line-height: 1.25;
 }

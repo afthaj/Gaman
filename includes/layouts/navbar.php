@@ -36,7 +36,7 @@
           	</ul>
           </li>
           
-          <?php if ($user->id) { ?>
+          <?php if (!empty($user->id)) { if ($user->id){ ?>
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Feedback <b class="caret"></b></a>
           	<ul class="dropdown-menu">
@@ -47,7 +47,7 @@
           		<li><a href="public_create_feedback.php"><i class="icon-plus icon-white"></i> Provide Feedback</a></li>
           	</ul>
           </li>
-          <?php } ?>
+          <?php } } ?>
           
           <li<?php if (!empty($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
           

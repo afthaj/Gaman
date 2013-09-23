@@ -27,6 +27,53 @@ if ($session->is_logged_in()){
     <title>Home &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header.php');?>
     
+    <script>
+    $(document).ready(function() {
+	  $('.typeahead').typeahead({
+	    name: 'name',
+	    prefetch: './ajax_files/get_stops.php',
+	    limit: 5
+	  		});
+	});
+
+	</script>
+	
+	<script type="text/javascript">
+
+	function findBusRoute(from, to, search_results) {
+		
+		if (from == "" || to == "") {
+			search_results.innerHTML = "";
+			return;
+			}
+			
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			request = new XMLHttpRequest();
+			
+			} else {
+				// code for IE6, IE5
+				request = new ActiveXObject("Microsoft.XMLHTTP");
+				
+				}
+				
+		request.onreadystatechange = function() {
+			
+			if (request.readyState == 4 && request.status == 200) {
+				related_object_id.innerHTML = request.responseText;
+				}
+			
+			}
+
+		request.open("GET","ajax_files/search_for_stops.php?f=" + from + "&t=" + to, true);
+		
+		request.send();
+
+				
+		}	
+
+	</script>
+    
   </head>
 
   <body>
@@ -41,22 +88,19 @@ if ($session->is_logged_in()){
       	<div class="jumbotron masthead">
 		  <div class="container">
 		    <h1><?php echo WEB_APP_NAME; ?></h1>
-		    <p><?php echo WEB_APP_CATCH_PHRASE; ?></p>
+		    <h3><?php echo WEB_APP_CATCH_PHRASE; ?></h3>
+		    <br />
 		    
-		    <div class="example-countries">
-		    
-		    <select>
-		    	<option></option>
-		    </select>
-		    
-		    <select>
-		    	<option></option>
-		    </select>
-        	<br />
-        	<button class="btn btn-primary">Find Bus Route</button>
-        	
+		    <div>
+			    <input type="text" class="typeahead" placeholder="From" id="from" />
+			    <input type="text" class="typeahead" placeholder="To" id="to" />
+	        	<br />
+	        	<button class="btn btn-primary" onClick="findBusRoute(document.getElementById('from'), document.getElementById('to'), document.getElementById('bus_route_search_results'))">Find Bus Route</button>
         	</div>
-		    
+        	
+        	<div class="" id="bus_route_search_results">
+        	</div>
+        	
 		  </div>
 		</div>
       
@@ -83,7 +127,8 @@ if ($session->is_logged_in()){
         
         <div class="row-fluid">
         
-        
+        <div class="" id="bus_route_search_results">
+        </div>
         
         </div>
         

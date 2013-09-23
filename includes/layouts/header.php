@@ -96,7 +96,9 @@
     <script src="js/bootstrap-tab.js"></script>
     <script src="js/bootstrap-tooltip.js"></script>
     <script src="js/bootstrap-transition.js"></script>
-    <script src="js/bootstrap-typeahead.js"></script>
+    <!-- <script src="js/bootstrap-typeahead.js"></script> -->
+    
+    <script src="js/typeahead.js"></script>
     
     
     <script src="js/application.js"></script>

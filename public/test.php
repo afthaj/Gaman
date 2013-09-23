@@ -95,6 +95,8 @@ if ($session->is_logged_in()){
        	  	  	
        	  	  	echo php_uname('s');
        	  	  	
+       	  	  	
+       	  	  	
        	  	  	?>
        	  	  	
        	  	  </section>

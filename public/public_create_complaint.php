@@ -96,64 +96,6 @@ if ($session->is_logged_in()){
     
     <script type="text/javascript">
 
-	function change_related_object_type(comp_type, related_object_type) {
-		
-		if (comp_type == "") {
-			related_object_type.innerHTML = "";
-			return;
-			}
-			
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			request = new XMLHttpRequest();
-			} else {
-				// code for IE6, IE5
-				request = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				
-		request.onreadystatechange = function() {
-			
-			if (request.readyState == 4 && request.status == 200) {
-				related_object_type.innerHTML = request.responseText;
-				}
-			
-			}
-			
-		request.open("GET","../ajax_files/get_object_types_to_create_complaint.php?q=" + comp_type, true);
-		
-		request.send();
-		
-		}
-
-	function change_related_object_id(str, related_object_id) {
-		
-		if (str == "") {
-			related_object_id.innerHTML = "";
-			return;
-			}
-			
-		if (window.XMLHttpRequest) {
-			// code for IE7+, Firefox, Chrome, Opera, Safari
-			request = new XMLHttpRequest();
-			} else {
-				// code for IE6, IE5
-				request = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				
-		request.onreadystatechange = function() {
-			
-			if (request.readyState == 4 && request.status == 200) {
-				related_object_id.innerHTML = request.responseText;
-				}
-			
-			}
-			
-		request.open("GET","../ajax_files/get_objects_to_create_complaint.php?q=" + str, true);
-		
-		request.send();
-		
-		}
-
 	function change_related_object_type_and_id(str, related_object_type, related_object_id) {
 		
 		if (str == "") {
