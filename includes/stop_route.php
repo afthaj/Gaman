@@ -34,13 +34,27 @@ class StopRoute extends DatabaseObject {
 		
 		$sql  = "SELECT * FROM " . static::$table_name;
 		$sql .= " WHERE stop_id = " . $from_stop;
-		$sql .= " OR stop_id = " . $to_stop;
+		$sql .= " UNION ";
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE stop_id = " . $to_stop;
 		
 		return self::find_by_sql($sql);
 		
 	}
 	
-	
+	public function check_stop_for_route($stopid, $routeid){
+		global $database;
+		
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE stop_id = " . $stopid;
+		$sql .= " AND route_id = " . $routeid;
+		
+		$result_array = self::find_by_sql($sql);
+		
+		return !empty($result_array) ? true : false;
+		
+	}
+
 }
 
 

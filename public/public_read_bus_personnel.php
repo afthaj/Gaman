@@ -33,7 +33,7 @@ if (!empty($_GET['personnelid'])){
 	$bus_personnel_to_read_update = $bus_personnel_object->find_by_id($_GET['personnelid']);
 	$profile_picture_of_bus_personnel = $photo_object->get_profile_picture(4, $bus_personnel_to_read_update->id);
 	$buses_bus_personnel = $bus_bus_personnel_object->get_buses_for_personnel($bus_personnel_to_read_update->id);
-	if ($user->id){
+	if (!empty($user->id)){
 		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 4, $bus_personnel_to_read_update->id);
 	}
 
@@ -213,7 +213,7 @@ if (!empty($_GET['personnelid'])){
 	      	
 	   		</div>
 	   		
-	   		<?php if ($user->id){ ?>
+	   		<?php if (!empty($user->id)){ ?>
 	      	<div class="tab-pane fade" id="complaints">
 	      	<?php if ($complaints_by_user) { 
 	      		

@@ -42,10 +42,21 @@ if ($session->is_logged_in()){
 
 	function findBusRoute(from, to, search_results) {
 		
-		if (from == "" || to == "") {
-			search_results.innerHTML = "";
-			return;
-			}
+		//if (from == "" || to == "") {
+			//search_results.innerHTML = "";
+			//return;
+			//}
+			
+		
+		var from_encoded = encodeURI(from.value);
+		var to_encoded = encodeURI(to.value);
+
+		var search_url = "ajax_files/search_for_stops.php?f=";
+			search_url += from_encoded;
+			search_url += "&t=";
+			search_url += to_encoded;
+
+		//document.write(search_url);
 			
 		if (window.XMLHttpRequest) {
 			// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -60,15 +71,14 @@ if ($session->is_logged_in()){
 		request.onreadystatechange = function() {
 			
 			if (request.readyState == 4 && request.status == 200) {
-				related_object_id.innerHTML = request.responseText;
+				search_results.innerHTML = request.responseText;
 				}
 			
 			}
 
-		request.open("GET","ajax_files/search_for_stops.php?f=" + from + "&t=" + to, true);
+		request.open("GET",search_url, true);
 		
 		request.send();
-
 				
 		}	
 
@@ -98,9 +108,6 @@ if ($session->is_logged_in()){
 	        	<button class="btn btn-primary" onClick="findBusRoute(document.getElementById('from'), document.getElementById('to'), document.getElementById('bus_route_search_results'))">Find Bus Route</button>
         	</div>
         	
-        	<div class="" id="bus_route_search_results">
-        	</div>
-        	
 		  </div>
 		</div>
       
@@ -127,7 +134,7 @@ if ($session->is_logged_in()){
         
         <div class="row-fluid">
         
-        <div class="" id="bus_route_search_results">
+        <div id="bus_route_search_results">
         </div>
         
         </div>

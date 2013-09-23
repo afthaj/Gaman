@@ -37,7 +37,7 @@ if ($session->is_logged_in()){
 //GET request stuff
 if (!empty($_GET['busid'])){
 	$bus_to_read_update = $bus_object->find_by_id($_GET['busid']);
-	if ($user->id){
+	if (!empty($user->id)){
 		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 3, $bus_to_read_update->id);
 	}
 } else {
@@ -247,7 +247,7 @@ if (!empty($_GET['busid'])){
 	  	
 			</div>
 			
-			<?php if ($user->id){ ?>
+			<?php if (!empty($user->id)){ ?>
 	      	<div class="tab-pane fade" id="complaints">
 	      	<?php if ($complaints_by_user) { 
 	      		

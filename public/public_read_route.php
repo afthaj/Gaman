@@ -31,7 +31,7 @@ if ($session->is_logged_in()){
 if (isset($_GET['routeid'])) {
 	$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
 	$stops_routes = $stop_route_object->get_stops_for_route($route_to_read_update->id);
-	if ($user->id){
+	if (!empty($user->id)){
 		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 1, $route_to_read_update->id);
 	}
 } else {
@@ -172,7 +172,7 @@ if (isset($_GET['routeid'])) {
 	      
 	      	</div>
 	      	
-	      	<?php if ($user->id){ ?>
+	      	<?php if (!empty($user->id)){ ?>
 	      	<div class="tab-pane fade" id="complaints">
 	      	<?php if ($complaints_by_user) { 
 	      		

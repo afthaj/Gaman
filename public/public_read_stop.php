@@ -35,7 +35,7 @@ if ($session->is_logged_in()){
 if (!empty($_GET['stopid'])){
 	$stop_to_read_update = $stop_object->find_by_id($_GET['stopid']);
 	$stops_routes = $stop_route_object->get_routes_for_stop($stop_to_read_update->id);
-	if ($user->id){
+	if (!empty($user->id)){
 		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 2, $stop_to_read_update->id);
 	}
 
@@ -221,7 +221,7 @@ if (!empty($_GET['stopid'])){
 			
 			</div>
 			
-			<?php if ($user->id){ ?>
+			<?php if (!empty($user->id)){ ?>
 	      	<div class="tab-pane fade" id="complaints">
 	      	<?php if ($complaints_by_user) { 
 	      		
