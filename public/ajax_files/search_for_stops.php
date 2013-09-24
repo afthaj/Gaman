@@ -26,6 +26,15 @@ echo '<br /><br />';
 //echo '<br />';
 
 
+//first check if the "from" and the "to" stops are on the same route
+
+
+//if so, return the route
+
+//if not, find routes so that the commuter passes through 1 intersection point
+
+
+
 for($i = 0; $i < count($routes_of_from_stop); $i++){
 	
 	for($j = 0; $j < count($routes_of_to_stop); $j++){
@@ -35,7 +44,8 @@ for($i = 0; $i < count($routes_of_from_stop); $i++){
 			
 			echo $route_object->find_by_id($routes_of_to_stop[$j]->route_id)->route_number . '<br />';
 			$flag = 1;
-		} else {
+			//return;
+		} /*else {
 			
 			$stops1 = $stop_route_object->get_stops_for_route($routes_of_from_stop[$i]->route_id);
 			$stops2 = $stop_route_object->get_stops_for_route($routes_of_to_stop[$j]->route_id);
@@ -69,11 +79,14 @@ for($i = 0; $i < count($routes_of_from_stop); $i++){
 						echo 'l = '.$l;
 						echo '<br /><br /><br />';
 						*/
+						/*
 					}
 				}
 			}
-		}
+		}*/
 	}
 }
+
+
 
 ?>
