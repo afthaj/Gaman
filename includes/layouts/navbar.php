@@ -26,7 +26,7 @@
           </li>
           
           <li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel<b class="caret"></b></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel <b class="caret"></b></a>
           	<ul class="dropdown-menu">
           		<li><a href="public_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
           		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>

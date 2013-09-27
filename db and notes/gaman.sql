@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2013 at 11:50 PM
+-- Generation Time: Sep 27, 2013 at 11:49 AM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -713,11 +713,32 @@ CREATE TABLE `stop_activities` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `surveys`
+--
+
+CREATE TABLE `surveys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `route_id` int(11) NOT NULL,
+  `start_date` int(11) NOT NULL,
+  `end_date` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `route_id` (`route_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `surveys`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `trips`
 --
 
 CREATE TABLE `trips` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `survey_id` int(11) NOT NULL,
   `route_id` int(11) NOT NULL,
   `bus_id` int(11) NOT NULL,
   `begin_stop` int(11) NOT NULL,
@@ -726,7 +747,8 @@ CREATE TABLE `trips` (
   `arrival_at_end_stop` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `route_id` (`route_id`),
-  KEY `bus_id` (`bus_id`)
+  KEY `bus_id` (`bus_id`),
+  KEY `survey_id` (`survey_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
@@ -850,11 +872,18 @@ ALTER TABLE `stop_activities`
   ADD CONSTRAINT `stop_activities_ibfk_2` FOREIGN KEY (`stop_id`) REFERENCES `stops` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `surveys`
+--
+ALTER TABLE `surveys`
+  ADD CONSTRAINT `surveys_ibfk_1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `trips`
 --
 ALTER TABLE `trips`
   ADD CONSTRAINT `trips_ibfk_1` FOREIGN KEY (`route_id`) REFERENCES `routes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `trips_ibfk_2` FOREIGN KEY (`bus_id`) REFERENCES `buses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `trips_ibfk_2` FOREIGN KEY (`bus_id`) REFERENCES `buses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `trips_ibfk_3` FOREIGN KEY (`survey_id`) REFERENCES `surveys` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_admins`

@@ -32,7 +32,7 @@
           </li>
           
           <li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel<b class="caret"></b></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel <b class="caret"></b></a>
           	<ul class="dropdown-menu">
           		<li><a href="admin_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
           		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>

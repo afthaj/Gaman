@@ -41,6 +41,9 @@ require_once("feedback_item.php");
 require_once("object_type.php");
 require_once("photo_type.php");
 require_once("photograph.php");
+require_once("stop_activity.php");
 require_once("stop_route.php");
+require_once("survey.php");
+require_once("trip.php");
 
 ?>

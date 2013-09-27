@@ -45,7 +45,7 @@ for($i = 0; $i < count($routes_of_from_stop); $i++){
 			echo $route_object->find_by_id($routes_of_to_stop[$j]->route_id)->route_number . '<br />';
 			$flag = 1;
 			//return;
-		} else {
+		} /*else {
 			
 			$stops1 = $stop_route_object->get_stops_for_route($routes_of_from_stop[$i]->route_id);
 			$stops2 = $stop_route_object->get_stops_for_route($routes_of_to_stop[$j]->route_id);
@@ -79,11 +79,11 @@ for($i = 0; $i < count($routes_of_from_stop); $i++){
 						echo 'l = '.$l;
 						echo '<br /><br /><br />';
 						*/
-						
+						/*
 					}
 				}
 			}
-		}
+		}*/
 	}
 }
 
