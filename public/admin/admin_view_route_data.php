@@ -5,6 +5,7 @@ require_once("../../includes/initialize.php");
 $photo_object = new Photograph();
 $admin_user_object = new AdminUser();
 $route_object = new BusRoute();
+$survey_object = new Survey();
 
 //check login
 if ($session->is_logged_in()){
@@ -21,8 +22,9 @@ if ($session->is_logged_in()){
 	}
 	
 	//GET request stuff
-	if (isset($_GET['routeid'])){
+	if (!empty($_GET['routeid'])){
 		$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
+		$surveys_of_route = $survey_object->get_surveys_for_route($route_to_read_update->id);
 	} else {
 		$session->message("No Route ID provided to view.");
 		redirect_to("admin_list_routes.php");
@@ -73,7 +75,37 @@ if ($session->is_logged_in()){
         
         <section>
         
-        <?php echo $session->message; ?>
+        <?php 
+        
+        if(!empty($session->message)){
+        	
+        	echo '<div class="alert">';
+        	echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        	//echo '<p>';
+        	echo $session->message;
+        	//echo '</p>';
+        	echo '</div>';
+        }
+        
+        ?>
+        
+        <table class="table table-bordered table-hover">
+      
+	      <tr>
+		   <td align="center">Survey Start Date</td>
+		   <td align="center">Survey End Date</td>
+		   <td>&nbsp;</td>
+	      </tr>
+	      
+	      <?php foreach($surveys_of_route as $survey) { ?>
+	      <tr>
+		   <td align="center"><?php echo strftime("%B %d, %Y", $survey->start_date); ?></td>
+		   <td align="center"><?php echo strftime("%B %d, %Y", $survey->end_date); ?></td>
+		   <td><a href="admin_view_survey_info.php?surveyid=<?php echo $survey->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Details</a></td>
+	      </tr>
+	      <?php } ?>
+	      
+	    </table>
         
         </section>
         	

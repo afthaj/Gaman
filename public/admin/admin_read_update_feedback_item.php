@@ -1,40 +1,58 @@
 <?php
-require_once("../includes/initialize.php");
+require_once("../../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 6) {
+//init code
+$photo_object = new Photograph();
+$admin_user_object = new AdminUser();
+
+$route_object = new BusRoute();
+$stop_object = new BusStop();
+$bus_object = new Bus();
+$bus_personnel_object = new BusPersonnel();
+
+$object_type_object = new ObjectType();
+
+$feedback_item_object = new FeedbackItem();
+
+$routes = BusRoute::find_all();
+$stops = BusStop::find_all();
+$buses = Bus::find_all();
+$bus_personnel = BusPersonnel::find_all();
+$complaint_types = ComplaintType::find_all();
+$complaint_status = ComplaintStatus::find_all();
+
+//GET request stuff
+$feedback_item_to_read_update = $feedback_item_object->find_by_id($_GET['feedbackitemid']);
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = Commuter::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	if ($session->object_type == 5) {
+		//admin_user
 	
-	$routes = BusRoute::find_all();
-	$stops = BusStop::find_all();
-	$buses = Bus::find_all();
-	$bus_personnel = BusPersonnel::find_all();
-	$complaint_types = ComplaintType::find_all();
-	$complaint_status = ComplaintStatus::find_all();
+		$user = $admin_user_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 	
-	if (isset($_POST['submit'])){
-		$complaint_to_create = new Complaint();
+		if (isset($_POST['submit'])){
+			
+			$feedback_item_to_read_update->content = $_POST['content'];
+			
+			if ($complaint_to_read_update->update()){
+				$session->message("Success! The Complaint details have been changed. ");
+				redirect_to('admin_list_complaints.php');
+			} else {
+				$session->message("Error! The Complaint details could not be changed. ");
+			}
 	
-		$complaint_to_create->bus_route_id = $_POST['bus_route_id'];
-		$complaint_to_create->stop_id = $_POST['stop_id'];
-		$complaint_to_create->bus_id = $_POST['bus_id'];
-		$complaint_to_create->bus_personnel_id = $_POST['bus_personnel_id'];
 	
-		$complaint_to_create->complaint_type = $_POST['complaint_type'];
-		$complaint_to_create->status = $_POST['status'];
-		$complaint_to_create->content = $_POST['content'];
-	
+		}
 	
 	}
 	
-} else if ($session->is_logged_in() && $session->object_type != 6) {
+} else {
+	//not logged in... GTFO!
 	
-	redirect_to("login.php");
-	
-} else if (!$session->is_logged_in() && $session->object_type != 6) {
-	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
 
@@ -43,7 +61,7 @@ if ($session->is_logged_in() && $session->object_type == 6) {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Complaints &middot; <?php echo WEB_APP_NAME; ?></title>
+    <title>Feedback &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
 

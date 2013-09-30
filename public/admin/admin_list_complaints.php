@@ -54,9 +54,18 @@ if ($session->is_logged_in()){
 	
 		//$complaints = $complaint_object->get_complaints_for_user($user->id, $session->object_type);
 	
+	} else {
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+		
 	}
 	
 } else {
+	//not logged in... GTFO!
+	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
 

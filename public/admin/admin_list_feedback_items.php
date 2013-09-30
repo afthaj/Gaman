@@ -25,6 +25,24 @@ if ($session->is_logged_in()){
 		
 		$feedback_items = $feedback_item_object->find_all();
 	
+	} else if ($session->is_logged_in() && $session->object_type == 4){
+		//bus_personnel
+	
+		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+	
+		$sql  = "SELECT * FROM complaints";
+		$sql .= " WHERE user_object_type = " . $session->object_type;
+		$sql .= " AND user_id = " . $user->id;
+		$sql .= " LIMIT " . $per_page;
+		if ($current_page != 1){
+			$sql .= " OFFSET " . $pagination->offset();
+		}
+		
+		$complaints = $complaint_object->find_by_sql($sql);
+	
+		//$complaints = $complaint_object->get_complaints_for_user($user->id, $session->object_type);
+	
 	} else {
 		//everyone else
 		
@@ -131,8 +149,8 @@ if ($session->is_logged_in()){
 			        <td><?php echo date("d M Y", $feedback_item->date_time_submitted); ?></td>
 			        <td><?php echo date("h:i:s a", $feedback_item->date_time_submitted); ?></td>
 			        <td><?php echo $feedback_item->content; ?></td>
-	        		<td><a href="public_read_update_feedback_item.php?feedbackitemid=<?php echo $feedback_item->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i></a></td>
-	        		<td><a href="public_delete_feedback_item.php?feedbackitemid=<?php echo $feedback_item->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i></a></td>        		
+	        		<td><a href="admin_read_update_feedback_item.php?feedbackitemid=<?php echo $feedback_item->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i></a></td>
+	        		<td><a href="admin_delete_feedback_item.php?feedbackitemid=<?php echo $feedback_item->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i></a></td>        		
         		</tr>
         	<?php } ?>
         	

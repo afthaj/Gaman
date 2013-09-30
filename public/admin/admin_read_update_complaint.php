@@ -2,16 +2,19 @@
 require_once("../../includes/initialize.php");
 
 //init code
-$complaint_object = new Complaint();
-$complaint_type_object = new ComplaintType();
-$complaint_status_object = new ComplaintStatus();
-$object_type_object = new ObjectType();
 $photo_object = new Photograph();
 $admin_user_object = new AdminUser();
-$bus_personnel_object = new BusPersonnel();
+
 $route_object = new BusRoute();
 $stop_object = new BusStop();
 $bus_object = new Bus();
+$bus_personnel_object = new BusPersonnel();
+
+$object_type_object = new ObjectType();
+
+$complaint_object = new Complaint();
+$complaint_type_object = new ComplaintType();
+$complaint_status_object = new ComplaintStatus();
 
 $complaint_statuses = $complaint_status_object->find_all();
 
@@ -59,6 +62,9 @@ if ($session->is_logged_in()){
 	}
 	
 } else {
+	//not logged in... GTFO!
+	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
 
@@ -100,11 +106,11 @@ if ($session->is_logged_in()){
         
         <div class="span3">
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
-	        	<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<a href="admin_list_complaints.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Complaints' List</a>
-	        	<?php } else if ($session->is_logged_in() && $session->object_type == 4) {?>
-	        		<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home</a>
-	        	<?php } ?>
+	        	<?php //if ($session->is_logged_in() && $session->object_type == 5) { ?>
+	        		<a href="admin_list_complaints.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Complaints</a>
+	        	<?php //} else if ($session->is_logged_in() && $session->object_type == 4) {?>
+	        		<!-- <a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home</a>  -->
+	        	<?php //} ?>
 	        </div>
         </div>
         
