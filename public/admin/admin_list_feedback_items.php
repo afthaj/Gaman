@@ -23,7 +23,34 @@ if ($session->is_logged_in()){
 		$user = $admin_user_object->find_by_id($_SESSION['id']);
 		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 		
-		$feedback_items = $feedback_item_object->find_all();
+		if (isset($_GET['t'])){
+			//time period flag has been set
+			switch ($_GET['t']) {
+				case 1: //past 24 hours 
+					$fromtime = strtotime("-1 day");
+					$totime = time();
+					$feedback_items = $feedback_item_object->get_feedback_items_within_time($fromtime, $totime);
+					break;
+				case 2: //past 3 days
+					$fromtime = strtotime("-3 days");
+					$totime = time();
+					$feedback_items = $feedback_item_object->get_feedback_items_within_time($fromtime, $totime);
+					break;
+				case 3: //past week
+					$fromtime = strtotime("-1 week");
+					$totime = time();
+					$feedback_items = $feedback_item_object->get_feedback_items_within_time($fromtime, $totime);
+					break;
+				
+			}
+			
+		} else {
+			//no time period defined, return ALL the feedback items
+			
+			$feedback_items = $feedback_item_object->get_all();
+		}
+		
+		
 	
 	} else if ($session->is_logged_in() && $session->object_type == 4){
 		//bus_personnel
@@ -31,17 +58,7 @@ if ($session->is_logged_in()){
 		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
 		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 	
-		$sql  = "SELECT * FROM complaints";
-		$sql .= " WHERE user_object_type = " . $session->object_type;
-		$sql .= " AND user_id = " . $user->id;
-		$sql .= " LIMIT " . $per_page;
-		if ($current_page != 1){
-			$sql .= " OFFSET " . $pagination->offset();
-		}
-		
-		$complaints = $complaint_object->find_by_sql($sql);
-	
-		//$complaints = $complaint_object->get_complaints_for_user($user->id, $session->object_type);
+		$feedback_items = $feedback_item_object->get_feedback_items_for_user($user->id, $session->object_type);
 	
 	} else {
 		//everyone else

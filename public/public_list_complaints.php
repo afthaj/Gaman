@@ -4,14 +4,17 @@ require_once("../includes/initialize.php");
 //init code
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
-$complaint_object = new Complaint();
-$complaint_type_object = new ComplaintType();
-$object_type_object = new ObjectType();
-$complaint_status_object = new ComplaintStatus();
+
 $route_object = new BusRoute();
 $stop_object = new BusStop();
 $bus_object = new Bus();
 $bus_personnel_object = new BusPersonnel();
+
+$object_type_object = new ObjectType();
+
+$complaint_object = new Complaint();
+$complaint_type_object = new ComplaintType();
+$complaint_status_object = new ComplaintStatus();
 
 //check login
 if ($session->is_logged_in()){
@@ -102,7 +105,6 @@ if ($session->is_logged_in()){
 		        <td>Complaint Details</td>
 		        <td>Complaint Status</td>
 		        <td>&nbsp;</td>
-		        <td>&nbsp;</td>
 	        </tr>
 	      </thead>
 	      <tbody>
@@ -146,7 +148,6 @@ if ($session->is_logged_in()){
 			        ?>
 			        "><?php echo $complaint_status_object->find_by_id($complaint->status)->comp_status_name; ?></span></td>
 	        		<td><a href="public_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></a></td>
-	        		<td><a href="public_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i></a></td>        		
         		</tr>
         	<?php }?>
         	

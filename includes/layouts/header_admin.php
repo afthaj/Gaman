@@ -84,6 +84,8 @@
     <script src="../js/jquery.js"></script>
     
     <script src="../js/bootstrap.js"></script>
+    
+    <!-- 
     <script src="js/bootstrap-affix.js"></script>
 	<script src="js/bootstrap-alert.js"></script>
     <script src="js/bootstrap-button.js"></script>
@@ -97,11 +99,14 @@
     <script src="js/bootstrap-tooltip.js"></script>
     <script src="js/bootstrap-transition.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
+    -->
+    <script src="../js/typeahead.js"></script>
+     
+    <script src="../js/application.js"></script>
+    <script src="../js/holder.js"></script>
+    <script src="../js/html5shiv.js"></script>
+    <script src="../js/prettify.js"></script>
     
-    <script src="js/application.js"></script>
-    <script src="js/holder.js"></script>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/prettify.js"></script>
     
     <!-- flexslider -->
     

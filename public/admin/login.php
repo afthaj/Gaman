@@ -4,6 +4,7 @@ require_once("../../includes/initialize.php");
 //init code
 $admin_user_object = new AdminUser();
 $bus_personnel_object = new BusPersonnel();
+
 $object_type_object = new ObjectType();
 
 $object_type_admin = $object_type_object->get_object_type_by_name("admin");
@@ -18,7 +19,7 @@ if (isset($_POST['submit'])){
 	
 	$object_type = trim($_POST['object_type']);
 	
-	if ($object_type == $object_type_admin->id) {
+	if ($object_type == 5 /*$object_type_admin->id*/) {
 		
 		$username = trim($_POST['username']);
 		$password = trim($_POST['password']);
@@ -32,7 +33,7 @@ if (isset($_POST['submit'])){
 			$session->message("username/password combination is incorrect. ");
 		}
 		
-	} else if ($object_type == $object_type_bus_personnel->id) {
+	} else if ($object_type == 4 /*$object_type_bus_personnel->id*/) {
 		
 		$username = trim($_POST['username']);
 		$password = trim($_POST['password']);

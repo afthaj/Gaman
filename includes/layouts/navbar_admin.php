@@ -17,34 +17,34 @@
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="admin_list_stops.php"><i class="icon-info-sign icon-white"></i> View All Stops</a></li>
-          		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-          		<li><a href="admin_create_stop.php"><i class="icon-plus icon-white"></i> Add Bus Stop</a></li>
-          		<?php } ?>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li>
-          		<li class="divider"></li>
           		<li><a href="admin_list_routes.php"><i class="icon-info-sign icon-white"></i> View All Bus Routes</a></li>
           		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
           		<li><a href="admin_create_route.php"><i class="icon-plus icon-white"></i> Add Bus Route</a></li>
           		<?php } ?>
           		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Route</a></li>
+          		<li class="divider"></li>
+          		<li><a href="admin_list_stops.php"><i class="icon-info-sign icon-white"></i> View All Stops</a></li>
+          		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
+          		<li><a href="admin_create_stop.php"><i class="icon-plus icon-white"></i> Add Bus Stop</a></li>
+          		<?php } ?>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li>
           	</ul>
           </li>
           
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="admin_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
-          		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-          		<li><a href="admin_create_bus_personnel.php"><i class="icon-plus icon-white"></i> Add Personnel</a></li>
-          		<?php } ?>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>
-          		<li class="divider"></li>
           		<li><a href="admin_list_buses.php"><i class="icon-info-sign icon-white"></i> View All Buses</a></li>
           		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
           		<li><a href="admin_create_bus.php"><i class="icon-plus icon-white"></i> Add Bus</a></li>
           		<?php } ?>
           		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus</a></li>
+          		<li class="divider"></li>
+          		<li><a href="admin_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
+          		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
+          		<li><a href="admin_create_bus_personnel.php"><i class="icon-plus icon-white"></i> Add Personnel</a></li>
+          		<?php } ?>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>
           	</ul>
           </li>
           
@@ -60,6 +60,16 @@
           		<li><a href="#"><i class="icon-search icon-white"></i> Search for Feedback Item</a></li>
           	</ul>
           </li>
+          
+          <?php if (!empty($session->id) && $session->object_type == 4) { // object_type 4 is bus_personnel ?>
+          <li class="dropdown">
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">My Buses and Personnel <b class="caret"></b></a>
+          	<ul class="dropdown-menu">
+          		<li><a href="admin_list_buses_for_personnel.php"><i class="icon-info-sign icon-white"></i> View My Buses</a></li>
+          		<li><a href="#"><i class="icon-info-sign icon-white"></i> View My Bus Personnel</a></li>
+          	</ul>
+          </li>
+          <?php } ?>
           
           <li<?php if (!empty($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
 

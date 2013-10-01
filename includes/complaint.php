@@ -20,6 +20,15 @@ class Complaint extends DatabaseObject {
 	public $status;
 	public $content;
 	
+	public function get_all(){
+		global $database;
+	
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " ORDER BY date_time_submitted DESC";
+	
+		return self::find_by_sql($sql);
+	}
+	
 	public function get_complaints_for_user($userid, $objecttype){
 		global $database;
 		
@@ -53,6 +62,17 @@ class Complaint extends DatabaseObject {
 		$sql .= " ORDER BY date_time_submitted DESC";
 	
 		return self::find_by_sql($sql);
+	}
+	
+	public function get_complaints_within_time($fromtime, $totime) {
+		global $database;
+	
+		$sql  = "SELECT * FROM " . static::$table_name;
+		$sql .= " WHERE date_time_submitted BETWEEN " . $fromtime . " AND " . $totime;
+		$sql .= " ORDER BY date_time_submitted DESC";
+	
+		return self::find_by_sql($sql);
+	
 	}
 	
 }

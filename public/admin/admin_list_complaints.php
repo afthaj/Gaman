@@ -2,24 +2,25 @@
 require_once("../../includes/initialize.php");
 
 //init code
+$photo_object = new Photograph();
 $admin_user_object = new AdminUser();
 $bus_personnel_object = new BusPersonnel();
-$photo_object = new Photograph();
+
 $complaint_object = new Complaint();
-$comp_type = new ComplaintType();
-$comp_status = new ComplaintStatus();
-$obj = new ObjectType();
-$route = new BusRoute();
-$stop = new BusStop();
-$bus = new Bus();
-$bp = new BusPersonnel();
+$complaint_type_object = new ComplaintType();
+$complaint_status_object = new ComplaintStatus();
+
+$object_type_object = new ObjectType();
+$route_object = new BusRoute();
+$stop_object = new BusStop();
+$bus_object = new Bus();
+$bus_personnel_object = new BusPersonnel();
 
 //pagination code
 $current_page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 $per_page = 20;
 $total_count = $complaint_object->count_all();
 $pagination = new Pagination($current_page, $per_page, $total_count);
-
 
 //check user login
 if ($session->is_logged_in()){
@@ -29,12 +30,31 @@ if ($session->is_logged_in()){
 	
 		$user = $admin_user_object->find_by_id($_SESSION['id']);
 		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
-	
-		$sql  = "SELECT * FROM complaints";
-		$sql .= " LIMIT " . $per_page;
-		$sql .= " OFFSET " . $pagination->offset();
-	
-		$complaints = $complaint_object->find_by_sql($sql);
+		
+		if (isset($_GET['t'])){
+			//time period flag has been set
+			
+			$totime = time();
+			
+			switch ($_GET['t']) {
+				case 1: //past 24 hours
+					$fromtime = strtotime("-1 day");
+					$complaints = $complaint_object->get_complaints_within_time($fromtime, $totime);
+					break;
+				case 2: //past 3 days
+					$fromtime = strtotime("-3 days");
+					$complaints = $complaint_object->get_complaints_within_time($fromtime, $totime);
+					break;
+				case 3: //past week
+					$fromtime = strtotime("-1 week");
+					$complaints = $complaint_object->get_complaints_within_time($fromtime, $totime);
+					break;
+			}
+		} else {
+			//no time period defined, return ALL the complaints
+			
+			$complaints = $complaint_object->get_all();
+		}
 	
 	} else if ($session->is_logged_in() && $session->object_type == 4){
 		//bus_personnel
@@ -42,17 +62,7 @@ if ($session->is_logged_in()){
 		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
 		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
 	
-		$sql  = "SELECT * FROM complaints";
-		$sql .= " WHERE user_object_type = " . $session->object_type;
-		$sql .= " AND user_id = " . $user->id;
-		$sql .= " LIMIT " . $per_page;
-		if ($current_page != 1){
-			$sql .= " OFFSET " . $pagination->offset();
-		}
-		
-		$complaints = $complaint_object->find_by_sql($sql);
-	
-		//$complaints = $complaint_object->get_complaints_for_user($user->id, $session->object_type);
+		$complaints = $complaint_object->get_complaints_for_user($user->id, $session->object_type);
 	
 	} else {
 		//everyone else
@@ -102,8 +112,13 @@ if ($session->is_logged_in()){
       	
       	<div class="row-fluid">
 	        <br />
-	        <a href="admin_create_complaint.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Complaint</a>
-	        <br/> <br />
+	        <div class="well">
+		        <a href="admin_create_complaint.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Complaint</a>
+		        <div class="pull-right">
+		        	Show only for: <a href="#" class="btn btn-primary"><i class="icon- icon-white"></i> Bus Routes</a> &middot; <a href="#" class="btn btn-primary"><i class="icon- icon-white"></i> Bus Stops</a> &middot; <a href="#" class="btn btn-primary"><i class="icon- icon-white"></i> Buses</a>
+		        </div>
+	        </div>
+	        <br/>
         </div>
         
         <div class="row-fluid">
@@ -140,22 +155,22 @@ if ($session->is_logged_in()){
         	
         	<?php foreach($complaints as $complaint){ ?>
         		<tr align="center">
-	        		<td><?php echo $comp_type->find_by_id($complaint->complaint_type)->comp_type_name; ?></td>
-			        <td><?php echo $obj->find_by_id($complaint->related_object_type)->display_name; ?></td>
+	        		<td><?php echo $complaint_type_object->find_by_id($complaint->complaint_type)->comp_type_name; ?></td>
+			        <td><?php echo $object_type_object->find_by_id($complaint->related_object_type)->display_name; ?></td>
 			        <td>
 			        <?php 
 					switch ($complaint->related_object_type) {
 					    case 1:
-					        echo $route->find_by_id($complaint->related_object_id)->route_number;
+					        echo $route_object->find_by_id($complaint->related_object_id)->route_number;
 					        break;
 					    case 2:
-					        echo $stop->find_by_id($complaint->related_object_id)->name;
+					        echo $stop_object->find_by_id($complaint->related_object_id)->name;
 					        break;
 					    case 3:
-					        echo $bus->find_by_id($complaint->related_object_id)->reg_number;
+					        echo $bus_object->find_by_id($complaint->related_object_id)->reg_number;
 					        break;
 				        case 4:
-				        	echo $bp->find_by_id($complaint->related_object_id)->fullname();
+				        	echo $bus_personnel_object->find_by_id($complaint->related_object_id)->fullname();
 				        	break;
 					}
 			        ?>
@@ -166,16 +181,16 @@ if ($session->is_logged_in()){
 			        <td><span class="label 
 			        <?php
 			        
-			        if ($comp_status->find_by_id($complaint->status)->id == 1){
+			        if ($complaint_status_object->find_by_id($complaint->status)->id == 1){
 			        	echo ' label-info';
-			        } else if ($comp_status->find_by_id($complaint->status)->id == 2){
+			        } else if ($complaint_status_object->find_by_id($complaint->status)->id == 2){
 			        	echo ' label-warning';
-			        } else if ($comp_status->find_by_id($complaint->status)->id == 3){
+			        } else if ($complaint_status_object->find_by_id($complaint->status)->id == 3){
 			        	echo ' label-success';
 			        }
 			        
 			        ?>
-			        "><?php echo $comp_status->find_by_id($complaint->status)->comp_status_name; ?></span></td>
+			        "><?php echo $complaint_status_object->find_by_id($complaint->status)->comp_status_name; ?></span></td>
 	        		<td><a href="admin_read_update_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i></a></td>
 	        		<td><a href="admin_delete_complaint.php?complaintid=<?php echo $complaint->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i></a></td>
         		</tr>

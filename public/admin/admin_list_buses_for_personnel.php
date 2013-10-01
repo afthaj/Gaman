@@ -5,24 +5,33 @@ require_once("../../includes/initialize.php");
 $photo_object = new Photograph();
 $admin_user_object = new AdminUser();
 $bus_personnel_object = new BusPersonnel();
-$route_object = new BusRoute();
 
-$buses = Bus::find_all();
+$route_object = new BusRoute();
+$bus_object = new Bus();
+$bus_bus_personnel_object = new BusBusPersonnel();
 
 //check login
 if ($session->is_logged_in()){
 	
 	if ($session->object_type == 5){
-		//admin user
 		
-		$user = $admin_user_object->find_by_id($_SESSION['id']);
-		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		$session->message("The requested page is for use by Bus Personnel only. ");
+		redirect_to("index.php");
 		
-	} else if ($session->is_logged_in() && $session->object_type == 4) {
+	} else if ($session->object_type == 4) {
 		//bus personnel
 		
 		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
 		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		
+		if ($user->role == 1 || $user->role == 4 || $user->role == 5){
+			//bus_personnel that is logged in is an owner (role is 1 (Owner), 4 (Owner + Driver) or 5 (Owner + Conductor))
+			$buses = $bus_bus_personnel_object->get_buses_for_personnel($user->id);
+		} else if ($user->role == 2 || $user->role == 3) {
+			//bus_personnel that is logged in is not an owner
+			
+			$buses = $bus_bus_personnel_object->get_buses_for_personnel($user->id);
+		}
 		
 	} else {
 		//everyone else
@@ -67,14 +76,6 @@ if ($session->is_logged_in()){
         <!-- Start Content -->
         <div class="container-fluid">
         
-        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-        <div class="row-fluid">
-        	<br />
-	        <a href="admin_create_bus.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Bus</a>
-	        <br />
-        </div>
-        <?php } ?>
-        
         <div class="row-fluid">
         
         <div class="span12">
@@ -100,21 +101,19 @@ if ($session->is_logged_in()){
 		        <td>Route Number</td>
 		        <td>Registration Number</td>
 		        <td>Name (Optional)</td>
-		        <td>&nbsp;</td>
-		        <?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
+		        <?php if ($user->role == 1 || $user->role == 4 || $user->role == 5){ ?>
 		        <td>&nbsp;</td>
 		        <?php } ?>
 	        </tr>
         	
         	<?php foreach($buses as $bus){ ?>
         		<tr align="center">
-	        		<td><?php echo $route_object->find_by_id($bus->route_id)->route_number; ?></td>
-	        		<td><?php echo $bus->reg_number; ?></td>
-	        		<td><?php if (!empty($bus->name)) {echo $bus->name;} ?></td>
-	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i> Edit</a></td>
-	        		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<td><a href="admin_delete_bus.php?busid=<?php echo $bus->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete</a></td>
-	        		<?php } ?>        		
+	        		<td><a href="admin_read_update_route.php?routeid=<?php echo $route_object->find_by_id($bus_object->find_by_id($bus->bus_id)->route_id)->id; ?>" class="btn btn-info btn-bloc"><?php echo $route_object->find_by_id($bus_object->find_by_id($bus->bus_id)->route_id)->route_number; ?></a></td>
+	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $bus->bus_id; ?>" class="btn btn-warning btn-bloc"><?php echo $bus_object->find_by_id($bus->bus_id)->reg_number; ?></a></td>
+	        		<td><?php if (!empty($bus_object->find_by_id($bus->bus_id)->name)) {echo $bus_object->find_by_id($bus->bus_id)->name;} ?></td>
+	        		<?php if ($user->role == 1 || $user->role == 4 || $user->role == 5){ ?>
+	        		<td><a href="admin_read_update_bus.php?busid=<?php echo $bus->bus_id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i> Edit</a></td>
+	        		<?php } ?>
         		</tr>
         	<?php } ?>
         	

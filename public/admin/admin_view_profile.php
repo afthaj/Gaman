@@ -6,6 +6,9 @@ $photo_object = new Photograph();
 $admin_user_object = new AdminUser();
 $bus_personnel_object = new BusPersonnel();
 
+$admin_level_object = new AdminLevel();
+$bus_personnel_role_object = new BusPersonnelRole();
+
 //check login
 if ($session->is_logged_in()){
 	
@@ -178,8 +181,12 @@ if ($session->is_logged_in()){
 		 </div>
 		 
 		 <div class="span9">
-		 	<h1>User Profile</h1>
-		 	<h3><?php echo $user->full_name();?></h3>
+		 	<h1><?php echo $user->full_name();?></h1>
+		 	<?php if($session->is_logged_in() && $session->object_type == 5) { ?>
+		 	<h3><?php echo $admin_level_object->get_admin_level($user->admin_level)->admin_level_name;?></h3>
+		 	<?php } else if ($session->is_logged_in() && $session->object_type == 4) { ?>
+		 	<h3><?php echo $bus_personnel_role_object->find_by_id($user->role)->role_name;?></h3>
+		 	<?php } ?>
 		 </div>
 		 
 		 </div>

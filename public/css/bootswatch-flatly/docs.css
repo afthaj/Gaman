@@ -275,7 +275,6 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
 -------------------------------------------------- */
 
 .marketing {
-  text-align: center;
   color: #5a5a5a;
 }
 .marketing h1 {
@@ -284,14 +283,17 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
   font-weight: 200;
   line-height: 1;
   letter-spacing: -1px;
+  text-align: center;
 }
 .marketing h2 {
   font-weight: 200;
   margin-bottom: 5px;
+  text-align: center;
 }
 .marketing p {
   font-size: 16px;
   line-height: 1.5;
+  text-align: justify;
 }
 .marketing .marketing-byline {
   margin-bottom: 40px;

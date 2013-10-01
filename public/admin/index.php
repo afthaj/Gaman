@@ -6,6 +6,24 @@ $photo_object = new Photograph();
 $admin_user_object = new AdminUser();
 $bus_personnel_object = new BusPersonnel();
 
+$feedback_item_object = new FeedbackItem();
+$complaint_object = new Complaint();
+
+$feedback_items = 
+
+$fromtime1 = strtotime("-1 day");
+$fromtime2 = strtotime("-3 day");
+$fromtime3 = strtotime("-1 week");
+$totime = time();
+
+$feedback_items1 = $feedback_item_object->get_feedback_items_within_time($fromtime1, $totime);
+$feedback_items2 = $feedback_item_object->get_feedback_items_within_time($fromtime2, $totime);
+$feedback_items3 = $feedback_item_object->get_feedback_items_within_time($fromtime3, $totime);
+
+$complaints1 = $complaint_object->get_complaints_within_time($fromtime1, $totime);
+$complaints2 = $complaint_object->get_complaints_within_time($fromtime2, $totime);
+$complaints3 = $complaint_object->get_complaints_within_time($fromtime3, $totime);
+
 if ($session->is_logged_in()){
 	// object_type = 5 is admin, 4 is bus_personnel, 6 is commuter
 	
@@ -81,20 +99,180 @@ if ($session->is_logged_in()){
         
         <div class="row-fluid">
         
-        <div class="span4">
-        <h2>Subheading 1</h2>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin rhoncus consectetur lectus, sit amet semper nisi lacinia varius. Etiam a tempus eros, ac dictum nisl. Quisque eu dignissim metus. Fusce id pretium risus. Phasellus adipiscing elit in mi semper tincidunt. Nullam lorem tortor, dapibus et nisl ac, fringilla scelerisque sem. Praesent commodo ipsum ut congue elementum.</p>
+        <?php if ($session->object_type == 5) { //admin_user ?>
+        <div class="span6">
+	        <h2>Feedback</h2>
+	        <div class="well">
+	        	<table class="table table-bordered table-hover">
+		        	
+		        	<tbody>
+		        		<tr>
+		        			<td colspan="3"><h3>For all Entities</h3></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 24 hours</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items1); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=1" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 3 days</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items2); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=2" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past week</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items3); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=3" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3"><h3>Bus Routes</h3></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 24 hours</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items1); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=1" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 3 days</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items2); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=2" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past week</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items3); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=3" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3"><h3>Bus Stops</h3></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 24 hours</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items1); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=1" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 3 days</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items2); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=2" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past week</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items3); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=3" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3"><h3>Buses</h3></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 24 hours</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items1); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=1" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past 3 days</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items2); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=2" class="btn btn-success">View</a></td>
+		        		</tr>
+		        		<tr>
+		        			<td align="right">Past week</td>
+		        			<td align="center"><span class="badge badge-success"><?php echo count($feedback_items3); ?></span></td>
+		        			<td align="center"><a href="admin_list_feedback_items.php?t=3" class="btn btn-success">View</a></td>
+		        		</tr>
+		        	</tbody>
+	        	
+	        	</table>
+	        </div>
         </div>
         
-        <div class="span4">
-        <h2>Subheading 2</h2>
-        <p class="lead">Aenean aliquam leo libero, ut tempor lorem cursus vitae. Donec porttitor diam orci, nec mollis diam pulvinar a. In tempus fermentum libero tempus mollis. Vestibulum volutpat nulla sed neque consequat, vel venenatis magna vestibulum. Duis placerat quam non pretium congue.</p>
+        <div class="span6">
+	        <h2>Complaints</h2>
+	        <div class="well">
+		        <table class="table table-bordered table-hover">
+			        	
+			        	<tbody>
+				        	<tr>
+			        			<td colspan="3"><h3>For all Entities</h3></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 24 hours</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints1); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=1" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 3 days</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints2); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=2" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past week</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints3); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=3" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td colspan="3"><h3>Bus Routes</h3></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 24 hours</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints1); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=1" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 3 days</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints2); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=2" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past week</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints3); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=3" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td colspan="3"><h3>Bus Stops</h3></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 24 hours</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints1); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=1" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 3 days</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints2); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=2" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past week</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints3); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=3" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td colspan="3"><h3>Buses</h3></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 24 hours</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints1); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=1" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past 3 days</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints2); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=2" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        		<tr>
+			        			<td align="right">Past week</td>
+			        			<td align="center"><span class="badge badge-important"><?php echo count($complaints3); ?></span></td>
+			        			<td align="center"><a href="admin_list_complaints.php?t=3" class="btn btn-danger">View</a></td>
+			        		</tr>
+			        	</tbody>
+		        	
+		        	</table>
+	        </div>
         </div>
+        <?php } else if ($session->object_type == 4) { //bus_personnel ?>
         
-        <div class="span4">
-        <h2>Subheading 3</h2>
-        <p class="lead">Aenean pharetra nisi a lorem tincidunt mattis. Quisque arcu eros, varius eu sapien sit amet, luctus volutpat neque. Maecenas turpis massa, ornare at ipsum ut, elementum cursus sem. Nunc ac lacus faucibus, lacinia nisl vel, venenatis metus. Curabitur luctus enim sapien, et euismod nisl mollis eu.</p>
-        </div>
+        
+        
+        <?php } ?>
+        
         
         </div>
         

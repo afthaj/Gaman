@@ -1,40 +1,63 @@
 <?php
 require_once("../includes/initialize.php");
 
-if ($session->is_logged_in() && $session->object_type == 6) {
+//init code
+$photo_object = new Photograph();
+$commuter_object = new Commuter();
+
+$route_object = new BusRoute();
+$stop_object = new BusStop();
+$bus_object = new Bus();
+$bus_personnel_object = new BusPersonnel();
+
+$object_type_object = new ObjectType();
+
+$complaint_object = new Complaint();
+$complaint_type_object = new ComplaintType();
+$complaint_status_object = new ComplaintStatus();
+
+$routes = BusRoute::find_all();
+$stops = BusStop::find_all();
+$buses = Bus::find_all();
+$bus_personnel = BusPersonnel::find_all();
+$complaint_types = ComplaintType::find_all();
+$complaint_status = ComplaintStatus::find_all();
+
+//GET request stuff
+$complaint_to_read_update = $complaint_object->find_by_id($_GET['complaintid']);
+
+//check login
+if ($session->is_logged_in()){
 	
-	$user = Commuter::find_by_id($_SESSION['id']);
-	$p = new Photograph();
-	$profile_picture = $p->get_profile_picture($user->id, "commuter");
+	if ($session->object_type == 6) {
 	
-	$routes = BusRoute::find_all();
-	$stops = BusStop::find_all();
-	$buses = Bus::find_all();
-	$bus_personnel = BusPersonnel::find_all();
-	$complaint_types = ComplaintType::find_all();
-	$complaint_status = ComplaintStatus::find_all();
+		$user = $commuter_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		
+		if (isset($_POST['submit'])){
+			$complaint_to_read_update->status = $_POST['status'];
+			$complaint_to_read_update->content = $_POST['content'];
+			
+			if ($complaint_to_read_update->update()){
+				$session->message("Success! The Complaint details have been changed. ");
+				redirect_to('public_list_complaints.php');
+			} else {
+				$session->message("Error! The Complaint details could not be changed. ");
+			}	
+		}
 	
-	if (isset($_POST['submit'])){
-		$complaint_to_create = new Complaint();
+	} else {
+		//everyone else
 	
-		$complaint_to_create->bus_route_id = $_POST['bus_route_id'];
-		$complaint_to_create->stop_id = $_POST['stop_id'];
-		$complaint_to_create->bus_id = $_POST['bus_id'];
-		$complaint_to_create->bus_personnel_id = $_POST['bus_personnel_id'];
-	
-		$complaint_to_create->complaint_type = $_POST['complaint_type'];
-		$complaint_to_create->status = $_POST['status'];
-		$complaint_to_create->content = $_POST['content'];
-	
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
 	
 	}
 	
-} else if ($session->is_logged_in() && $session->object_type != 6) {
+} else {
+	//not logged in... GTFO!
 	
-	redirect_to("login.php");
-	
-} else if (!$session->is_logged_in() && $session->object_type != 6) {
-	
+	$session->message("Error! You must login to view the requested page. ");
 	redirect_to("login.php");
 }
 
@@ -74,7 +97,7 @@ if ($session->is_logged_in() && $session->object_type == 6) {
        	  <div class="span3">
        	  
 	       	  <div class="sidenav" data-spy="affix" data-offset-top="200">
-		      	<a href="index.php" class="btn btn-primary"> &larr; Back to Home Page</a>
+		      	<a href="public_list_complaints.php" class="btn btn-primary"><i class="icon-arrow-left icon-white"></i> Back to List of Complaints</a>
 		      </div>
        	  
        	  </div>
@@ -102,77 +125,50 @@ if ($session->is_logged_in() && $session->object_type == 6) {
 	            <div class="control-group">
 	            <label for="complaint_type" class="control-label">Complaint Type</label>
 		            <div class="controls">
-		            	<select name="complaint_type">
-		            	<?php foreach($complaint_types as $complaint_type){ ?>
-						  <option value="<?php echo $complaint_type->id; ?>"><?php echo $complaint_type->name; ?></option>
-						<?php } ?>
-						</select>
+			            <textarea rows="3" name="complaint_type" disabled="disabled"><?php echo $complaint_type_object->find_by_id($complaint_to_read_update->complaint_type)->comp_type_name; ?></textarea>
 		            </div>
 	            </div>
 	            
 	            <div class="control-group">
-	            <label for="bus_route_id" class="control-label">Bus Route</label>
-		            <div class="controls">
-		            	<select name="bus_route_id">
-						  <?php foreach($routes as $route){ ?>
-		            		<option value="<?php echo $route->id; ?>"><?php echo $route->route_number; ?></option>
-		            	<?php } ?>
-						</select>
-		            </div>
-		            
+	            <label for="related_object_type" class="control-label">Related to:</label>
+					<div class="controls">
+					<input type="text" name="related_object_type" disabled="disabled" value="<?php echo $object_type_object->find_by_id($complaint_to_read_update->related_object_type)->display_name; ?>" />
+					</div>
 	            </div>
 	            
 	            <div class="control-group">
-	            <label for="stop_id" class="control-label">Bus Stop</label>
-		            <div class="controls">
-		            	<select name="stop_id">
-						<?php foreach($stops as $stop){ ?>
-		            		<option value="<?php echo $stop->id; ?>"><?php echo $stop->name; ?></option>
-		            	<?php } ?>
-						</select>
-		            </div>
+	            <label for="related_object_id" class="control-label">Identifier:</label>
+					<div class="controls">
+					<input type="text" name="related_object_id" disabled="disabled" value="<?php 
+					
+					if ($complaint_to_read_update->related_object_type == 1){
+						//complaint is about a Route
+						echo $route_object->find_by_id($complaint_to_read_update->related_object_id)->route_number;
+						
+					} else if ($complaint_to_read_update->related_object_type == 2){
+						//complaint is about a Stop
+						echo $stop_object->find_by_id($complaint_to_read_update->related_object_id)->name;
+						
+					} else if ($complaint_to_read_update->related_object_type == 3){
+						//complaint is about a Bus
+						echo $bus_object->find_by_id($complaint_to_read_update->related_object_id)->reg_number;
+						
+					} else if ($complaint_to_read_update->related_object_type == 4){
+						//complaint is about a Bus Personnel
+						echo $bus_personnel_object->find_by_id($complaint_to_read_update->related_object_id)->full_name();
+						
+					}
+					?>" />
+					</div>
 	            </div>
 	            
-	            <div class="control-group">
-	            <label for="bus_id" class="control-label">Bus</label>
-		            <div class="controls">
-		            	<select name="bus_id">
-						  <?php foreach($buses as $bus){ ?>
-						  	<option value="<?php echo $bus->id; ?>"><?php echo $bus->reg_number; ?></option>
-						  <?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="bus_personnel_id" class="control-label">Bus Personnel</label>
-		            <div class="controls">
-		            	<select name="bus_personnel_id">
-		            	<?php foreach($bus_personnel as $bp){ ?>
-							<option value="<?php echo $bp->id; ?>"><?php echo $bp->first_name . ' ' . $bp->last_name; ?></option>
-						<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="status" class="control-label">Complaint Status</label>
-		            <div class="controls">
-		            	<select name="status">
-						<?php foreach($complaint_status as $comp_status){ ?>
-							<option value="<?php echo $comp_status->id; ?>"><?php echo $comp_status->comp_status_name; ?></option>
-						<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
+		        <div class="control-group">
 	            <label for="content" class="control-label">Details of Complaint</label>
 		            <div class="controls">
-		            	<textarea rows="5" name="content"></textarea>
+		            	<textarea rows="5" name="content"><?php echo $complaint_to_read_update->content; ?></textarea>
 		            </div>
 	            </div>
-	            
+		        
 	          	<div class="form-actions">
 	        	    <button class="btn btn-primary" name="submit">Submit</button>
 	        	</div>

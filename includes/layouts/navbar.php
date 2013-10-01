@@ -17,22 +17,22 @@
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="public_list_stops.php"><i class="icon-info-sign icon-white"></i> View All Stops</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li>
-          		<li class="divider"></li>
           		<li><a href="public_list_routes.php"><i class="icon-info-sign icon-white"></i> View All Bus Routes</a></li>
           		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Route</a></li>
+          		<li class="divider"></li>
+          		<li><a href="public_list_stops.php"><i class="icon-info-sign icon-white"></i> View All Stops</a></li>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li>
           	</ul>
           </li>
           
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel <b class="caret"></b></a>
           	<ul class="dropdown-menu">
-          		<li><a href="public_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>
-          		<li class="divider"></li>
           		<li><a href="public_list_buses.php"><i class="icon-info-sign icon-white"></i> View All Buses</a></li>
           		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus</a></li>
+          		<li class="divider"></li>
+          		<li><a href="public_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
+          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>
           	</ul>
           </li>
           

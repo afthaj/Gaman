@@ -84,27 +84,29 @@
     <script src="js/jquery.js"></script>
     
     <script src="js/bootstrap.js"></script>
+    
+    <!-- 
     <script src="js/bootstrap-affix.js"></script>
 	<script src="js/bootstrap-alert.js"></script>
     <script src="js/bootstrap-button.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-collapse.js"></script>
-    <script src="../../public/js/bootstrap-dropdown.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
 	<script src="js/bootstrap-modal.js"></script>
     <script src="js/bootstrap-popover.js"></script>
     <script src="js/bootstrap-scrollspy.js"></script>
     <script src="js/bootstrap-tab.js"></script>
     <script src="js/bootstrap-tooltip.js"></script>
     <script src="js/bootstrap-transition.js"></script>
-    <!-- <script src="js/bootstrap-typeahead.js"></script> -->
-    
-    <script src="js/typeahead.js"></script>
-    
+    <script src="js/bootstrap-typeahead.js"></script>
+    -->
+    <script src="js/typeahead.js"></script>    
     
     <script src="js/application.js"></script>
     <script src="js/holder.js"></script>
     <script src="js/html5shiv.js"></script>
     <script src="js/prettify.js"></script>
+    
     
     <script defer src="./js/jquery.flexslider.js"></script>
     <script defer src="./js/responsiveslides.js"></script>

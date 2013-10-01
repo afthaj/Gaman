@@ -37,16 +37,37 @@ if ($session->is_logged_in()){
 			
 			$feedback_item_to_read_update->content = $_POST['content'];
 			
-			if ($complaint_to_read_update->update()){
-				$session->message("Success! The Complaint details have been changed. ");
-				redirect_to('admin_list_complaints.php');
+			if ($feedback_item_to_read_update->update()){
+				$session->message("Success! The Feedback Item details have been changed. ");
+				redirect_to('admin_list_feedback_items.php');
 			} else {
-				$session->message("Error! The Complaint details could not be changed. ");
+				$session->message("Error! The details of the Feedback Item could not be changed. ");
 			}
-	
-	
 		}
 	
+	} else if ($session->object_type == 4) {
+		//bus_personnel
+		
+		$user = $bus_personnel_object->find_by_id($_SESSION['id']);
+		$profile_picture = $photo_object->get_profile_picture($session->object_type, $user->id);
+		
+		if (isset($_POST['submit'])){
+
+			$feedback_item_to_read_update->content = $_POST['content'];
+			
+		if ($feedback_item_to_read_update->update()){
+				$session->message("Success! The Feedback Item details have been changed. ");
+				redirect_to('admin_list_feedback_items.php');
+			} else {
+				$session->message("Error! The details of the Feedback Item could not be changed. ");
+			}
+		}
+	} else {
+		//everyone else
+		
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+		
 	}
 	
 } else {
@@ -79,7 +100,7 @@ if ($session->is_logged_in()){
       
       <header class="jumbotron subhead">
         <div class="container-fluid">
-        	<h1>Complaints</h1>
+        	<h1>Feedback Items</h1>
         </div>
       </header>
         
@@ -92,7 +113,7 @@ if ($session->is_logged_in()){
        	  <div class="span3">
        	  
 	       	  <div class="sidenav" data-spy="affix" data-offset-top="200">
-		      	<a href="index.php" class="btn btn-primary"> &larr; Back to Home Page</a>
+		      	<a href="admin_list_feedback_items.php" class="btn btn-primary"> &larr; Back to List of Feedback</a>
 		      </div>
        	  
        	  </div>
@@ -115,79 +136,45 @@ if ($session->is_logged_in()){
 	        
 	        ?>
        	  	
-       	  	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" class="form-horizontal">
+       	  	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?feedbackitemid=<?php echo $feedback_item_to_read_update->id; ?>" method="POST" class="form-horizontal">
             
 	            <div class="control-group">
-	            <label for="complaint_type" class="control-label">Complaint Type</label>
-		            <div class="controls">
-		            	<select name="complaint_type">
-		            	<?php foreach($complaint_types as $complaint_type){ ?>
-						  <option value="<?php echo $complaint_type->id; ?>"><?php echo $complaint_type->name; ?></option>
-						<?php } ?>
-						</select>
-		            </div>
+	            <label for="related_object_type" class="control-label">Related to:</label>
+					<div class="controls">
+					<input type="text" name="related_object_type" disabled="disabled" value="<?php echo $object_type_object->find_by_id($feedback_item_to_read_update->related_object_type)->display_name; ?>" />
+					</div>
 	            </div>
 	            
 	            <div class="control-group">
-	            <label for="bus_route_id" class="control-label">Bus Route</label>
-		            <div class="controls">
-		            	<select name="bus_route_id">
-						  <?php foreach($routes as $route){ ?>
-		            		<option value="<?php echo $route->id; ?>"><?php echo $route->route_number; ?></option>
-		            	<?php } ?>
-						</select>
-		            </div>
-		            
+	            <label for="related_object_id" class="control-label">Identifier:</label>
+					<div class="controls">
+					<input type="text" name="related_object_id" disabled="disabled" value="<?php 
+					
+					if ($feedback_item_to_read_update->related_object_type == 1){
+						//complaint is about a Route
+						echo $route_object->find_by_id($feedback_item_to_read_update->related_object_id)->route_number;
+						
+					} else if ($feedback_item_to_read_update->related_object_type == 2){
+						//complaint is about a Stop
+						echo $stop_object->find_by_id($feedback_item_to_read_update->related_object_id)->name;
+						
+					} else if ($feedback_item_to_read_update->related_object_type == 3){
+						//complaint is about a Bus
+						echo $bus_object->find_by_id($feedback_item_to_read_update->related_object_id)->reg_number;
+						
+					} else if ($feedback_item_to_read_update->related_object_type == 4){
+						//complaint is about a Bus Personnel
+						echo $bus_personnel_object->find_by_id($feedback_item_to_read_update->related_object_id)->full_name();
+						
+					}
+					?>" />
+					</div>
 	            </div>
 	            
 	            <div class="control-group">
-	            <label for="stop_id" class="control-label">Bus Stop</label>
+	            <label for="content" class="control-label">Details of Feedback Item</label>
 		            <div class="controls">
-		            	<select name="stop_id">
-						<?php foreach($stops as $stop){ ?>
-		            		<option value="<?php echo $stop->id; ?>"><?php echo $stop->name; ?></option>
-		            	<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="bus_id" class="control-label">Bus</label>
-		            <div class="controls">
-		            	<select name="bus_id">
-						  <?php foreach($buses as $bus){ ?>
-						  	<option value="<?php echo $bus->id; ?>"><?php echo $bus->reg_number; ?></option>
-						  <?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="bus_personnel_id" class="control-label">Bus Personnel</label>
-		            <div class="controls">
-		            	<select name="bus_personnel_id">
-		            	<?php foreach($bus_personnel as $bp){ ?>
-							<option value="<?php echo $bp->id; ?>"><?php echo $bp->first_name . ' ' . $bp->last_name; ?></option>
-						<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="status" class="control-label">Complaint Status</label>
-		            <div class="controls">
-		            	<select name="status">
-						<?php foreach($complaint_status as $comp_status){ ?>
-							<option value="<?php echo $comp_status->id; ?>"><?php echo $comp_status->comp_status_name; ?></option>
-						<?php } ?>
-						</select>
-		            </div>
-	            </div>
-	            
-	            <div class="control-group">
-	            <label for="content" class="control-label">Details of Complaint</label>
-		            <div class="controls">
-		            	<textarea rows="5" name="content"></textarea>
+		            	<textarea rows="5" name="content"><?php echo $feedback_item_to_read_update->content; ?></textarea>
 		            </div>
 	            </div>
 	            

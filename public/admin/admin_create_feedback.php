@@ -75,7 +75,7 @@ if ($session->is_logged_in()){
 			
 		if ($feedback_item_to_create->create()){
 			$session->message("Success! The Complaint has been submitted. ");
-			redirect_to('public_list_feedback_items.php');
+			redirect_to('admin_list_feedback_items.php');
 		} else {
 			$session->message("Error! The Feedback could not be submitted. ");
 		}

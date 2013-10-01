@@ -13,6 +13,7 @@ class Bus extends DatabaseObject {
 	public $name;
 	
 	
+	
 }
 
 

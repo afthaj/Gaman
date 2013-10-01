@@ -4,12 +4,15 @@ require_once("../includes/initialize.php");
 //init code
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
-$feedback_item_object = new FeedbackItem();
-$object_type_object = new ObjectType();
+
 $route_object = new BusRoute();
 $stop_object = new BusStop();
 $bus_object = new Bus();
 $bus_personnel_object = new BusPersonnel();
+
+$object_type_object = new ObjectType();
+
+$feedback_item_object = new FeedbackItem();
 
 //check login
 if ($session->is_logged_in()){
@@ -41,7 +44,7 @@ if ($session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Complaints List &middot; <?php echo WEB_APP_NAME; ?></title>
+    <title>Feedback &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../includes/layouts/header.php');?>
   </head>
 
@@ -99,7 +102,6 @@ if ($session->is_logged_in()){
 		        <td>Time Submitted</td>
 		        <td>Feedback Details</td>
 		        <td>&nbsp;</td>
-		        <td>&nbsp;</td>
 	        </tr>
 	      </thead>
 	      <tbody>
@@ -128,8 +130,7 @@ if ($session->is_logged_in()){
 			        <td><?php echo date("d M Y", $feedback_item->date_time_submitted); ?></td>
 			        <td><?php echo date("h:i:s a", $feedback_item->date_time_submitted); ?></td>
 			        <td><?php echo $feedback_item->content; ?></td>
-	        		<td><a href="public_read_update_feedback_item.php?feedbackitemid=<?php echo $feedback_item->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i></a></td>
-	        		<td><a href="public_delete_feedback_item.php?feedbackitemid=<?php echo $feedback_item->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i></a></td>        		
+	        		<td><a href="public_read_update_feedback_item.php?feedbackitemid=<?php echo $feedback_item->id; ?>" class="btn btn-warning btn-block"><i class="icon-edit icon-white"></i></a></td>		
         		</tr>
         	<?php } ?>
         	

@@ -75,7 +75,7 @@ if ($session->is_logged_in()){
       <?php } else { ?>
       <div class="span3">
       	<div class="sidenav" data-spy="affix" data-offset-top="200">
-      		<a href="index.php" class="btn btn-primary btn-block"><i class="icon-left-arrow icon-white"></i> Back to Home</a>
+      		<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home</a>
       	</div>
       </div>
       <?php } ?>

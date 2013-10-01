@@ -59,6 +59,12 @@ if ($session->is_logged_in()){
 				$session->message("Error! The Complaint details could not be changed. ");
 			}
 		}
+	} else {
+		//everyone else
+	
+		$session->message("Error! You do not have sufficient priviledges to view the requested page. ");
+		redirect_to("index.php");
+	
 	}
 	
 } else {
