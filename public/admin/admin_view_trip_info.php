@@ -8,8 +8,10 @@ $admin_user_object = new AdminUser();
 $route_object = new BusRoute();
 $stop_object = new BusStop();
 $bus_object = new Bus();
+
 $survey_object = new Survey();
 $trip_object = new Trip();
+$stop_activity_object = new StopActivity();
 
 //check login
 if ($session->is_logged_in()){
@@ -26,14 +28,14 @@ if ($session->is_logged_in()){
 	}
 	
 	//GET request stuff
-	if (!empty($_GET['surveyid'])){
+	if (!empty($_GET['tripid'])){
 		
-		$survey = $survey_object->find_by_id($_GET['surveyid']);
-		$trips = $trip_object->get_trips_for_survey($survey->id);
+		$trip_to_read = $trip_object->find_by_id($_GET['tripid']);
+		$stop_activities = $stop_activity_object->get_stop_activities_for_trip($trip_to_read->id);
 		
 	} else {
 		
-		$session->message("No Survey was selected.");
+		$session->message("No Trip was selected.");
 		redirect_to("admin_list_routes.php");
 		
 	}
@@ -48,7 +50,7 @@ if ($session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Survey Info &middot; <?php echo WEB_APP_NAME; ?></title>
+    <title>Trip Info &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
 
@@ -63,10 +65,11 @@ if ($session->is_logged_in()){
 
       <header class="jumbotron subhead">
         <div class="container-fluid">
-        	<h1>Survey Information</h1>
-        	<h3>Started on <?php echo strftime("%d %b %Y", $survey->start_date); ?> &middot; Ended on <?php echo strftime("%d %b %Y", $survey->end_date); ?></h3>
+        	<h1>Trip Information</h1>
+        	<h3>Started from <?php echo $stop_object->find_by_id($trip_to_read->begin_stop)->name; ?> &middot; Ended at <?php echo $stop_object->find_by_id($trip_to_read->end_stop)->name; ?></h3>
+        	<h4>Started at <?php echo strftime("%I:%M:%S %p", $trip_to_read->departure_from_begin_stop); ?> &middot; Ended at <?php echo strftime("%I:%M:%S %p", $trip_to_read->arrival_at_end_stop); ?></h4>
         </div>
-      </header>
+      </header> 
       
       <!-- Begin page content -->
       <div class="container-fluid">
@@ -97,31 +100,36 @@ if ($session->is_logged_in()){
         
         ?>
         
+        <?php if ($stop_activities) { ?>
+        
         <table class="table table-bordered table-hover">
       
 	      <tr>
-		   <td align="center">Route Number</td>
-		   <td align="center">Bus Registration Number</td>
-		   <td align="center">Begin Stop</td>
-		   <td align="center">End Stop</td>
-		   <td align="center">Departure from Begin Stop</td>
-		   <td align="center">Arrival at End Stop</td>
-		   <td>&nbsp;</td>
+		   <td align="center">Bus Stop</td>
+		   <td align="center">Alighted Commuters</td>
+		   <td align="center">Boarded Commuters</td>
+		   <td align="center">Time Arrived at Stop</td>
+		   <td align="center">Time Departed from Stop</td>
 	      </tr>
 	      
-	      <?php foreach($trips as $trip) { ?>
+	      <?php foreach($stop_activities as $sa) { ?>
 	      <tr>
-		   <td align="center"><?php echo $route_object->find_by_id($trip->route_id)->route_number; ?></td>
-		   <td align="center"><?php echo $bus_object->find_by_id($trip->bus_id)->reg_number; ?></td>
-		   <td align="center"><?php echo $stop_object->find_by_id($trip->begin_stop)->name; ?></td>
-		   <td align="center"><?php echo $stop_object->find_by_id($trip->end_stop)->name; ?></td>
-		   <td align="center"><?php echo strftime("%I:%M:%S %p", $trip->departure_from_begin_stop); ?></td>
-		   <td align="center"><?php echo strftime("%I:%M:%S %p", $trip->arrival_at_end_stop); ?></td>
-		   <td><a href="admin_view_trip_info.php?tripid=<?php echo $trip->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Trip Info</a></td>
+		   <td align="center"><?php echo $stop_object->find_by_id($sa->stop_id)->name; ?></td>
+		   <td align="center"><?php echo $sa->alighted_commuters; ?></td>
+		   <td align="center"><?php echo $sa->boarded_commuters; ?></td>
+		   <td align="center"><?php if (!empty($sa->arrival_time)) { echo strftime("%I:%M:%S %p", $sa->arrival_time); } else {echo '0'; } ?></td>
+		   <td align="center"><?php if (!empty($sa->departure_time)) { echo strftime("%I:%M:%S %p", $sa->departure_time);  } else {echo '0'; } ?></td>
 	      </tr>
 	      <?php } ?>
 	      
 	    </table>
+	    
+	    <?php } else { ?>
+	      <div class="alert">
+	      No Stop Activities recorded
+	      <button type="button" class="close" data-dismiss="alert">&times;</button>
+	      </div>
+      	<?php } ?>
         
         </section>
         	

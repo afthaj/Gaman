@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 01, 2013 at 02:34 PM
+-- Generation Time: Oct 02, 2013 at 02:29 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -725,7 +725,15 @@ CREATE TABLE IF NOT EXISTS `stop_activities` (
   PRIMARY KEY (`id`),
   KEY `trip_id` (`trip_id`),
   KEY `stop_id` (`stop_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `stop_activities`
+--
+
+INSERT INTO `stop_activities` (`id`, `trip_id`, `stop_id`, `alighted_commuters`, `boarded_commuters`, `arrival_time`, `departure_time`) VALUES
+(1, 1, 1, 0, 11, 0, 1369323600),
+(2, 1, 2, 0, 10, 1369323840, 1369323900);
 
 -- --------------------------------------------------------
 

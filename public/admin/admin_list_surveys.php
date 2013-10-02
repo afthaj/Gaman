@@ -24,8 +24,8 @@ if ($session->is_logged_in()){
 	//GET request stuff
 	if (!empty($_GET['routeid'])){
 		
-		$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
-		$surveys = $survey_object->get_surveys_for_route($route_to_read_update->id);
+		$route = $route_object->find_by_id($_GET['routeid']);
+		$surveys = $survey_object->get_surveys_for_route($route->id);
 		
 	} else {
 		
@@ -62,7 +62,7 @@ if ($session->is_logged_in()){
         <div class="container-fluid">
         	<h1>List of Surveys</h1>
         	<?php if (!empty($_GET['routeid'])) { ?>
-        	<h3>Route Number: <?php echo $route_to_read_update->route_number;?></h3>
+        	<h3>Route Number: <?php echo $route->route_number;?></h3>
         	<?php } ?>
         </div>
       </header>
@@ -112,7 +112,7 @@ if ($session->is_logged_in()){
 	      <tr>
 		   <td align="center"><?php echo strftime("%B %d, %Y", $survey->start_date); ?></td>
 		   <td align="center"><?php echo strftime("%B %d, %Y", $survey->end_date); ?></td>
-		   <td><a href="admin_list_trips.php?tripid=<?php echo $survey->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Details</a></td>
+		   <td><a href="admin_list_trips.php?surveyid=<?php echo $survey->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Details</a></td>
 	      </tr>
 	      <?php } ?>
 	      
