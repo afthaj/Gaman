@@ -115,7 +115,7 @@ if ($session->is_logged_in()){
 	        <div class="well">
 		        <a href="admin_create_complaint.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Add New Complaint</a>
 		        <div class="pull-right">
-		        	Show only for: <a href="#" class="btn btn-primary"><i class="icon- icon-white"></i> Bus Routes</a> &middot; <a href="#" class="btn btn-primary"><i class="icon- icon-white"></i> Bus Stops</a> &middot; <a href="#" class="btn btn-primary"><i class="icon- icon-white"></i> Buses</a>
+		        	Show for &middot; <a href="#" class="btn btn-info">All</a> &middot; <a href="#" class="btn btn-info">Bus Routes</a> &middot; <a href="#" class="btn btn-info">Bus Stops</a> &middot; <a href="#" class="btn btn-info">Buses</a>
 		        </div>
 	        </div>
 	        <br/>

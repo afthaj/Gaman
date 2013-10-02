@@ -22,12 +22,16 @@ if ($session->is_logged_in()){
 	}
 	
 	//GET request stuff
-	if (!empty($_GET['routeid'])){
+	if (!empty($_GET['surveyid'])){
+		
 		$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
 		$surveys_of_route = $survey_object->get_surveys_for_route($route_to_read_update->id);
+		
 	} else {
+		
 		$session->message("No Route ID provided to view.");
 		redirect_to("admin_list_routes.php");
+		
 	}
 	
 } else {
@@ -40,7 +44,7 @@ if ($session->is_logged_in()){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Route Data &middot; <?php echo WEB_APP_NAME; ?></title>
+    <title>Survey Info &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
 
@@ -55,7 +59,7 @@ if ($session->is_logged_in()){
 
       <header class="jumbotron subhead">
         <div class="container-fluid">
-        	<h1>Route Data</h1>
+        	<h1>Survey Information</h1>
         	<h3>Route Number: <?php echo $route_to_read_update->route_number;?></h3>
         </div>
       </header>

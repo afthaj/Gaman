@@ -124,7 +124,7 @@ if ($session->is_logged_in()){
 	        		<td><?php echo $route->trip_time; ?></td>
 	        		<td><a href="admin_read_update_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Route Profile</a></td>
 	        		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
-	        		<td><a href="admin_view_route_data.php?routeid=<?php echo $route->id; ?>" class="btn btn-success btn-block"><i class="icon-globe icon-white"></i> Route Data</a></td>
+	        		<td><a href="admin_list_surveys.php?routeid=<?php echo $route->id; ?>" class="btn btn-success btn-block"><i class="icon-globe icon-white"></i> Route Data</a></td>
 	        		<td><a href="admin_delete_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-danger btn-block"><i class="icon-remove icon-white"></i> Delete Route</a></td>
 	        		<?php } ?>        		
         		</tr>

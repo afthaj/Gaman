@@ -104,11 +104,16 @@ if ($session->is_logged_in()){
       <!-- Start Content -->
       
       <div class="container-fluid">
-      	
-      	<div class="row-fluid">
+        
+        <div class="row-fluid">
 	        <br />
-	        <a href="admin_create_feedback.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Provide Feedback</a>
-	        <br/> <br />
+	        <div class="well">
+		        <a href="admin_create_feedback.php" class="btn btn-primary"><i class="icon-plus icon-white"></i> Provide Feedback</a>
+		        <div class="pull-right">
+		        	Show for &middot; <a href="#" class="btn btn-info">All</a> &middot; <a href="#" class="btn btn-info">Bus Routes</a> &middot; <a href="#" class="btn btn-info">Bus Stops</a> &middot; <a href="#" class="btn btn-info">Buses</a>
+		        </div>
+	        </div>
+	        <br/>
         </div>
         
         <div class="row-fluid">

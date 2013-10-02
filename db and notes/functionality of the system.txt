@@ -1,0 +1,21 @@
+functionalities of the system:
+
+commuters:
+
+bus route finder
+information portal for bus routes, stops, buses and personnel
+providing and reviewing feedback
+providing and reviewing complaints
+
+schedulers
+
+information portal for bus routes, stops, buses and personnel
+tracking feedback
+tracking complaints
+route survey data visualization tool
+
+bus persoonel (owners, drivers, conductors)
+
+information portal for bus routes, stops, buses and personnel
+tracking feedback
+tracking complaints
