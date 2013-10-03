@@ -143,15 +143,15 @@ $commuters = $commuter_object->find_all();
         
         <div class="marketing">
         
-        <div class="row">
+        <div class="well">
         
-        <h2>Hello!</h2>
+        <h2>Hello! ආයුබෝවන්! வணக்கம்! </h2><br />
 
-		<p>My name is <a href="https://twitter.com/afthaj" class="" target="_blank">Aftha Jaldin</a> and I'm a Final Year Research Student at the University of Colombo School of Computing following a degree in Information and Communication Technology (wow, that's a mouthful!). My chosen area of research for the final year project is the Bus Passenger Transportation System in the Western Province of Sri Lanka.</p> 
+		<p>&nbsp;&nbsp; My name is <a href="https://twitter.com/afthaj" class="" target="_blank">Aftha Jaldin</a> and I'm a Final Year Research Student at the University of Colombo School of Computing following a degree in Information and Communication Technology (wow, that's a mouthful!). My chosen area of research for the final year project is the Bus Passenger Transportation System in the Western Province of Sri Lanka.</p> 
 		
-		<p>As regular commuters, you use the bus transportation system in Colombo daily and know the ins-and-outs, the shortfalls and the shortcuts of the system. Therefore, I need your help in doing my research project.</p>
+		<p>&nbsp;&nbsp; As regular commuters, you use the bus transportation system in Colombo daily and know the ins-and-outs, the shortfalls and the shortcuts of the system. Therefore, I need your help in doing my research project.</p>
 		
-		<p>I have created this prototype system (tentatively named "Gaman") to test the usability and the various functionality needed in system such as this. It aims to be an information portal and a means of providing feedback to the people who manage and regulate the bus service. It also has a Bus Route Finder which is still in its prototype stage. (shout-out to <a href="https://twitter.com/chav_" class="" target="_blank">@chav_</a> for the help given). After using the system, I would like you to complete a simple survey about your experience in using the system. The Survey can be accessed via the "Survey Info" link in the main navigation bar at the top of every page.</p>
+		<p>&nbsp;&nbsp; I have created this prototype system (tentatively named "Gaman") to test the usability and the various functionality needed in a system such as this. It aims to be an information portal and a means of providing feedback to the people who manage and regulate the bus service. It also has a Bus Route Finder which is still in its prototype stage. (shout-out to <a href="https://twitter.com/chav_" class="" target="_blank">@chav_</a> for the help given). After using the system, I would like you to complete a simple survey about your experience in using the system. The Survey can be accessed via the "Survey Info" link in the main navigation bar at the top of every page.</p>
 		
 		<p>Please feel free to give as much input to the survey as you can, it will only help my research efforts.</p>
 		
@@ -161,7 +161,9 @@ $commuters = $commuter_object->find_all();
         
         </div>
         
-        <div class="">
+        <div class="well">
+        
+        <div class="alert alert-info" style="text-align: center">In order to use the Feedback and Complaints Functionalities, you will need to login</div>
         
 	        <table class="span6 table table-bordered table-hover h-center">
 	        	
@@ -190,8 +192,6 @@ $commuters = $commuter_object->find_all();
 		        </tbody>
 	        
 	        </table>
-	        
-	        <div class="alert alert-info span6 h-center">In order to use the Feedback and Complaints Functionalities, you will need to login</div>
         
         </div>
         

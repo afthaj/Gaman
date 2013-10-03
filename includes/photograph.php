@@ -21,8 +21,8 @@ class Photograph extends DatabaseObject {
 	
 	// change $upload_dir when changing between Mac and PC
 	
-	//protected $upload_dir = 'img/uploads';
-	protected $upload_dir = 'public/img/uploads';
+	protected $upload_dir = 'img/uploads';
+	//protected $upload_dir = 'public/img/uploads';
 	
 	public $errors = array();
 	

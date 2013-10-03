@@ -4,15 +4,20 @@ require_once("../includes/initialize.php");
 //init code
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
+
+$route_object = new BusRoute();
+$bus_object = new Bus();
 $bus_personnel_object = new BusPersonnel();
+
+$object_type_object = new ObjectType();
+
 $bus_personnel_role_object = new BusPersonnelRole();
 $bus_bus_personnel_object = new BusBusPersonnel();
-$bus_object = new Bus();
-$route_object = new BusRoute();
+
 $complaint_object = new Complaint();
 $complaint_type_object = new ComplaintType();
-$object_type_object = new ObjectType();
 $complaint_status_object = new ComplaintStatus();
+$feedback_item_object = new FeedbackItem();
 
 $roles = BusPersonnelRole::find_all();
 $buses = Bus::find_all();
@@ -34,12 +39,13 @@ if (!empty($_GET['personnelid'])){
 	$profile_picture_of_bus_personnel = $photo_object->get_profile_picture(4, $bus_personnel_to_read_update->id);
 	$buses_bus_personnel = $bus_bus_personnel_object->get_buses_for_personnel($bus_personnel_to_read_update->id);
 	if (!empty($user->id)){
+		$feedback_by_user = $feedback_item_object->get_feedback_items_submitted_by_user_for_object($user->id, $session->object_type, 4, $bus_personnel_to_read_update->id);
 		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 4, $bus_personnel_to_read_update->id);
 	}
 
 } else {
 	$session->message("No Bus Personnel ID provided to view.");
-	redirect_to("admin_list_bus_personnel.php");
+	redirect_to("public_list_bus_personnel.php");
 }
 
 ?>
@@ -95,12 +101,12 @@ if (!empty($_GET['personnelid'])){
 	        <div class="sidenav" data-spy="affix" data-offset-top="300">
 	        	<a href="public_list_bus_personnel.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Bus Personnel</a>
 	        	<?php if (!empty($user->id)){ ?>
-	        	<a href="public_create_feedback.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
-	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
 	        	<br />
-	        	<div class="well">
-	        		<p>Complaints submitted on the Route: <span class="badge"><?php echo count($complaints_by_user); ?></span></p>
-	        	</div>
+	        	<a href="admin_create_feedback.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="admin_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<br />
+	        	<div class="well">Feedback <span class="badge badge-success"><?php echo count($feedback_by_user); ?></span></div>
+	        	<div class="well">Complaints <span class="badge badge-important"><?php echo count($complaints_by_user); ?></span></div>
 	        	<?php } ?>
 	        </div>
         </div>
@@ -129,6 +135,7 @@ if (!empty($_GET['personnelid'])){
 	      <li class="active"><a href="#personnel_profile" data-toggle="tab">Profile</a></li>
 	      <li><a href="#assigned_buses_list" data-toggle="tab">Bus Assignment</a></li>
 	      <?php if (!empty($user->id)){ ?>
+	      <li><a href="#feedback" data-toggle="tab">Feedback </a></li>
 	      <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
 	      <?php } ?>
 	    </ul>
@@ -214,6 +221,26 @@ if (!empty($_GET['personnelid'])){
 	   		</div>
 	   		
 	   		<?php if (!empty($user->id)){ ?>
+	   		
+	   		<div class="tab-pane fade" id="feedback">
+	      	<?php if ($feedback_by_user) { 
+	      		
+	      		foreach ($feedback_by_user as $feedback_item) { ?>
+	      		
+	      		<div class="well">
+	      			<p><?php echo $feedback_item->content; ?></p>
+	      			<p>Submitted on <span class="badge"><?php echo date("d M Y", $feedback_item->date_time_submitted); ?></span> at <span class="badge"><?php echo date("h:i:s a", $feedback_item->date_time_submitted); ?></span>
+	      			</p>
+	      		</div>
+	      	<?php } 
+	      	
+	      	} else { 
+	      		echo '<h4>You have not provided Feedback on this Bus Person</h4>'; 
+	      	} 
+	      	
+	      	?>
+	      	</div>
+	   		
 	      	<div class="tab-pane fade" id="complaints">
 	      	<?php if ($complaints_by_user) { 
 	      		
@@ -256,7 +283,7 @@ if (!empty($_GET['personnelid'])){
 	      	<?php } 
 	      	
 	      	} else { 
-	      		echo '<h4>You have not submitted any Complaints on this Bus Route</h4>'; 
+	      		echo '<h4>You have not submitted any Complaints on this Bus Person</h4>'; 
 	      	} ?>	
 	      	</div>
 	      	<?php } ?>

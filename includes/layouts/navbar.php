@@ -14,6 +14,8 @@
         <ul class="nav navbar-nav">
           <li<?php if (!empty($page) && $page == 'index'){echo ' class="active"';}?>><a href="index.php"><i class="icon-home icon-white"></i></a></li>
           
+          <li<?php if (!empty($page) && $page == 'user_manual'){echo ' class="active"';}?>><a href="user_manual.php">How to use Gaman</a></li>
+          
           <li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">

@@ -163,7 +163,7 @@ if ($session->is_logged_in()){
 					        echo $bus_object->find_by_id($feedback_item->related_object_id)->reg_number;
 					        break;
 				        case 4:
-				        	echo $bus_personnel_object->find_by_id($feedback_item->related_object_id)->fullname();
+				        	echo $bus_personnel_object->find_by_id($feedback_item->related_object_id)->full_name();
 				        	break;
 					}
 			        ?>

@@ -4,15 +4,20 @@ require_once("../includes/initialize.php");
 //init code
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
+
 $route_object = new BusRoute();
-$stop_route_object = new StopRoute();
 $stop_object = new BusStop();
-$complaint_object = new Complaint();
-$complaint_type_object = new ComplaintType();
-$object_type_object = new ObjectType();
-$complaint_status_object = new ComplaintStatus();
 $bus_object = new Bus();
 $bus_personnel_object = new BusPersonnel();
+
+$object_type_object = new ObjectType();
+
+$stop_route_object = new StopRoute();
+
+$complaint_object = new Complaint();
+$complaint_type_object = new ComplaintType();
+$complaint_status_object = new ComplaintStatus();
+$feedback_item_object = new FeedbackItem();
 
 $routes = BusRoute::find_all();
 $stops = BusStop::find_all();
@@ -32,7 +37,10 @@ if (isset($_GET['routeid'])) {
 	$route_to_read_update = $route_object->find_by_id($_GET['routeid']);
 	$stops_routes = $stop_route_object->get_stops_for_route($route_to_read_update->id);
 	if (!empty($user->id)){
+		
+		$feedback_by_user = $feedback_item_object->get_feedback_items_submitted_by_user_for_object($user->id, $session->object_type, 1, $route_to_read_update->id);
 		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 1, $route_to_read_update->id);
+		
 	}
 } else {
 	$session->message("No Route ID provided to view.");
@@ -72,12 +80,12 @@ if (isset($_GET['routeid'])) {
 	        <div class="sidenav" data-spy="affix" data-offset-top="150">
 	        	<a href="public_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Bus Routes</a>
 	        	<?php if (!empty($user->id)){ ?>
-	        	<a href="public_create_feedback.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
-	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
 	        	<br />
-	        	<div class="well">
-	        		<p>Complaints submitted on the Route: <span class="badge"><?php echo count($complaints_by_user); ?></span></p>
-	        	</div>
+	        	<a href="admin_create_feedback.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="admin_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<br />
+	        	<div class="well">Feedback <span class="badge badge-success"><?php echo count($feedback_by_user); ?></span></div>
+	        	<div class="well">Complaints <span class="badge badge-important"><?php echo count($complaints_by_user); ?></span></div>
 	        	<?php } ?>
 	        </div>
         </div>
@@ -106,6 +114,7 @@ if (isset($_GET['routeid'])) {
 	      <li class="active"><a href="#route_stops_list" data-toggle="tab">List of Stops</a></li>
 	      <li><a href="#route_profile" data-toggle="tab">Route Profile</a></li>
 	      <?php if (!empty($user->id)){ ?>
+	      <li><a href="#feedback" data-toggle="tab">Feedback</a></li>
 	      <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
 	      <?php } ?>
 	    </ul>
@@ -173,6 +182,26 @@ if (isset($_GET['routeid'])) {
 	      	</div>
 	      	
 	      	<?php if (!empty($user->id)){ ?>
+	      	
+	      	<div class="tab-pane fade" id="feedback">
+	      	<?php if ($feedback_by_user) { 
+	      		
+	      		foreach ($feedback_by_user as $feedback_item) { ?>
+	      		
+	      		<div class="well">
+	      			<p><?php echo $feedback_item->content; ?></p>
+	      			<p>Submitted on <span class="badge"><?php echo date("d M Y", $feedback_item->date_time_submitted); ?></span> at <span class="badge"><?php echo date("h:i:s a", $feedback_item->date_time_submitted); ?></span>
+	      			</p>
+	      		</div>
+	      	<?php } 
+	      	
+	      	} else { 
+	      		echo '<h4>You have not provided any Feedback on this Bus Route</h4>'; 
+	      	} 
+	      	
+	      	?>
+	      	</div>
+	      	
 	      	<div class="tab-pane fade" id="complaints">
 	      	<?php if ($complaints_by_user) { 
 	      		

@@ -4,14 +4,19 @@ require_once("../includes/initialize.php");
 //init code
 $photo_object = new Photograph();
 $commuter_object = new Commuter();
-$photo_type_object = new PhotoType();
-$stop_object = new BusStop();
-$stop_route_object = new StopRoute();
+
 $bus_route_object = new BusRoute();
+$stop_object = new BusStop();
+
+$object_type_object = new ObjectType();
+
+$stop_route_object = new StopRoute();
+$photo_type_object = new PhotoType();
+
 $complaint_object = new Complaint();
 $complaint_type_object = new ComplaintType();
-$object_type_object = new ObjectType();
 $complaint_status_object = new ComplaintStatus();
+$feedback_item_object = new FeedbackItem();
 
 $stops = $stop_object->find_all();
 
@@ -36,6 +41,7 @@ if (!empty($_GET['stopid'])){
 	$stop_to_read_update = $stop_object->find_by_id($_GET['stopid']);
 	$stops_routes = $stop_route_object->get_routes_for_stop($stop_to_read_update->id);
 	if (!empty($user->id)){
+		$feedback_by_user = $feedback_item_object->get_feedback_items_submitted_by_user_for_object($user->id, $session->object_type, 2, $stop_to_read_update->id);
 		$complaints_by_user = $complaint_object->get_complaints_submitted_by_user_for_object($user->id, $session->object_type, 2, $stop_to_read_update->id);
 	}
 
@@ -78,12 +84,12 @@ if (!empty($_GET['stopid'])){
 	        <div class="sidenav" data-spy="affix" data-offset-top="200">
 	        	<a href="public_list_stops.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Bus Stops</a>
 	        	<?php if (!empty($user->id)){ ?>
-	        	<a href="public_create_feedback.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
-	        	<a href="public_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
 	        	<br />
-	        	<div class="well">
-	        		<p>Complaints submitted on the Stop: <span class="badge"><?php echo count($complaints_by_user); ?></span></p>
-	        	</div>
+	        	<a href="admin_create_feedback.php" class="btn btn-success btn-block"><i class="icon-thumbs-up icon-white"></i> Give Feedback</a>
+	        	<a href="admin_create_complaint.php" class="btn btn-danger btn-block"><i class="icon-exclamation-sign icon-white"></i> Create Complaint</a>
+	        	<br />
+	        	<div class="well">Feedback <span class="badge badge-success"><?php echo count($feedback_by_user); ?></span></div>
+	        	<div class="well">Complaints <span class="badge badge-important"><?php echo count($complaints_by_user); ?></span></div>
 	        	<?php } ?>
 	        </div>
         </div>
@@ -114,6 +120,7 @@ if (!empty($_GET['stopid'])){
 	      <li><a href="#route_profile" data-toggle="tab">Bus Stop Profile</a></li>
 	      <li><a href="#route_stops_list" data-toggle="tab">List of Routes</a></li>
 	      <?php if (!empty($user->id)){ ?>
+	      <li><a href="#feedback" data-toggle="tab">Feedback </a></li>
 	      <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
 	      <?php } ?>
 	    </ul>
@@ -222,6 +229,26 @@ if (!empty($_GET['stopid'])){
 			</div>
 			
 			<?php if (!empty($user->id)){ ?>
+			
+			<div class="tab-pane fade" id="feedback">
+	      	<?php if ($feedback_by_user) { 
+	      		
+	      		foreach ($feedback_by_user as $feedback_item) { ?>
+	      		
+	      		<div class="well">
+	      			<p><?php echo $feedback_item->content; ?></p>
+	      			<p>Submitted on <span class="badge"><?php echo date("d M Y", $feedback_item->date_time_submitted); ?></span> at <span class="badge"><?php echo date("h:i:s a", $feedback_item->date_time_submitted); ?></span>
+	      			</p>
+	      		</div>
+	      	<?php } 
+	      	
+	      	} else { 
+	      		echo '<h4>You have not provided Feedback on this Bus Stop</h4>'; 
+	      	} 
+	      	
+	      	?>
+	      	</div>
+			
 	      	<div class="tab-pane fade" id="complaints">
 	      	<?php if ($complaints_by_user) { 
 	      		

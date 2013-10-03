@@ -8,14 +8,15 @@ providing and reviewing feedback
 providing and reviewing complaints
 
 
-schedulers
+schedulers:
 
 information portal for bus routes, stops, buses and personnel
 tracking feedback
 tracking complaints
 route survey data visualization tool
 
-bus personnel (owners, drivers, conductors)
+
+bus personnel (owners, drivers, conductors):
 
 information portal for bus routes, stops, buses and personnel
 tracking feedback

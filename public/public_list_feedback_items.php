@@ -122,7 +122,7 @@ if ($session->is_logged_in()){
 					        echo $bus_object->find_by_id($feedback_item->related_object_id)->reg_number;
 					        break;
 				        case 4:
-				        	echo $bus_personnel_object->find_by_id($feedback_item->related_object_id)->fullname();
+				        	echo $bus_personnel_object->find_by_id($feedback_item->related_object_id)->full_name();
 				        	break;
 					}
 			        ?>
@@ -139,7 +139,7 @@ if ($session->is_logged_in()){
         <?php 
          
 	        } else {
-	        	echo '<h4>You have not submitted any feedback yet. </h4>';
+	        	echo '<h4>You have not provided any Feedback yet. </h4>';
 	        }
         
         ?>

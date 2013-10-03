@@ -60,15 +60,25 @@ if ($session->is_logged_in()){
        	  <div class="row-fluid" style="text-align: justify">
 	       	  <section>
 	       	  
+	       	  <div class="well">
+	       	  
 	       	  	<p>Thank you for taking the time to complete a short survey on this system. As this is a research prototype, your feedback is important to me in my research efforts.</p>
-
-				<p>This survey should only take about 5 minutes of your time. Your answers will be completely anonymous and by filling out the survey you will be contributing to the improvement of the Bus Passenger Transport Service. All survey results will be used for my research thesis alone and no information will be used for commercial purposes.</p>
+	       	  	
+				<p>This survey should only take about 5 minutes of your time. Your answers will be completely anonymous and by filling out the survey you will be contributing to the improvement of the Bus Passenger Transport Service. All survey results will be used for my research thesis alone and no information will be used for commercial purposes. Click the button below to visit the survey, or scroll down if you prefer to complete the survey without leaving this site.</p>
 				
-				<p>If you have any questions about the survey, please contact me at gamantransport@gmail.com. I will reply to your emails as soon as I can. To start the survey, please use the following link.</p>
+				<p>If you have any questions about the survey, please contact me at gamantransport@gmail.com. I will reply to your emails as soon as I can. </p>
 				
-				<a href="#" class="btn btn-info btn-block">Survey</a><br />
+				<a href="https://docs.google.com/forms/d/100pWQ4476Mo4tqn3SHLmVO1r8cB-ayuQEdai8xWyjCI/viewform" class="btn btn-info btn-block" target="_blank">Click me!</a><br />
 				
-				<p>Thank You :)</p>
+				<h3 style="text-align: center">Thank You :)</h3>
+       	  	  
+       	  	  </div>
+       	  	  
+       	  	  <div>
+       	  	  
+       	  	  <iframe class="span12" height="3000" src="https://docs.google.com/forms/d/100pWQ4476Mo4tqn3SHLmVO1r8cB-ayuQEdai8xWyjCI/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+       	  	  
+       	  	  </div>
        	  	  	
        	  	  </section>
        	  	  

@@ -92,6 +92,8 @@ if ($session->is_logged_in()){
 	        	echo '</div>';
 	        }
 	        
+	        if ($complaints) {
+	        
 		?>
         
         <table class="table table-bordered table-hover">
@@ -126,7 +128,7 @@ if ($session->is_logged_in()){
 					        echo $bus_object->find_by_id($complaint->related_object_id)->reg_number;
 					        break;
 				        case 4:
-				        	echo $bus_personnel_object->find_by_id($complaint->related_object_id)->fullname();
+				        	echo $bus_personnel_object->find_by_id($complaint->related_object_id)->full_name();
 				        	break;
 					}
 			        ?>
@@ -153,6 +155,14 @@ if ($session->is_logged_in()){
         	
           </tbody>
         </table>
+        
+        <?php 
+         
+	        } else {
+	        	echo '<h4>You have not submitted any complaints yet. </h4>';
+	        }
+        
+        ?>
         
         </div>
         

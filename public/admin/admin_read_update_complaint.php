@@ -183,7 +183,7 @@ if ($session->is_logged_in()){
 	            <div class="control-group">
 	            <label for="content" class="control-label">Details of Complaint</label>
 		            <div class="controls">
-		            	<textarea rows="5" name="content"><?php echo $complaint_to_read_update->content; ?></textarea>
+		            	<textarea rows="5" name="content" disabled="disabled"><?php echo $complaint_to_read_update->content; ?></textarea>
 		            </div>
 	            </div>
 	            
