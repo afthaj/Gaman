@@ -75,7 +75,7 @@ if ($session->is_logged_in()){
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
         	<?php if (!empty($_GET['routeid'])) { ?>
-        		<a href="admin_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Routes List</a>
+        		<a href="admin_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Routes</a>
         	<?php } else { ?>
         		<a href="index.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Home Page</a>
         	<?php } ?>
@@ -100,6 +100,8 @@ if ($session->is_logged_in()){
         
         ?>
         
+        <?php if ($surveys) { ?>
+        
         <table class="table table-bordered table-hover">
       
 	      <tr>
@@ -117,6 +119,13 @@ if ($session->is_logged_in()){
 	      <?php } ?>
 	      
 	    </table>
+	    
+	    <?php } else { ?>
+	      <div class="alert">
+	      No Surveys recorded
+	      <button type="button" class="close" data-dismiss="alert">&times;</button>
+	      </div>
+      	<?php } ?>
         
         </section>
         	

@@ -75,7 +75,7 @@ if ($session->is_logged_in()){
         
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Routes List</a>
+        		<a href="admin_list_surveys.php?routeid=<?php echo $survey->route_id; ?>" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Surveys</a>
         	</div>
         </div>
         
@@ -96,6 +96,8 @@ if ($session->is_logged_in()){
         }
         
         ?>
+        
+        <?php if ($trips) { ?>
         
         <table class="table table-bordered table-hover">
       
@@ -122,6 +124,13 @@ if ($session->is_logged_in()){
 	      <?php } ?>
 	      
 	    </table>
+	    
+	    <?php } else { ?>
+	      <div class="alert">
+	      No Trips recorded
+	      <button type="button" class="close" data-dismiss="alert">&times;</button>
+	      </div>
+      	<?php } ?>
         
         </section>
         	

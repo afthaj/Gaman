@@ -52,6 +52,114 @@ if ($session->is_logged_in()){
   <head>
     <title>Trip Info &middot; <?php echo WEB_APP_NAME; ?></title>
     <?php require_once('../../includes/layouts/header_admin.php');?>
+    
+    <!-- Google Charts -->
+  
+  <script type="text/javascript" src="../js/jsapi.js"></script>
+  
+  <script type="text/javascript">
+
+     google.load("visualization", "1", {packages:["corechart"]});
+
+     google.setOnLoadCallback(drawChart);
+
+     function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Bus Stop', 'Boarded', 'Alighted', 'On Board'],
+          ['Kolpetty - Railway Station', 11, 0, 11],
+          ['Kolpetty - Supermarket', 10, 0, 21],
+          ['Kolpetty - Alwis Place', 7, 0, 28],
+          ['Colombo Public Library', 3, 6, 25],
+          ['SLTA', 0, 2, 23],
+          ['Colombo National Museum', 1, 0, 24],
+          ['Nelum Pokuna Theater', 2, 2, 24],
+          ['Alexandra Roundabout', 5, 0, 29],
+          ['Central', 2, 1, 30],
+          ['Wijerama', 4, 0, 34],
+          ['Borella - Horton Place', 2, 5, 31],
+          ['Devi Balika', 1, 1, 31],
+          ['Castle Street', 1, 0, 32],
+          ['Ayurveda', 2, 6, 28],
+          ['Rajagiriya', 25, 5, 48]
+        ]);
+
+        var options = {
+          title: 'Passenger Load Data',
+          height: 600,
+          vAxis: { title: 'No. of Passengers', gridlines: {color: '#000000', count: 8} }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('chart_line'));
+        chart.draw(data, options);
+      }
+    </script>
+  
+  <script type="text/javascript">
+
+  google.load("visualization", "1", {packages:["corechart"]});
+
+  google.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Bus Stop', 'Loiter Time'],
+          ['Kolpetty - Railway Station', 0],
+          ['Kolpetty - Supermarket', 1],
+          ['Kolpetty - Alwis Place', 0],
+          ['Colombo Public Library', 1],
+          ['SLTA', 1],
+          ['Colombo National Museum', 0],
+          ['Nelum Pokuna Theater', 1],
+          ['Alexandra Roundabout', 0],
+          ['Central', 0],
+          ['Wijerama', 0],
+          ['Borella - Horton Place', 1],
+          ['Devi Balika', 0],
+          ['Castle Street', 0],
+          ['Ayurveda', 1],
+          ['Rajagiriya', 6]
+        ]);
+
+        var options = {
+          title: 'Loiter Time',
+          height: 600,
+          vAxis: { title: 'Minutes', gridlines: {color: '#000000', count: 8} }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_column'));
+        chart.draw(data, options);
+      }
+    </script>
+    
+     
+    
+    <script type="text/javascript">
+    
+    // Load the Visualization API and the piechart package.
+    google.load('visualization', '1', {'packages':['corechart']});
+      
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.setOnLoadCallback(drawChart);
+      
+    function drawChart() {
+      var jsonData = $.ajax({
+          url: "../ajax_files/getData.php",
+          dataType:"json",
+          async: false
+          }).responseText;
+          
+      // Create our data table out of JSON data loaded from server.
+      var data = new google.visualization.DataTable(jsonData);
+
+      // Instantiate and draw our chart, passing in some options.
+      var chart = new google.visualization.PieChart(document.getElementById('chart_pie'));
+      chart.draw(data, {width: 800, height: 480, title: 'Breakdown of Vegies'});
+    }
+
+    </script>
+    
+    <!-- End Google Charts -->
+    
   </head>
 
   <body>
@@ -78,7 +186,7 @@ if ($session->is_logged_in()){
         
         <div class="span3">
         	<div class="sidenav" data-spy="affix" data-offset-top="200">
-        		<a href="admin_list_routes.php" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to Routes List</a>
+        		<a href="admin_list_trips.php?surveyid=<?php echo $trip_to_read->survey_id; ?>" class="btn btn-primary btn-block"><i class="icon-arrow-left icon-white"></i> Back to List of Trips</a>
         	</div>
         </div>
         
@@ -132,6 +240,24 @@ if ($session->is_logged_in()){
       	<?php } ?>
         
         </section>
+        	
+        <div class="row-fluid">
+	       	<section>
+	       	<div id="chart_line" style="width: 100%;"></div>
+	       	</section>
+       	</div>
+        
+        <div class="row-fluid">
+	       	<section>
+	       	<div id="chart_column" style="width: 100%;"></div>
+	       	</section>
+       	</div>
+       	  	  
+       	<div class="row-fluid">
+	       	<section>
+	       	<div id="" style="width: 100%;"></div>
+	       	</section>
+       	</div>
         	
         </div>
 
