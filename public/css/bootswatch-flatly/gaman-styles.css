@@ -4,3 +4,15 @@ ol.bus-stops-list {
 	list-style: none;
 	text-align: left;
 }
+
+.search-results
+{
+	text-align: center;
+}
+
+.h-center
+{
+  margin-left: auto !important;
+  margin-right: auto !important;
+  float: none !important;
+}

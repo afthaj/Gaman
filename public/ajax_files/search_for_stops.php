@@ -18,9 +18,10 @@ $to_stop = $stop_object->get_stop_from_name($to_string);
 $routes_of_from_stop = $stop_route_object->get_routes_for_stop($from_stop->id);
 $routes_of_to_stop = $stop_route_object->get_routes_for_stop($to_stop->id);
 
-echo 'From: ' . $stop_object->find_by_id($from_stop->id)->name;
-echo '<br />';
-echo 'To: ' . $stop_object->find_by_id($to_stop->id)->name;
+echo '<div class="">';
+echo '<a href="public_read_stop.php?stopid=' . $stop_object->find_by_id($from_stop->id)->id . '" class="btn btn-info">' . $stop_object->find_by_id($from_stop->id)->name . '</a>';
+echo ' <i class="icon-arrow-right"></i> ';
+echo '<a href="public_read_stop.php?stopid=' . $stop_object->find_by_id($to_stop->id)->id . '" class="btn btn-info">' . $stop_object->find_by_id($to_stop->id)->name . '</a>';
 echo '<br /><br />';
 //echo 'Common Route(s): ';
 //echo '<br />';
@@ -40,11 +41,17 @@ for($i = 0; $i < count($routes_of_from_stop); $i++){
 		
 		if ($routes_of_from_stop[$i]->route_id == $routes_of_to_stop[$j]->route_id){
 			//one bus
-			
-			echo $route_object->find_by_id($routes_of_to_stop[$j]->route_id)->route_number . '<br />';
+			$option_count = $j+1;
+			echo 'Option ' . $option_count . ' - ' . '<a href="public_read_route.php?routeid=' . $route_object->find_by_id($routes_of_to_stop[$j]->route_id)->id . '" class="btn btn-primary">' . $route_object->find_by_id($routes_of_to_stop[$j]->route_id)->route_number . '</a>';
+			if ($j < count($routes_of_to_stop)-1){ echo '<br /><br />'; } else { }
 			$flag = 1;
 			//return;
-		} /*else {
+		} else {
+			//echo 'No Bus Routes were found :(';
+			//return;
+		} 
+		
+		/*else {
 			$stops1 = $stop_route_object->get_stops_for_route($routes_of_from_stop[$i]->route_id);
 			$stops2 = $stop_route_object->get_stops_for_route($routes_of_to_stop[$j]->route_id);
 			for ($k = 0; $k < count($stops1); $k++){
@@ -108,6 +115,7 @@ for($i = 0; $i < count($routes_of_from_stop); $i++){
 	}
 }
 
-
+echo '</div>';
 
 ?>
+

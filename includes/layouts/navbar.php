@@ -18,10 +18,10 @@
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Bus Routes &amp; Stops <b class="caret"></b></a>
           	<ul class="dropdown-menu">
           		<li><a href="public_list_routes.php"><i class="icon-info-sign icon-white"></i> View All Bus Routes</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Route</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Route</a></li> -->
           		<li class="divider"></li>
           		<li><a href="public_list_stops.php"><i class="icon-info-sign icon-white"></i> View All Stops</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li> -->
           	</ul>
           </li>
           
@@ -29,10 +29,10 @@
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Buses &amp; Personnel <b class="caret"></b></a>
           	<ul class="dropdown-menu">
           		<li><a href="public_list_buses.php"><i class="icon-info-sign icon-white"></i> View All Buses</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Bus</a></li> -->
           		<li class="divider"></li>
           		<li><a href="public_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li> -->
           	</ul>
           </li>
           
@@ -49,12 +49,12 @@
           </li>
           <?php } } ?>
           
-          <li<?php if (!empty($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
+          <li<?php if (!empty($page) && $page == 'survey_info'){echo ' class="active"';}?>><a href="survey_info.php">Survey Info</a></li>
           
         </ul>
         <ul class="nav navbar-nav pull-right">
           
-          <li><a href="./admin">Admin Area</a></li>
+          <!-- <li><a href="./admin">Admin Area</a></li> -->
           
           <?php 
           
@@ -66,7 +66,7 @@
           	<i class="icon-user icon-white"></i> <?php if (!empty($user->id)) { echo $user->full_name(); } ?> <b class="caret"></b>
           	</a>
           	<ul class="dropdown-menu">
-          		<li><a href="public_view_profile.php"><i class="icon-info-sign icon-white"></i> View Profile</a></li>
+          		<!-- <li><a href="public_view_profile.php"><i class="icon-info-sign icon-white"></i> View Profile</a></li> -->
           		<li><a href="logout.php"><i class="icon-off icon-white"></i> Logout</a></li>
           	</ul>
           	</li>

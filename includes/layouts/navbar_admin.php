@@ -21,13 +21,13 @@
           		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
           		<li><a href="admin_create_route.php"><i class="icon-plus icon-white"></i> Add Bus Route</a></li>
           		<?php } ?>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Route</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Route</a></li> -->
           		<li class="divider"></li>
           		<li><a href="admin_list_stops.php"><i class="icon-info-sign icon-white"></i> View All Stops</a></li>
           		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
           		<li><a href="admin_create_stop.php"><i class="icon-plus icon-white"></i> Add Bus Stop</a></li>
           		<?php } ?>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Bus Stop</a></li> -->
           	</ul>
           </li>
           
@@ -38,13 +38,13 @@
           		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
           		<li><a href="admin_create_bus.php"><i class="icon-plus icon-white"></i> Add Bus</a></li>
           		<?php } ?>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Bus</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Bus</a></li> -->
           		<li class="divider"></li>
           		<li><a href="admin_list_bus_personnel.php"><i class="icon-info-sign icon-white"></i> View All Personnel</a></li>
           		<?php if ($session->is_logged_in() && $session->object_type == 5) { ?>
           		<li><a href="admin_create_bus_personnel.php"><i class="icon-plus icon-white"></i> Add Personnel</a></li>
           		<?php } ?>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Personnel</a></li> -->
           	</ul>
           </li>
           
@@ -53,11 +53,11 @@
           	<ul class="dropdown-menu">
           		<li><a href="admin_list_complaints.php"><i class="icon-info-sign icon-white"></i> View All Complaints</a></li>
           		<li><a href="admin_create_complaint.php"><i class="icon-plus icon-white"></i> Add Complaint</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Complaint</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Complaint</a></li> -->
           		<li class="divider"></li>
           		<li><a href="admin_list_feedback_items.php"><i class="icon-info-sign icon-white"></i> View Feedback Provided</a></li>
           		<li><a href="admin_create_feedback.php"><i class="icon-plus icon-white"></i> Provide Feedback</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Feedback Item</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Feedback Item</a></li> -->
           	</ul>
           </li>
           
@@ -71,7 +71,7 @@
           </li>
           <?php } ?>
           
-          <li<?php if (!empty($page) && $page == 'test'){echo ' class="active"';}?>><a href="test.php">Test Page</a></li>
+          <li<?php if (!empty($page) && $page == 'survey_info'){echo ' class="active"';}?>><a href="survey_info.php">Survey Info</a></li>
 
         </ul>
         <ul class="nav navbar-nav pull-right">
@@ -90,7 +90,7 @@
           		<li class="divider"></li>
           		<li><a href="admin_list_admin_users.php"><i class="icon-info-sign icon-white"></i> View All Admin Users</a></li>
           		<li><a href="admin_create_admin_user.php"><i class="icon-plus icon-white"></i> Add Admin User</a></li>
-          		<li><a href="#"><i class="icon-search icon-white"></i> Search for Admin User</a></li>
+          		<!-- <li><a href="#"><i class="icon-search icon-white"></i> Search for Admin User</a></li> -->
           		<?php } ?>
           	</ul>
           	</li>

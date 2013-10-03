@@ -2,10 +2,11 @@ functionalities of the system:
 
 commuters:
 
-bus route finder
 information portal for bus routes, stops, buses and personnel
+bus route finder
 providing and reviewing feedback
 providing and reviewing complaints
+
 
 schedulers
 
@@ -14,8 +15,36 @@ tracking feedback
 tracking complaints
 route survey data visualization tool
 
-bus persoonel (owners, drivers, conductors)
+bus personnel (owners, drivers, conductors)
 
 information portal for bus routes, stops, buses and personnel
 tracking feedback
 tracking complaints
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Hello!
+
+My name is Aftha Jaldin and I'm a Final Year Research Student at the University of Colombo School of Computing following a degree in Information and Communication Technology (wow, that's a mouthful!). My chosen area of research for the final year project is the Bus Passenger Transportation System in the Western Province of Sri Lanka. 
+
+As regular commuters, you use the bus transportation system in Colombo daily and know the ins-and-outs, the shortfalls and the shortcuts of the system. Therefore, I need your help in doing my research project.
+
+I have created this prototype system (tentatively named "Gaman") to test the usability and the various functionality needed in system such as this. It aims to be an information portal and a means of providing feedback to the people who manage and regulate the bus service. It also has a Bus Route Finder which is still in its prototype stage. (shout-out to @chav_ for the help given). After using the system, I would like you to complete a simple survey about your experience in using the system. The Survey can be accessed via the "Survey Info" link in the main navigation bar at the top of every page.
+
+Please feel free to give as much input to the survey as you can, it will only help my research efforts.
+
+I thank you in advance and hope you succeed in whatever you do in life! 
+
+p.s.: did I tell you? you are awesome!
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Thank you for taking the time to complete a short survey on this system. As this is a research prototype, your feedback is important to me in my research efforts.
+
+This survey should only take about 5 minutes of your time. Your answers will be completely anonymous and by filling out the survey you will be contributing to the improvement of the Bus Passenger Transport Service. All survey results will be used for my research thesis alone and no information will be used for commercial purposes.
+
+If you have any questions about the survey, please contact me at gamantransport@gmail.com. I will reply to your emails as soon as I can. To start the survey, please use the following link.
+
+
+
+Thank You :)

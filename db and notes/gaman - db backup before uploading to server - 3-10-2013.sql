@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2013 at 02:16 PM
+-- Generation Time: Oct 02, 2013 at 02:29 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -128,9 +128,9 @@ CREATE TABLE IF NOT EXISTS `bus_personnel` (
 --
 
 INSERT INTO `bus_personnel` (`id`, `object_type`, `role`, `username`, `password`, `first_name`, `last_name`, `nic_number`, `telephone_number`) VALUES
-(1, 4, 1, 'kamal', '123', 'Kamal', 'Indika', '801231511v', '0774422980'),
-(2, 4, 4, 'nihal', '123', 'Nihal', 'Shantha', '823231511v', ''),
-(3, 4, 3, 'hasitha', '123', 'Hasitha', 'Perera', '842321151v', '');
+(1, 4, 1, 'john', 'john123', 'John', 'Smith', '801231511v', '0774422980'),
+(2, 4, 4, 'busdriver', 'busdriver123', 'Bus', 'Driver', '823231511v', ''),
+(3, 4, 3, 'busconductor', 'busconductor123', 'Bus', 'Conductor', '842321151v', '');
 
 -- --------------------------------------------------------
 
@@ -345,26 +345,26 @@ CREATE TABLE IF NOT EXISTS `photographs` (
 --
 
 INSERT INTO `photographs` (`id`, `related_object_type`, `related_object_id`, `photo_type`, `filename`, `file_type`, `size`) VALUES
-(18, 5, 8, 9, 'generic-user.jpg', 'image/jpeg', '6195'),
-(19, 5, 11, 9, 'generic-user.jpg', 'image/jpeg', '261559'),
-(20, 5, 1, 9, 'generic-user.jpg', 'image/jpeg', '70034'),
-(21, 5, 4, 9, 'generic-user.jpg', 'image/jpeg', '33102'),
-(22, 2, 1, 10, 'generic-bus-stop.jpg', 'image/jpeg', '21804'),
-(23, 2, 1, 11, 'generic-bus-stop.jpg', 'image/jpeg', '105293'),
-(24, 2, 1, 12, 'generic-bus-stop.jpg', 'image/jpeg', '90063'),
-(25, 2, 2, 10, 'generic-bus-stop.jpg', 'image/jpeg', '22031'),
-(26, 2, 2, 11, 'generic-bus-stop.jpg', 'image/jpeg', '73071'),
-(27, 3, 1, 1, 'generic-bus.jpg', 'image/jpeg', '37090'),
-(28, 3, 1, 2, 'generic-bus.jpg', 'image/jpeg', '43218'),
-(29, 3, 2, 1, 'generic-bus.jpg', 'image/jpeg', '37227'),
-(30, 3, 2, 2, 'generic-bus.jpg', 'image/jpeg', '68710'),
-(31, 3, 3, 1, 'generic-bus.jpg', 'image/jpeg', '34694'),
-(32, 3, 3, 5, 'generic-bus.jpg', 'image/jpeg', '53572'),
-(33, 3, 1, 6, 'generic-bus.jpg', 'image/jpeg', '24515'),
-(34, 4, 1, 9, 'generic-user.jpg', 'image/jpeg', '31614'),
-(35, 4, 2, 9, 'generic-user.jpg', 'image/jpeg', '37737'),
-(36, 4, 3, 9, 'generic-user.jpg', 'image/jpeg', '28270'),
-(37, 5, 7, 9, 'generic-user.jpg', 'image/jpeg', '27079');
+(18, 5, 8, 9, '8-Sachith-Senevirathna.jpg', 'image/jpeg', '6195'),
+(19, 5, 11, 9, '11-Janitha-Rasanga.jpg', 'image/jpeg', '261559'),
+(20, 5, 1, 9, '1-Admin-User.jpg', 'image/jpeg', '70034'),
+(21, 5, 4, 9, '4-Buddhi-De Silva.jpg', 'image/jpeg', '33102'),
+(22, 2, 1, 10, 'bus_stop_pic_1_10.jpg', 'image/jpeg', '21804'),
+(23, 2, 1, 11, 'bus_stop_pic_1_11.jpg', 'image/jpeg', '105293'),
+(24, 2, 1, 12, 'bus_stop_pic_1_12.jpg', 'image/jpeg', '90063'),
+(25, 2, 2, 10, 'bus_stop_pic_2_10.jpg', 'image/jpeg', '22031'),
+(26, 2, 2, 11, 'bus_stop_pic_2_11.jpg', 'image/jpeg', '73071'),
+(27, 3, 1, 1, 'bus_pic_1_1.jpeg', 'image/jpeg', '37090'),
+(28, 3, 1, 2, 'bus_pic_1_2.jpeg', 'image/jpeg', '43218'),
+(29, 3, 2, 1, 'bus_pic_2_1.jpg', 'image/jpeg', '37227'),
+(30, 3, 2, 2, 'bus_pic_2_2.jpg', 'image/jpeg', '68710'),
+(31, 3, 3, 1, 'bus_pic_3_1.jpg', 'image/jpeg', '34694'),
+(32, 3, 3, 5, 'bus_pic_3_5.jpg', 'image/jpeg', '53572'),
+(33, 3, 1, 6, 'bus_pic_1_6.jpeg', 'image/jpeg', '24515'),
+(34, 4, 1, 9, 'bus_personnel_prof_pic_1_John_Smith.jpg', 'image/jpeg', '31614'),
+(35, 4, 2, 9, 'bus_personnel_prof_pic_2_Bus_Driver.jpg', 'image/jpeg', '37737'),
+(36, 4, 3, 9, 'bus_personnel_prof_pic_3_Bus_Conductor.jpg', 'image/jpeg', '28270'),
+(37, 5, 7, 9, 'admin_prof_pic_7_Laleen_Pallegoda.jpg', 'image/jpeg', '27079');
 
 -- --------------------------------------------------------
 
@@ -838,17 +838,14 @@ CREATE TABLE IF NOT EXISTS `user_commuters` (
   `email_address` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `object_type` (`object_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `user_commuters`
 --
 
 INSERT INTO `user_commuters` (`id`, `object_type`, `username`, `password`, `first_name`, `last_name`, `email_address`) VALUES
-(1, 6, 'heisenberg', '123', 'Walter', 'White', 'gamantransport@gmail.com'),
-(2, 6, 'whysoserious', '123', 'The', 'Joker', 'thejoker@gothamnet.com'),
-(4, 6, 'adopted', '123', 'Loki', 'Laufeyson', 'loki@asgardnet.com'),
-(5, 6, 'manofirony', '123', 'Tony', 'Stark', 'tony@starkindustries.com');
+(1, 6, 'gencomm', 'gencomm123', 'Generic', 'Commuter', 'aftha.jaldin88@gmail.com');
 
 --
 -- Constraints for dumped tables
