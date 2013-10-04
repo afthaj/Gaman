@@ -253,16 +253,106 @@ Thurstan College Grounds
 Colombo Uni - Arts Faculty
 Thunmulla
 Bamabalapitiya
-Wellawatte
-Dehiwala
+Milagiriya
+St. Peter's
+Wellawatte - Savoy
+Wellawatte - Supermarket
+Wellawatte - Junction
+Dehiwala - William Grinding Mills
+Dehiwala - Hill Street
 Mount Lavinia
 Moratuwa
 
 --------------------------------------------------------------------------------
 
-138 - incomplete
+120 - incomplete
 
+Havelock Town
+Thimbirigasyaya
+Campus
+Thurstan
+Nelum Pokuna
+Town Hall
+Darley Road
+Gamini Hall
+Lake House
+Fort
 
 
 --------------------------------------------------------------------------------
+
+155
+
+Soysapura
+Ratmalana - Golu madama
+Ratmalana - Belek Kadey Handiya
+Ratmalana - Maliban Handiya
+Mount Lavinia
+Dehiwala
+Bambalapitya
+Campus
+Thurstan
+Nelum Pokuna
+Town Hall
+Ibbanwala Junction
+Gamini Hall
+Maradana
+Technical Junction
+Armour Street
+Kotahena
+Hettiyawatte
+Modhara
+Mattakkuliya
+
+--------------------------------------------------------------------------------
+
+120
+
+Helape handiya
+Werahera
+Piriewena Road
+Boralesgamuwa - Abeyratne Mawatha
+Boralesgamuwa - Junction (police station)
+Rattanapitiya
+Divulapitiyia
+Kanda uda (I think. Not entirely sure)
+Pepiliyana
+Woodland Avenue
+Kohuwala
+Kelaniya Halt
+Bernard's
+Paalama gaawa
+Pamankada
+Redi mola (Wellawatte, near Royal Institute)
+Lumbini (near Park Road)
+Thimbirigasyaya
+Police Park
+Thunmulla
+Campus
+St. Bridget's
+Town  Hall
+Ibbanwala Junction
+St. Joseph's
+Gamini Hall
+Lake House
+Fort
+Pettah
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
