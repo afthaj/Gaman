@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../includes/initialize.php');
+require_once('../includes/initialize.php');
 
 $routes = BusRoute::find_all();
 $stops = BusStop::find_all();

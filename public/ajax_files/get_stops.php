@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../../includes/initialize.php');
+require_once('../includes/initialize.php');
 
 $stop_object = new BusStop();
 

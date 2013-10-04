@@ -1,5 +1,5 @@
 <?php
-require_once("../../includes/initialize.php");
+require_once("../includes/initialize.php");
 
 //init code
 $photo_object = new Photograph();
@@ -172,7 +172,7 @@ $bus_bus_personnel = $bus_bus_personnel_object->check_if_user_is_personnel_for_a
 <html lang="en">
   <head>
     <title>Bus Details &middot; <?php echo WEB_APP_NAME;?></title>
-    <?php require_once('../../includes/layouts/header_admin.php');?>
+    <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
   <body>
@@ -182,7 +182,7 @@ $bus_bus_personnel = $bus_bus_personnel_object->check_if_user_is_personnel_for_a
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('../../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../includes/layouts/navbar_admin.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -542,9 +542,9 @@ $bus_bus_personnel = $bus_bus_personnel_object->check_if_user_is_personnel_for_a
       <div id="push"></div>
     </div>
     
-    <?php require_once('../../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
     
-    <?php require_once('../../includes/layouts/footer_admin.php');?>
+    <?php require_once('../includes/layouts/footer_admin.php');?>
     
   </body>
 </html>

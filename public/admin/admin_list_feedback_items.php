@@ -1,5 +1,5 @@
 <?php
-require_once("../../includes/initialize.php");
+require_once("../includes/initialize.php");
 
 //init code
 $photo_object = new Photograph();
@@ -80,7 +80,7 @@ if ($session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Complaints List &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../../includes/layouts/header_admin.php');?>
+    <?php require_once('../includes/layouts/header_admin.php');?>
   </head>
 
   <body>
@@ -91,7 +91,7 @@ if ($session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'list_feedback_items';?>
-      <?php require_once('../../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../includes/layouts/navbar_admin.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -196,9 +196,9 @@ if ($session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('../../includes/layouts/footer_admin.php');?>
+    <?php require_once('../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

@@ -9,8 +9,12 @@ if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32' || PHP_OS == 'Windows'){
 	defined('SITE_ROOT') ? null : define('SITE_ROOT', 'C:'.DS.'xampp'.DS.'htdocs'.DS.'webdev'.DS.'Gaman');
 	require_once("config_windows.php");
 	
-} else {
-	//OS X and linux
+} else if (PHP_OS == 'Linux') {
+	//server
+	require_once("config_server.php");
+	
+} else if (PHP_OS == 'Darwin') {
+	//OS X
 	
 	defined('SITE_ROOT') ? null : define('SITE_ROOT', DS.'Users'.DS.'aftha'.DS.'Sites'.DS.'2. Eclipse Workspace'.DS.'Gaman'.DS.'public');
 	require_once("config_mac.php");
