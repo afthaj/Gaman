@@ -112,7 +112,8 @@ if (isset($_GET['routeid'])) {
         
         <ul class="nav nav-tabs">
 	      <li class="active"><a href="#route_stops_list" data-toggle="tab">List of Stops</a></li>
-	      <li><a href="#route_profile" data-toggle="tab">Route Profile</a></li>
+	      <li><a href="#route_map" data-toggle="tab">Route Map</a></li>
+		  <li><a href="#route_profile" data-toggle="tab">Route Profile</a></li>
 	      <?php if (!empty($user->id)){ ?>
 	      <li><a href="#feedback" data-toggle="tab">Feedback</a></li>
 	      <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
@@ -137,6 +138,21 @@ if (isset($_GET['routeid'])) {
 	      		</div>
 	      	
 	   		</div>
+			
+			<div class="tab-pane fade" id="route_map">
+	  	
+				<section>
+					<div class="callbacks_container">
+						<ul class="rslides" id="responsive_slider">
+								<li>
+									<img src="img/uploads/generic-bus-route.jpg" alt="">
+									<p class="caption"></p>
+								</li>
+						</ul>
+					</div>
+				</section>
+	  	
+			</div>
 	      	
 	      	<div class="tab-pane fade" id="route_profile">
 	      	
