@@ -1,5 +1,5 @@
 <?php
-require_once("../includes/initialize.php");
+require_once("../../includes/initialize.php");
 
 //init code
 $photo_object = new Photograph();
@@ -128,7 +128,7 @@ if ($session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Bus Personnel Details &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('../includes/layouts/header_admin.php');?>
+    <?php require_once('../../includes/layouts/header_admin.php');?>
   </head>
 
   <body>
@@ -138,7 +138,7 @@ if ($session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('../includes/layouts/navbar_admin.php');?>
+      <?php require_once('../../includes/layouts/navbar_admin.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -147,9 +147,9 @@ if ($session->is_logged_in()){
 		 
 		 <?php 
          if (!empty($profile_picture_of_bus_personnel->filename)) {
-         	echo '<img src="../../' . $profile_picture_of_bus_personnel->image_path() . '" width="200" class="img-rounded" />'; 
+         	echo '<img src="../' . $profile_picture_of_bus_personnel->image_path() . '" width="200" class="img-rounded" />'; 
          } else {
-         	echo '<img src="../img/default-prof-pic.jpg" width="200" class="img-rounded" alt="Please upload a profile picture" />';
+         	echo '<img src="../assets/img/default-prof-pic.jpg" width="200" class="img-rounded" alt="Please upload a profile picture" />';
          } 
          ?>
 		 
@@ -450,9 +450,9 @@ if ($session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('../includes/layouts/footer_admin.php');?>
+    <?php require_once('../../includes/layouts/footer_admin.php');?>
 
-    <?php require_once('../includes/layouts/scripts_admin.php');?>
+    <?php require_once('../../includes/layouts/scripts_admin.php');?>
 
   </body>
 </html>

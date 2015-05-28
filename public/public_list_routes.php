@@ -1,11 +1,5 @@
 <?php
-require_once("./includes/initialize.php");
-
-//init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
-$stop = new BusStop();
-$route_object = new BusRoute();
+require_once("../includes/initialize.php");
 
 //pagination code
 $current_page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -40,7 +34,7 @@ if ($session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Routes List &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -50,7 +44,7 @@ if ($session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -86,8 +80,8 @@ if ($session->is_logged_in()){
         	<?php foreach($routes as $route){ ?>
         		<tr align="center">
 	        		<td><?php echo $route->route_number; ?></td>
-	        		<td><?php echo $stop->find_by_id($route->begin_stop)->name; ?></td>
-	        		<td><?php echo $stop->find_by_id($route->end_stop)->name; ?></td>
+	        		<td><?php echo $stop_object->find_by_id($route->begin_stop)->name; ?></td>
+	        		<td><?php echo $stop_object->find_by_id($route->end_stop)->name; ?></td>
 	        		<td><?php echo $route->length; ?></td>
 	        		<td><?php echo format_trip_time($route->trip_time); ?></td>
 	        		<td><a href="public_read_route.php?routeid=<?php echo $route->id; ?>" class="btn btn-warning btn-block"><i class="icon-info-sign icon-white"></i> Route Profile</a></td>        		
@@ -143,9 +137,9 @@ if ($session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

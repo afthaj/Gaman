@@ -1,9 +1,5 @@
 <?php
-require_once("./includes/initialize.php");
-
-//init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
+require_once("../includes/initialize.php");
 
 //check login
 if ($session->is_logged_in()){
@@ -23,7 +19,7 @@ if ($session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Test &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -34,7 +30,7 @@ if ($session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'test';?>
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
 
       <!-- Begin page content -->
       
@@ -94,9 +90,13 @@ if ($session->is_logged_in()){
        	  	  	echo '<br /><br />';
        	  	  	
        	  	  	echo php_uname('s');
+
+                echo '<br /><br />';
        	  	  	
+       	  	  	echo var_dump($_SERVER);
        	  	  	
-       	  	  	
+                echo '<br /><br />';
+
        	  	  	?>
        	  	  	
        	  	  </section>
@@ -116,9 +116,9 @@ if ($session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

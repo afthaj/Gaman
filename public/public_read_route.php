@@ -1,26 +1,5 @@
 <?php
-require_once("./includes/initialize.php");
-
-//init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
-
-$route_object = new BusRoute();
-$stop_object = new BusStop();
-$bus_object = new Bus();
-$bus_personnel_object = new BusPersonnel();
-
-$object_type_object = new ObjectType();
-
-$stop_route_object = new StopRoute();
-
-$complaint_object = new Complaint();
-$complaint_type_object = new ComplaintType();
-$complaint_status_object = new ComplaintStatus();
-$feedback_item_object = new FeedbackItem();
-
-$routes = BusRoute::find_all();
-$stops = BusStop::find_all();
+require_once("../includes/initialize.php");
 
 //check login
 if ($session->is_logged_in()){
@@ -44,7 +23,7 @@ if (isset($_GET['routeid'])) {
 	}
 } else {
 	$session->message("No Route ID provided to view.");
-	redirect_to("public_list_routes.php");
+	redirect_to("/routes");
 }
 
 ?>
@@ -53,7 +32,7 @@ if (isset($_GET['routeid'])) {
 <html lang="en">
   <head>
     <title>Route Details &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -62,7 +41,7 @@ if (isset($_GET['routeid'])) {
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -145,7 +124,7 @@ if (isset($_GET['routeid'])) {
 					<div class="callbacks_container">
 						<ul class="rslides" id="responsive_slider">
 								<li>
-									<img src="img/uploads/generic-bus-route.jpg" alt="">
+									<img src="/assets/img/uploads/generic-bus-route.jpg" alt="">
 									<p class="caption"></p>
 								</li>
 						</ul>
@@ -282,9 +261,9 @@ if (isset($_GET['routeid'])) {
       <div id="push"></div>
     </div>
 
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

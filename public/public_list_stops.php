@@ -1,12 +1,5 @@
 <?php
-require_once("./includes/initialize.php");
-
-//init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
-$stop_object = new BusStop();
-
-//$stops = BusStop::find_all();
+require_once("../includes/initialize.php");
 
 //pagination code
 $current_page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -39,7 +32,7 @@ if ($session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Stops List &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -49,7 +42,7 @@ if ($session->is_logged_in()){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -71,21 +64,21 @@ if ($session->is_logged_in()){
 			echo '<div class="pagination pagination-centered">';
 			echo '<ul>';
 			
-			echo $pagination->has_previous_page() ? '<li><a href="' . $_SERVER['PHP_SELF'] . '?page='.$pagination->previous_page().'">&laquo;</a></li>' : '<li class="disabled"><a href="">&laquo;</a></li>';
+			echo $pagination->has_previous_page() ? '<li><a href="' . $_SERVER['REQUEST_URI'] . '?page='.$pagination->previous_page().'">&laquo;</a></li>' : '<li class="disabled"><a href="">&laquo;</a></li>';
 			
 			for ($i=1; $i <= $pagination->total_pages(); $i++) {
 				
 				echo '<li';
 				echo $i == $pagination->current_page ? ' class="active"' : '';
 				echo '>';
-				echo '<a href="' . $_SERVER['PHP_SELF'] . '?page=';
+				echo '<a href="' . $_SERVER['REQUEST_URI'] . '?page=';
 				echo $i;
 				echo '">'.$i.'</a>';
 				echo '</li>';
 				
 			}
 			
-			echo $pagination->has_next_page() ? '<li><a href="' . $_SERVER['PHP_SELF'] . '?page='.$pagination->next_page().'">&raquo;</a></li>' : '<li class="disabled"><a href="">&raquo;</a></li>';
+			echo $pagination->has_next_page() ? '<li><a href="' . $_SERVER['REQUEST_URI'] . '?page='.$pagination->next_page().'">&raquo;</a></li>' : '<li class="disabled"><a href="">&raquo;</a></li>';
 			
 			echo '</ul>';
 			echo '</div>';
@@ -185,9 +178,9 @@ if ($session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

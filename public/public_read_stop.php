@@ -1,22 +1,5 @@
 <?php
-require_once("./includes/initialize.php");
-
-//init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
-
-$bus_route_object = new BusRoute();
-$stop_object = new BusStop();
-
-$object_type_object = new ObjectType();
-
-$stop_route_object = new StopRoute();
-$photo_type_object = new PhotoType();
-
-$complaint_object = new Complaint();
-$complaint_type_object = new ComplaintType();
-$complaint_status_object = new ComplaintStatus();
-$feedback_item_object = new FeedbackItem();
+require_once("../includes/initialize.php");
 
 $stops = $stop_object->find_all();
 
@@ -56,7 +39,7 @@ if (!empty($_GET['stopid'])){
 <html lang="en">
   <head>
     <title>Route Details &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -66,7 +49,7 @@ if (!empty($_GET['stopid'])){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -171,7 +154,7 @@ if (!empty($_GET['stopid'])){
 	      				
 	      				<?php for ($i = 0; $i < count($stops_routes); $i++){
 	      					
-	      					$route = $bus_route_object->find_by_id($stops_routes[$i]->route_id);
+	      					$route = $route_object->find_by_id($stops_routes[$i]->route_id);
 	      					
 							?>
 							
@@ -211,7 +194,7 @@ if (!empty($_GET['stopid'])){
 		        <ul class="rslides" id="responsive_slider">
 				    <?php foreach($photos_of_stop as $photo_of_stop) { ?>
 					    <li>
-							<img src="<?php echo '../' . $photo_of_stop->image_path(); ?>" alt="">
+							<img src="<?php echo $photo_of_stop->image_path(); ?>" alt="">
 							<p class="caption"><?php echo $photo_type_object->find_by_id($photo_of_stop->photo_type)->photo_type_name; ?></p>
 						</li>
 				    <?php } ?>
@@ -313,9 +296,9 @@ if (!empty($_GET['stopid'])){
       <div id="push"></div>
     </div>
     
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
     
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
     
   </body>
 </html>

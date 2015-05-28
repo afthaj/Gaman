@@ -1,12 +1,7 @@
 <?php
-require_once("./includes/initialize.php");
+require_once("../includes/initialize.php");
 
 //init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
-
-$object_type_object = new ObjectType();
-
 $routes = BusRoute::find_all();
 $stops = BusStop::find_all();
 $buses = Bus::find_all();
@@ -93,7 +88,7 @@ if ($session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Complaints &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
     
     <script type="text/javascript">
 
@@ -130,11 +125,11 @@ if ($session->is_logged_in()){
 			
 			}
 			
-		request.open("GET","ajax_files/get_objects_to_create_complaint.php?q=" + str, true);
+		request.open("GET","assets/ajax_files/get_objects_to_create_complaint.php?q=" + str, true);
 		
 		request.send();
 
-		request2.open("GET","ajax_files/get_object_types_to_create_complaint.php?q=" + str, true);
+		request2.open("GET","assets/ajax_files/get_object_types_to_create_complaint.php?q=" + str, true);
 		
 		request2.send();
 		
@@ -152,7 +147,7 @@ if ($session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'complaints';?>
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
 
       <!-- Begin page content -->
       
@@ -248,9 +243,9 @@ if ($session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>

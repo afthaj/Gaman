@@ -1,26 +1,7 @@
 <?php
-require_once("./includes/initialize.php");
+require_once("../includes/initialize.php");
 
 //init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
-
-$photo_type_object = new PhotoType();
-
-$route_object = new BusRoute();
-$bus_object = new Bus();
-$bus_personnel_object = new BusPersonnel();
-
-$object_type_object = new ObjectType();
-
-$bus_personnel_role_object = new BusPersonnelRole();
-$bus_bus_personnel_object = new BusBusPersonnel();
-
-$complaint_object = new Complaint();
-$complaint_type_object = new ComplaintType();
-$complaint_status_object = new ComplaintStatus();
-$feedback_item_object = new FeedbackItem();
-
 $routes = BusRoute::find_all();
 $buses = Bus::find_all();
 $bus_personnel = BusPersonnel::find_all();
@@ -58,7 +39,7 @@ if (!empty($_GET['busid'])){
 <html lang="en">
   <head>
     <title>Bus Details &middot; <?php echo WEB_APP_NAME;?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -68,7 +49,7 @@ if (!empty($_GET['busid'])){
     <div id="wrap">
 
       <!-- Fixed navbar -->
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
       
       <header class="jumbotron subhead">
 		 <div class="container-fluid">
@@ -196,9 +177,9 @@ if (!empty($_GET['busid'])){
 		        		$bus_personnel_profile_picture = $photo_object->get_profile_picture(4, $assigned_bus_personnel->id);
 		        		
 		        		if (!empty($bus_personnel_profile_picture->filename)) {
-		        			echo '<a href="public_read_bus_personnel.php?personnelid=' . $assigned_bus_personnel->id . '"><img src="../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" /></a>';
+		        			echo '<a href="public_read_bus_personnel.php?personnelid=' . $assigned_bus_personnel->id . '"><img src="../assets/' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" /></a>';
 		        		} else {
-		        			echo '<img src="img/default-prof-pic.jpg" width="100" class="img-rounded" alt="Please upload a profile picture" />';
+		        			echo '<img src="assets/img/default-prof-pic.jpg" width="100" class="img-rounded" alt="Please upload a profile picture" />';
 		        		}
 		        		
 		        		?>
@@ -238,7 +219,7 @@ if (!empty($_GET['busid'])){
 		        <?php for ( $i = 0; $i < count($photos_of_bus); $i++ ) { ?>
 		        
 					<li>
-					<img src="<?php echo '../'.$photos_of_bus[$i]->image_path(); ?>" alt="">
+					<img src="<?php echo '../assets/'.$photos_of_bus[$i]->image_path(); ?>" alt="">
 					<p class="caption"><?php echo $photo_type_object->find_by_id($photos_of_bus[$i]->photo_type)->photo_type_name; ?></p>
 					</li>
 				
@@ -340,9 +321,9 @@ if (!empty($_GET['busid'])){
       <div id="push"></div>
     </div>
     
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
     
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
     
   </body>
 </html>

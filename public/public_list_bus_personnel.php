@@ -1,13 +1,5 @@
 <?php
-require_once("./includes/initialize.php");
-
-//init code
-$photo_object = new Photograph();
-$commuter_object = new Commuter();
-$bus_personnel_role_object = new BusPersonnelRole();
-$bus_personnel_object = new BusPersonnel();
-
-//$bus_personnel = BusPersonnel::find_all();
+require_once("../includes/initialize.php");
 
 //pagination code
 $current_page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -40,7 +32,7 @@ if ($session->is_logged_in()){
 <html lang="en">
   <head>
     <title>Buses List &middot; <?php echo WEB_APP_NAME; ?></title>
-    <?php require_once('./includes/layouts/header.php');?>
+    <?php require_once('../includes/layouts/header.php');?>
   </head>
 
   <body>
@@ -51,7 +43,7 @@ if ($session->is_logged_in()){
 
       <!-- Fixed navbar -->
       <?php $page = 'admin_buses_list';?>
-      <?php require_once('./includes/layouts/navbar.php');?>
+      <?php require_once('../includes/layouts/navbar.php');?>
 
       <!-- Begin page content -->
       
@@ -89,9 +81,9 @@ if ($session->is_logged_in()){
 	        		$bus_personnel_profile_picture = $photo_object->get_profile_picture(4, $bus_person->id);
 	        		
 	        		if (!empty($bus_personnel_profile_picture->filename)) {
-	        			echo '<img src="../' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" />';
+	        			echo '<img src="' . $bus_personnel_profile_picture->image_path() . '" width="100" class="img-rounded" />';
 	        		} else {
-	        			echo '<img src="img/default-prof-pic.jpg" width="100" class="img-rounded" alt="Please upload a profile picture" />';
+	        			echo '<img src="assets/img/default-prof-pic.jpg" width="100" class="img-rounded" alt="Please upload a profile picture" />';
 	        		}
 	        		
 	        		?>
@@ -151,9 +143,9 @@ if ($session->is_logged_in()){
       <div id="push"></div>
     </div>
 
-    <?php require_once('./includes/layouts/footer.php');?>
+    <?php require_once('../includes/layouts/footer.php');?>
 
-    <?php require_once('./includes/layouts/scripts.php');?>
+    <?php require_once('../includes/layouts/scripts.php');?>
 
   </body>
 </html>
